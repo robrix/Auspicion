@@ -1,7 +1,11 @@
-//
-// Prefix header for all source files of the 'Auspicion' target in the 'Auspicion' project.
-//
-
 #ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
+	#import <Foundation/Foundation.h>
 #endif
+#ifndef __STDC_LIMIT_MACROS
+	#define __STDC_LIMIT_MACROS
+#endif
+#ifndef __STDC_CONSTANT_MACROS
+	#define __STDC_CONSTANT_MACROS
+#endif
+#import "llvm-c/Core.h"
+#import "llvm-c/ExecutionEngine.h"
