@@ -1,0 +1,7 @@
+*.tmproj
+.DS_Store
+build
+*.xcodeproj/*.pbxuser
+*.xcodeproj/*.mode*
+.classes.TM_Completions.txt.gz
+.methods.TM_Completions.txt.gz

@@ -1,0 +1,3 @@
+#Why?
+
+Auspicion sets out to make it more convenient to write compilers using LLVM.
