@@ -16,15 +16,15 @@
 }
 
 
--(LLVMValue *)buildReturn:(LLVMValue *)value {
+-(LLVMValue *)return:(LLVMValue *)value {
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildRet(builderRef, value.valueRef)];
 }
 
--(LLVMValue *)buildFunctionCall:(LLVMFunction *)function arguments:(NSArray *)arguments {
+-(LLVMValue *)functionCall:(LLVMFunction *)function arguments:(NSArray *)arguments {
 	return nil;
 }
 
--(LLVMValue *)buildSelect:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue {
+-(LLVMValue *)select:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue {
 	return nil;
 }
 

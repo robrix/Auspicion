@@ -10,8 +10,8 @@
 
 +(LLVMBuilder *)builderWithContext:(LLVMContext *)context;
 
--(LLVMValue *)buildReturn:(LLVMValue *)value;
--(LLVMValue *)buildFunctionCall:(LLVMFunction *)function arguments:(NSArray *)arguments;
--(LLVMValue *)buildSelect:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue;
+-(LLVMValue *)return:(LLVMValue *)value;
+-(LLVMValue *)functionCall:(LLVMFunction *)function arguments:(NSArray *)arguments;
+-(LLVMValue *)select:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue;
 
 @end

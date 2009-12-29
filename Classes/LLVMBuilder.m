@@ -12,17 +12,17 @@
 }
 
 
--(LLVMValue *)buildReturn:(LLVMValue *)value {
+-(LLVMValue *)return:(LLVMValue *)value {
 	[self doesNotRecognizeSelector: _cmd];
 	return nil;
 }
 
--(LLVMValue *)buildFunctionCall:(LLVMFunction *)function arguments:(NSArray *)arguments {
+-(LLVMValue *)functionCall:(LLVMFunction *)function arguments:(NSArray *)arguments {
 	[self doesNotRecognizeSelector: _cmd];
 	return nil;
 }
 
--(LLVMValue *)buildSelect:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue {
+-(LLVMValue *)select:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue {
 	[self doesNotRecognizeSelector: _cmd];
 	return nil;
 }
