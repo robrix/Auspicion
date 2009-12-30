@@ -4,6 +4,13 @@
 
 #import "LLVMBuilder.h"
 
+@interface LLVMBuilder ()
+
+@property (nonatomic, readonly) LLVMBuilderRef builderRef;
+
+@end
+
+
 @interface LLVMConcreteBuilder : LLVMBuilder {
 	LLVMBuilderRef builderRef;
 }
