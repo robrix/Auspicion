@@ -10,6 +10,7 @@
 
 @end
 
+
 @interface LLVMConcreteModule : LLVMModule {
 	LLVMModuleRef moduleRef;
 }
