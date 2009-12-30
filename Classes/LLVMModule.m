@@ -34,6 +34,11 @@
 	return NULL;
 }
 
+-(LLVMModuleProviderRef)moduleProviderRef {
+	[self doesNotRecognizeSelector: _cmd];
+	return NULL;
+}
+
 
 -(BOOL)verifyWithError:(NSError **)error {
 	[self doesNotRecognizeSelector: _cmd];

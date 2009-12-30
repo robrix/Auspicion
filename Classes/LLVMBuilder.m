@@ -21,6 +21,7 @@
 
 
 -(LLVMBuilderRef)builderRef {
+	[self doesNotRecognizeSelector: _cmd];
 	return NULL;
 }
 
