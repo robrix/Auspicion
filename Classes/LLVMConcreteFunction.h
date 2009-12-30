@@ -15,6 +15,7 @@
 	LLVMValueRef functionRef;
 }
 
++(id)functionWithFunctionRef:(LLVMValueRef)_functionRef;
 -(id)initWithFunctionRef:(LLVMValueRef)_functionRef;
 
 @end
