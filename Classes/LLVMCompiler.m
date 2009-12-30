@@ -23,6 +23,7 @@
 
 
 -(void *)compiledFunction:(LLVMFunction *)function {
+	NSParameterAssert(function != nil);
 	return AuspicionLLVMGetPointerToFunction(self.compilerRef, function.valueRef);
 }
 
