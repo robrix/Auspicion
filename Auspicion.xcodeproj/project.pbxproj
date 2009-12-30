@@ -573,7 +573,6 @@
 		1DEB921F08733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -590,16 +589,13 @@
 					"\"$(SRCROOT)/External/LLVM/Libraries\"",
 					"\"$(SRCROOT)/build/Debug\"",
 				);
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Auspicion;
-				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
 		1DEB922008733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
@@ -614,7 +610,6 @@
 					"\"$(SRCROOT)/build/Debug\"",
 				);
 				PRODUCT_NAME = Auspicion;
-				SDKROOT = macosx10.5;
 			};
 			name = Release;
 		};
@@ -622,13 +617,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
@@ -636,11 +633,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.5;
 			};
 			name = Release;
 		};
@@ -667,7 +665,6 @@
 				);
 				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_NAME = Auspicion;
-				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
@@ -693,7 +690,6 @@
 				);
 				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_NAME = Auspicion;
-				SDKROOT = macosx10.5;
 			};
 			name = Release;
 		};
@@ -709,7 +705,6 @@
 				INSTALL_PATH = /usr/local/lib;
 				PREBINDING = NO;
 				PRODUCT_NAME = AuspicionLLVM;
-				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
@@ -724,7 +719,6 @@
 				INSTALL_PATH = /usr/local/lib;
 				PREBINDING = NO;
 				PRODUCT_NAME = AuspicionLLVM;
-				SDKROOT = macosx10.5;
 			};
 			name = Release;
 		};
