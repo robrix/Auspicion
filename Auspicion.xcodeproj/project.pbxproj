@@ -88,6 +88,14 @@
 		D407958010EB284F0061CF6C /* libLLVMX86Disassembler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405886410EA168B00A9E853 /* libLLVMX86Disassembler.a */; };
 		D407958110EB284F0061CF6C /* libLLVMX86Info.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405886510EA168B00A9E853 /* libLLVMX86Info.a */; };
 		D407958A10EB28E90061CF6C /* Auspicion.h in Headers */ = {isa = PBXBuildFile; fileRef = D407958910EB28E90061CF6C /* Auspicion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D4D9DCD610EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCD410EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h */; };
+		D4D9DCD710EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCD510EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m */; };
+		D4D9DCD810EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCD410EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h */; };
+		D4D9DCD910EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCD510EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m */; };
+		D4D9DCDC10EB31DC003EEE90 /* LLVMExecutionEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* LLVMExecutionEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D4D9DCDD10EB31DC003EEE90 /* LLVMExecutionEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* LLVMExecutionEngine.m */; };
+		D4D9DCDE10EB31DC003EEE90 /* LLVMExecutionEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* LLVMExecutionEngine.h */; };
+		D4D9DCDF10EB31DC003EEE90 /* LLVMExecutionEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* LLVMExecutionEngine.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -139,6 +147,10 @@
 		D407954F10EB27140061CF6C /* Auspicion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Auspicion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D407955910EB280B0061CF6C /* Auspicion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Auspicion.plist; sourceTree = "<group>"; };
 		D407958910EB28E90061CF6C /* Auspicion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Auspicion.h; sourceTree = "<group>"; };
+		D4D9DCD410EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMConcreteExecutionEngine.h; path = Classes/LLVMConcreteExecutionEngine.h; sourceTree = "<group>"; };
+		D4D9DCD510EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMConcreteExecutionEngine.m; path = Classes/LLVMConcreteExecutionEngine.m; sourceTree = "<group>"; };
+		D4D9DCDA10EB31DC003EEE90 /* LLVMExecutionEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMExecutionEngine.h; path = Classes/LLVMExecutionEngine.h; sourceTree = "<group>"; };
+		D4D9DCDB10EB31DC003EEE90 /* LLVMExecutionEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMExecutionEngine.m; path = Classes/LLVMExecutionEngine.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,6 +265,8 @@
 				D405883510EA13E900A9E853 /* LLVMConcreteBuilder.m */,
 				D405880410EA0CF000A9E853 /* LLVMConcreteContext.h */,
 				D405880510EA0CF000A9E853 /* LLVMConcreteContext.m */,
+				D4D9DCD410EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h */,
+				D4D9DCD510EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m */,
 				D40588D010EAC52400A9E853 /* LLVMConcreteFunction.h */,
 				D40588D110EAC52400A9E853 /* LLVMConcreteFunction.m */,
 				D405881610EA0EB100A9E853 /* LLVMConcreteModule.h */,
@@ -263,6 +277,8 @@
 				D405884510EA14EB00A9E853 /* LLVMConcreteValue.m */,
 				D405880610EA0CF000A9E853 /* LLVMContext.h */,
 				D405880710EA0CF000A9E853 /* LLVMContext.m */,
+				D4D9DCDA10EB31DC003EEE90 /* LLVMExecutionEngine.h */,
+				D4D9DCDB10EB31DC003EEE90 /* LLVMExecutionEngine.m */,
 				D40588D410EAC52C00A9E853 /* LLVMFunction.h */,
 				D40588D510EAC52C00A9E853 /* LLVMFunction.m */,
 				D405881810EA0EB100A9E853 /* LLVMModule.h */,
@@ -311,6 +327,8 @@
 				D40588D610EAC52C00A9E853 /* LLVMFunction.h in Headers */,
 				D407953A10EB228E0061CF6C /* LLVMType.h in Headers */,
 				D407953E10EB22950061CF6C /* LLVMConcreteType.h in Headers */,
+				D4D9DCD810EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h in Headers */,
+				D4D9DCDE10EB31DC003EEE90 /* LLVMExecutionEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +343,8 @@
 				D407956110EB283F0061CF6C /* LLVMFunction.h in Headers */,
 				D407956210EB283F0061CF6C /* LLVMType.h in Headers */,
 				D407958A10EB28E90061CF6C /* Auspicion.h in Headers */,
+				D4D9DCD610EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h in Headers */,
+				D4D9DCDC10EB31DC003EEE90 /* LLVMExecutionEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +432,8 @@
 				D40588D710EAC52C00A9E853 /* LLVMFunction.m in Sources */,
 				D407953B10EB228E0061CF6C /* LLVMType.m in Sources */,
 				D407953F10EB22950061CF6C /* LLVMConcreteType.m in Sources */,
+				D4D9DCD910EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m in Sources */,
+				D4D9DCDF10EB31DC003EEE90 /* LLVMExecutionEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +453,8 @@
 				D407956C10EB28470061CF6C /* LLVMFunction.m in Sources */,
 				D407956D10EB28470061CF6C /* LLVMType.m in Sources */,
 				D407956E10EB28470061CF6C /* LLVMConcreteType.m in Sources */,
+				D4D9DCD710EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m in Sources */,
+				D4D9DCDD10EB31DC003EEE90 /* LLVMExecutionEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
