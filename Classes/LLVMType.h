@@ -4,6 +4,8 @@
 
 @class LLVMContext;
 
+#import <Foundation/Foundation.h>
+
 @interface LLVMType : NSObject
 
 +(LLVMType *)integerTypeInContext:(LLVMContext *)context;
