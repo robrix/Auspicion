@@ -23,4 +23,10 @@
 	return NULL;
 }
 
+
+-(BOOL)verifyWithError:(NSError **)error {
+	[self doesNotRecognizeSelector: _cmd];
+	return NO;
+}
+
 @end

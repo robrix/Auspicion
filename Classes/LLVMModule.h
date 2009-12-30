@@ -12,4 +12,6 @@
 
 -(LLVMFunction *)functionWithName:(NSString *)_name;
 
+-(BOOL)verifyWithError:(NSError **)error;
+
 @end

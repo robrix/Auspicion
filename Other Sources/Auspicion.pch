@@ -9,3 +9,6 @@
 #endif
 #import "llvm-c/Core.h"
 #import "llvm-c/ExecutionEngine.h"
+#import "llvm-c/Analysis.h"
+#import "llvm-c/Target.h"
+#import "llvm-c/Transforms/Scalar.h"

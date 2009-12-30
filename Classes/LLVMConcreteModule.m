@@ -22,4 +22,19 @@
 	return nil;
 }
 
+
+-(BOOL)verifyWithError:(NSError **)error {
+	char *errorMessage = NULL;
+	BOOL result = YES;
+	if(LLVMVerifyModule(moduleRef, LLVMReturnStatusAction, &errorMessage) == 1) {
+		if(error)
+			*error = [NSError errorWithDomain: @"com.monochromeindustries.Auspicion" code: -1 userInfo: [NSDictionary dictionaryWithObjectsAndKeys:
+				[NSString stringWithUTF8String:errorMessage], NSLocalizedDescriptionKey,
+			nil]];
+		LLVMDisposeMessage(errorMessage);
+		result = NO;
+	}
+	return result;
+}
+
 @end
