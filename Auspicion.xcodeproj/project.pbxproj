@@ -526,7 +526,7 @@
 				GCC_PREFIX_HEADER = "Other Sources/Auspicion.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/LLVM/Include/";
 				INFOPLIST_FILE = Resources/Auspicion.plist;
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@rpath";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/LLVM/Libraries\"",
@@ -553,7 +553,7 @@
 				GCC_PREFIX_HEADER = "Other Sources/Auspicion.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/LLVM/Include/";
 				INFOPLIST_FILE = Resources/Auspicion.plist;
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@rpath";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/LLVM/Libraries\"",
