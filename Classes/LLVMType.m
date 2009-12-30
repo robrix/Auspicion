@@ -47,7 +47,7 @@
 }
 
 +(LLVMType *)untypedPointerTypeInContext:(LLVMContext *)context {
-	return [self pointerTypeToType: [self int8TypeInContext: context] addressSpace: 0]
+	return [self pointerTypeToType: [self int8TypeInContext: context] addressSpace: 0];
 }
 
 
