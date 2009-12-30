@@ -9,5 +9,6 @@
 #import <Auspicion/LLVMContext.h>
 #import <Auspicion/LLVMFunction.h>
 #import <Auspicion/LLVMModule.h>
+#import <Auspicion/LLVMOptimizer.h>
 #import <Auspicion/LLVMType.h>
 #import <Auspicion/LLVMValue.h>
