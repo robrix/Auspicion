@@ -6,6 +6,7 @@
 #import "LLVMConcreteFunction.h"
 #import "LLVMConcreteModule.h"
 #import "LLVMConcreteType.h"
+#import "LLVMConcreteValue.h"
 
 @implementation LLVMConcreteModule
 
@@ -26,9 +27,16 @@
 	return function;
 }
 
-// -(LLVMFunction *)functionWithName:(NSString *)_name {
-// 	return nil;
-// }
+
+-(LLVMFunction *)functionWithName:(NSString *)name {
+	return [LLVMConcreteFunction functionWithFunctionRef: LLVMGetNamedFunction(moduleRef, [name UTF8String])];
+}
+
+-(LLVMFunction *)functionWithName:(NSString *)name type:(LLVMType *)type {
+	LLVMFunction *function = [LLVMFunction functionInModule: self withName: name type: type];
+	LLVMAppendBasicBlock(function.valueRef, "entry");
+	return function;
+}
 
 
 -(BOOL)verifyWithError:(NSError **)error {

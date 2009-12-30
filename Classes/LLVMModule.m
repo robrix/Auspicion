@@ -18,10 +18,15 @@
 }
 
 
-// -(LLVMFunction *)functionWithName:(NSString *)_name {
-// 	[self doesNotRecognizeSelector: _cmd];
-// 	return nil;
-// }
+-(LLVMFunction *)functionWithName:(NSString *)_name {
+	[self doesNotRecognizeSelector: _cmd];
+	return nil;
+}
+
+-(LLVMFunction *)functionWithName:(NSString *)_name type:(LLVMType *)type {
+	[self doesNotRecognizeSelector: _cmd];
+	return nil;
+}
 
 
 -(LLVMModuleRef)moduleRef {

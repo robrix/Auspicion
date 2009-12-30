@@ -10,7 +10,7 @@
 @implementation LLVMFunction
 
 +(id)functionInModule:(LLVMModule *)module withName:(NSString *)name type:(LLVMType *)type {
-	return [[[LLVMConcreteFunction alloc] initWithFunctionRef: LLVMAddFunction(module.moduleRef, [name UTF8String], type.typeRef)] autorelease];
+	return [LLVMConcreteFunction functionWithFunctionRef: LLVMAddFunction(module.moduleRef, [name UTF8String], type.typeRef)];
 }
 
 

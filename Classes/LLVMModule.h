@@ -12,7 +12,8 @@
 
 -(LLVMFunction *)declareExternalFunctionWithName:(NSString *)name type:(LLVMType *)type;
 
-// -(LLVMFunction *)functionWithName:(NSString *)_name;
+-(LLVMFunction *)functionWithName:(NSString *)_name; // returns the named function if it exists
+-(LLVMFunction *)functionWithName:(NSString *)_name type:(LLVMType *)type; // creates a new function with the given name and type
 
 -(BOOL)verifyWithError:(NSError **)error;
 

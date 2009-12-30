@@ -9,6 +9,10 @@
 
 @synthesize valueRef=functionRef;
 
++(id)functionWithFunctionRef:(LLVMValueRef)_functionRef {
+	return [[[self alloc] initWithFunctionRef: _functionRef] autorelease];
+}
+
 -(id)initWithFunctionRef:(LLVMValueRef)_functionRef {
 	if(self = [super init]) {
 		functionRef = _functionRef;
