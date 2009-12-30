@@ -15,7 +15,7 @@
 +(id)sharedCompiler {
 	static LLVMCompiler *sharedCompiler = nil;
 	if(!sharedCompiler) {
-		sharedCompiler = [self compilerWithContext: [LLVMContext sharedContext]];
+		sharedCompiler = [[self compilerWithContext: [LLVMContext sharedContext]] retain];
 	}
 	return sharedCompiler;
 }

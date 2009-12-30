@@ -12,7 +12,7 @@
 +(LLVMContext *)sharedContext {
 	static LLVMContext *sharedContext = nil;
 	if(!sharedContext) {
-		sharedContext = [[[LLVMConcreteContext alloc] initWithContextRef: LLVMGetGlobalContext()] autorelease];
+		sharedContext = [[LLVMConcreteContext alloc] initWithContextRef: LLVMGetGlobalContext()];
 	}
 	return sharedContext;
 }
