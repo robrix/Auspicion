@@ -10,6 +10,7 @@
 
 @end
 
+
 @interface LLVMConcreteValue : LLVMValue {
 	LLVMValueRef valueRef;
 }
