@@ -10,15 +10,17 @@
 	LLVMLinkInJIT();
 	LLVMInitializeNativeTarget();
 	
-	LLVMAddTargetData;
-	LLVMAddCFGSimplificationPass;
-	LLVMAddPromoteMemoryToRegisterPass;
-	LLVMGetExecutionEngineTargetData;
-	LLVMCreateJITCompiler;
-	LLVMAddInstructionCombiningPass;
-	LLVMVerifyModule;
-	LLVMAddGVNPass;
-	LLVMAddConstantPropagationPass;
+	static void *functions[] = {
+		LLVMAddTargetData,
+		LLVMAddCFGSimplificationPass,
+		LLVMAddPromoteMemoryToRegisterPass,
+		LLVMGetExecutionEngineTargetData,
+		LLVMCreateJITCompiler,
+		LLVMAddInstructionCombiningPass,
+		LLVMVerifyModule,
+		LLVMAddGVNPass,
+		LLVMAddConstantPropagationPass
+	};
 }
 
 @end
