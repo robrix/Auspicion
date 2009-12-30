@@ -17,6 +17,10 @@
 }
 
 
++(LLVMType *)int1TypeInContext:(LLVMContext *)context {
+	return [LLVMConcreteType typeWithTypeRef: LLVMInt1TypeInContext(context.contextRef)];
+}
+
 +(LLVMType *)int8TypeInContext:(LLVMContext *)context {
 	return [LLVMConcreteType typeWithTypeRef: LLVMInt8TypeInContext(context.contextRef)];
 }
@@ -34,7 +38,7 @@
 }
 
 
-+(LLVMType *)pointerInContext:(LLVMContext *)context toType:(LLVMType *)type addressSpace:(NSUInteger)addressSpace {
++(LLVMType *)pointerTypeInContext:(LLVMContext *)context toType:(LLVMType *)type addressSpace:(NSUInteger)addressSpace {
 	return [LLVMConcreteType typeWithTypeRef: LLVMPointerType(type.typeRef, addressSpace)];
 }
 
