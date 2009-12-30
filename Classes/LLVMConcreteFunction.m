@@ -22,11 +22,11 @@
 }
 
 
--(LLVMFunctionLinkage)linkage {
+-(LLVMLinkage)linkage {
 	return LLVMGetLinkage(functionRef);
 }
 
--(void)setLinkage:(LLVMFunctionLinkage)_linkage {
+-(void)setLinkage:(LLVMLinkage)_linkage {
 	LLVMSetLinkage(functionRef, _linkage);
 }
 

@@ -38,9 +38,18 @@
 }
 
 
-+(LLVMType *)pointerTypeInContext:(LLVMContext *)context toType:(LLVMType *)type addressSpace:(NSUInteger)addressSpace {
++(LLVMType *)pointerTypeToType:(LLVMType *)type addressSpace:(NSUInteger)addressSpace {
 	return [LLVMConcreteType typeWithTypeRef: LLVMPointerType(type.typeRef, addressSpace)];
 }
+
++(LLVMType *)pointerTypeToType:(LLVMType *)type {
+	return [self pointerTypeToType: type addressSpace: 0];
+}
+
++(LLVMType *)untypedPointerTypeInContext:(LLVMContext *)context {
+	return [self pointerTypeToType: [self int8TypeInContext: context] addressSpace: 0]
+}
+
 
 +(LLVMType *)functionTypeWithReturnType:(LLVMType *)_returnType argumentTypes:(NSArray *)argumentTypes variadic:(BOOL)variadic {
 	LLVMTypeRef argumentTypeRefs[argumentTypes.count];
@@ -49,6 +58,14 @@
 		argumentTypeRefs[i++] = type.typeRef;
 	}
 	return [LLVMConcreteType typeWithTypeRef: LLVMFunctionType(_returnType.typeRef, argumentTypeRefs, argumentTypes.count, variadic)];
+}
+
++(LLVMType *)functionTypeWithReturnType:(LLVMType *)_returnType argumentTypes:(NSArray *)argumentTypes {
+	return [self functionTypeWithReturnType: _returnType argumentTypes: argumentTypes variadic: NO];
+}
+
++(LLVMType *)functionTypeWithReturnType:(LLVMType *)_returnType argumentType:(LLVMType *)argumentType {
+	return [self functionTypeWithReturnType: _returnType argumentTypes: [NSArray arrayWithObject: argumentType] variadic: NO];
 }
 
 

@@ -4,13 +4,15 @@
 
 #import <Foundation/Foundation.h>
 
-@class LLVMContext, LLVMFunction;
+@class LLVMContext, LLVMFunction, LLVMType;
 
 @interface LLVMModule : NSObject
 
 +(LLVMModule *)moduleWithName:(NSString *)_name inContext:(LLVMContext *)context;
 
--(LLVMFunction *)functionWithName:(NSString *)_name;
+-(LLVMFunction *)declareExternalFunctionWithName:(NSString *)name type:(LLVMType *)type;
+
+// -(LLVMFunction *)functionWithName:(NSString *)_name;
 
 -(BOOL)verifyWithError:(NSError **)error;
 
