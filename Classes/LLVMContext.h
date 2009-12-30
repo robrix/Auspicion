@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class LLVMType;
+@class LLVMType, LLVMValue;
 
 @interface LLVMContext : NSObject
 
