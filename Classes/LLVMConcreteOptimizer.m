@@ -11,6 +11,7 @@
 	if(self = [super init]) {
 		compiler = [_compiler retain];
 		NSParameterAssert(compiler != nil);
+		optimizerRef = LLVMCreatePassManager();
 		LLVMAddTargetData(LLVMGetExecutionEngineTargetData(compiler.compilerRef), optimizerRef);
 	}
 	return self;
@@ -18,6 +19,7 @@
 
 -(void)dealloc {
 	[compiler release];
+	LLVMDisposePassManager(optimizerRef);
 	[super dealloc];
 }
 
