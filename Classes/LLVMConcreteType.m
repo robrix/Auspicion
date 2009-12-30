@@ -13,6 +13,7 @@
 -(id)initWithTypeRef:(LLVMTypeRef)_typeRef {
 	if(self = [super init]) {
 		typeRef = _typeRef;
+		NSParameterAssert(typeRef != NULL);
 	}
 	return self;
 }

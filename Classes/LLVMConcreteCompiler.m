@@ -27,6 +27,8 @@
 
 -(id)initWithContext:(LLVMContext *)context {
 	if(self = [super init]) {
+		NSParameterAssert(context != nil);
+		
 		LLVMModule *module = [[LLVMModule moduleWithName: @"com.monochromeindustries.LLVMConcreteCompiler" inContext: context] retain];
 		
 		char *error = NULL;

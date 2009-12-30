@@ -13,6 +13,7 @@
 -(id)initWithValueRef:(LLVMValueRef)_valueRef {
 	if(self = [super init]) {
 		valueRef = _valueRef;
+		NSParameterAssert(valueRef != NULL);
 	}
 	return self;
 }
