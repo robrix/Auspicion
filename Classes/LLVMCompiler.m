@@ -13,7 +13,11 @@
 @implementation LLVMCompiler
 
 +(id)sharedCompiler {
-	return [self compilerWithContext: [LLVMContext sharedContext]];
+	static LLVMCompiler *sharedCompiler = nil;
+	if(!sharedCompiler) {
+		sharedCompiler = [self compilerWithContext: [LLVMContext sharedContext]];
+	}
+	return sharedCompiler;
 }
 
 +(id)compilerWithContext:(LLVMContext *)context {
