@@ -8,8 +8,13 @@
 #import "LLVMConcreteFunction.h"
 #import "LLVMConcreteModule.h"
 #import "LLVMConcreteValue.h"
+#import "LLVMContext.h"
 
 @implementation LLVMCompiler
+
++(id)sharedCompiler {
+	return [self compilerWithContext: [LLVMContext sharedContext]];
+}
 
 +(id)compilerWithContext:(LLVMContext *)context {
 	return [[[LLVMConcreteCompiler alloc] initWithContext: context] autorelease];
