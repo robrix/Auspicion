@@ -4,8 +4,8 @@
 
 #import "LLVMContext.h"
 #import "LLVMConcreteContext.h"
+#import "LLVMConcreteType.h"
 #import "LLVMConcreteValue.h"
-#import "LLVMType.h"
 
 @implementation LLVMContext
 
@@ -58,19 +58,19 @@
 
 // constants
 -(LLVMValue *)constantInteger:(NSInteger)integer {
-	return [LLVMValue valueWithValueRef: LLVMConstInt(self.integerType, integer, 1)]
+	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.integerType.typeRef, integer, 1)];
 }
 
 -(LLVMValue *)constantUnsignedInteger:(NSUInteger)integer {
-	return [LLVMValue valueWithValueRef: LLVMConstInt(self.integerType, integer, 0)]
+	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.integerType.typeRef, integer, 0)];
 }
 
 -(LLVMValue *)constantInt32:(int32_t)integer {
-	return [LLVMValue valueWithValueRef: LLVMConstInt(self.int32Type, integer, 1)]
+	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.int32Type.typeRef, integer, 1)];
 }
 
 -(LLVMValue *)constantUnsignedInt32:(uint32_t)integer {
-	return [LLVMValue valueWithValueRef: LLVMConstInt(self.int32Type, integer, 0)]
+	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.int32Type.typeRef, integer, 0)];
 }
 
 @end

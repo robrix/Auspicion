@@ -4,6 +4,7 @@
 
 #import "LLVMConcreteBuilder.h"
 #import "LLVMConcreteContext.h"
+#import "LLVMConcreteFunction.h"
 #import "LLVMConcreteValue.h"
 
 @implementation LLVMConcreteBuilder
@@ -26,7 +27,7 @@
 	for(LLVMValue *argument in arguments) {
 		argumentRefs[i++] = argument.valueRef;
 	}
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildCall(builderRef, function.valueRef, argumentRefs, arguments.count)];
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildCall(builderRef, function.valueRef, argumentRefs, arguments.count, "")];
 }
 
 -(LLVMValue *)select:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue {
