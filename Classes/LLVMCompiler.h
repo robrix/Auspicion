@@ -8,6 +8,7 @@
 
 @interface LLVMCompiler : NSObject
 
++(id)sharedCompiler;
 +(id)compilerWithContext:(LLVMContext *)context;
 
 -(void *)compiledFunction:(LLVMFunction *)function;
