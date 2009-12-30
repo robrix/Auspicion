@@ -16,6 +16,24 @@
 #endif
 }
 
+
++(LLVMType *)int8TypeInContext:(LLVMContext *)context {
+	return [LLVMConcreteType typeWithTypeRef: LLVMInt8TypeInContext(context.contextRef)];
+}
+
++(LLVMType *)int16TypeInContext:(LLVMContext *)context {
+	return [LLVMConcreteType typeWithTypeRef: LLVMInt16TypeInContext(context.contextRef)];
+}
+
++(LLVMType *)int32TypeInContext:(LLVMContext *)context {
+	return [LLVMConcreteType typeWithTypeRef: LLVMInt32TypeInContext(context.contextRef)];
+}
+
++(LLVMType *)int64TypeInContext:(LLVMContext *)context {
+	return [LLVMConcreteType typeWithTypeRef: LLVMInt64TypeInContext(context.contextRef)];
+}
+
+
 +(LLVMType *)pointerInContext:(LLVMContext *)context toType:(LLVMType *)type addressSpace:(NSUInteger)addressSpace {
 	return [LLVMConcreteType typeWithTypeRef: LLVMPointerType(type.typeRef, addressSpace)];
 }

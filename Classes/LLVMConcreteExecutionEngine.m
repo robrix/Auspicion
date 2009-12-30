@@ -17,7 +17,6 @@
 		LLVMGetExecutionEngineTargetData,
 		LLVMCreateJITCompiler,
 		LLVMAddInstructionCombiningPass,
-		LLVMVerifyModule,
 		LLVMAddGVNPass,
 		LLVMAddConstantPropagationPass
 	};
