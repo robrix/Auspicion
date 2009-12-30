@@ -13,12 +13,15 @@
 -(id)initWithName:(NSString *)_name context:(LLVMContext *)_context {
 	if(self = [super init]) {
 		moduleRef = LLVMModuleCreateWithNameInContext([_name UTF8String], _context.contextRef);
+		moduleProviderRef = LLVMCreateModuleProviderForExistingModule(moduleRef);
 	}
 	return self;
 }
 
 
 @synthesize moduleRef;
+
+@synthesize moduleProviderRef;
 
 
 -(LLVMFunction *)declareExternalFunctionWithName:(NSString *)name type:(LLVMType *)type {

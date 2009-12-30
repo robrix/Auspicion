@@ -88,15 +88,36 @@
 		D407958010EB284F0061CF6C /* libLLVMX86Disassembler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405886410EA168B00A9E853 /* libLLVMX86Disassembler.a */; };
 		D407958110EB284F0061CF6C /* libLLVMX86Info.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405886510EA168B00A9E853 /* libLLVMX86Info.a */; };
 		D407958A10EB28E90061CF6C /* Auspicion.h in Headers */ = {isa = PBXBuildFile; fileRef = D407958910EB28E90061CF6C /* Auspicion.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D4D9DCD610EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCD410EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h */; };
-		D4D9DCD710EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCD510EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m */; };
-		D4D9DCD810EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCD410EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h */; };
-		D4D9DCD910EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCD510EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m */; };
-		D4D9DCDC10EB31DC003EEE90 /* LLVMExecutionEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* LLVMExecutionEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D4D9DCDD10EB31DC003EEE90 /* LLVMExecutionEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* LLVMExecutionEngine.m */; };
-		D4D9DCDE10EB31DC003EEE90 /* LLVMExecutionEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* LLVMExecutionEngine.h */; };
-		D4D9DCDF10EB31DC003EEE90 /* LLVMExecutionEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* LLVMExecutionEngine.m */; };
+		D4D9DCD610EB31D4003EEE90 /* LLVMConcreteCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCD410EB31D4003EEE90 /* LLVMConcreteCompiler.h */; };
+		D4D9DCD710EB31D4003EEE90 /* LLVMConcreteCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCD510EB31D4003EEE90 /* LLVMConcreteCompiler.m */; };
+		D4D9DCD810EB31D4003EEE90 /* LLVMConcreteCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCD410EB31D4003EEE90 /* LLVMConcreteCompiler.h */; };
+		D4D9DCD910EB31D4003EEE90 /* LLVMConcreteCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCD510EB31D4003EEE90 /* LLVMConcreteCompiler.m */; };
+		D4D9DCDC10EB31DC003EEE90 /* LLVMCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D4D9DCDD10EB31DC003EEE90 /* LLVMCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */; };
+		D4D9DCDE10EB31DC003EEE90 /* LLVMCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */; };
+		D4D9DCDF10EB31DC003EEE90 /* LLVMCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */; };
+		D4D9DE5E10EB5F68003EEE90 /* libAuspicionLLVM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */; };
+		D4D9DE6610EB5FBC003EEE90 /* AuspicionLLVM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DE6410EB5FBC003EEE90 /* AuspicionLLVM.cpp */; };
+		D4D9DE6710EB5FBC003EEE90 /* AuspicionLLVM.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DE6510EB5FBC003EEE90 /* AuspicionLLVM.h */; };
+		D4D9DE6A10EB5FE0003EEE90 /* libAuspicionLLVM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D4D9DE5810EB5F60003EEE90 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4D9DE5410EB5F4F003EEE90 /* AuspicionLLVM */;
+			remoteInfo = AuspicionLLVM;
+		};
+		D4D9DE5A10EB5F62003EEE90 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4D9DE5410EB5F4F003EEE90 /* AuspicionLLVM */;
+			remoteInfo = AuspicionLLVM;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -147,10 +168,13 @@
 		D407954F10EB27140061CF6C /* Auspicion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Auspicion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D407955910EB280B0061CF6C /* Auspicion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Auspicion.plist; sourceTree = "<group>"; };
 		D407958910EB28E90061CF6C /* Auspicion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Auspicion.h; sourceTree = "<group>"; };
-		D4D9DCD410EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMConcreteExecutionEngine.h; path = Classes/LLVMConcreteExecutionEngine.h; sourceTree = "<group>"; };
-		D4D9DCD510EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMConcreteExecutionEngine.m; path = Classes/LLVMConcreteExecutionEngine.m; sourceTree = "<group>"; };
-		D4D9DCDA10EB31DC003EEE90 /* LLVMExecutionEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMExecutionEngine.h; path = Classes/LLVMExecutionEngine.h; sourceTree = "<group>"; };
-		D4D9DCDB10EB31DC003EEE90 /* LLVMExecutionEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMExecutionEngine.m; path = Classes/LLVMExecutionEngine.m; sourceTree = "<group>"; };
+		D4D9DCD410EB31D4003EEE90 /* LLVMConcreteCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMConcreteCompiler.h; path = Classes/LLVMConcreteCompiler.h; sourceTree = "<group>"; };
+		D4D9DCD510EB31D4003EEE90 /* LLVMConcreteCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMConcreteCompiler.m; path = Classes/LLVMConcreteCompiler.m; sourceTree = "<group>"; };
+		D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMCompiler.h; path = Classes/LLVMCompiler.h; sourceTree = "<group>"; };
+		D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMCompiler.m; path = Classes/LLVMCompiler.m; sourceTree = "<group>"; };
+		D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAuspicionLLVM.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4D9DE6410EB5FBC003EEE90 /* AuspicionLLVM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AuspicionLLVM.cpp; sourceTree = "<group>"; };
+		D4D9DE6510EB5FBC003EEE90 /* AuspicionLLVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuspicionLLVM.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +182,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4D9DE5E10EB5F68003EEE90 /* libAuspicionLLVM.a in Frameworks */,
 				D405880210EA0CE100A9E853 /* Foundation.framework in Frameworks */,
 				D405886610EA168B00A9E853 /* libLLVMAnalysis.a in Frameworks */,
 				D405886710EA168C00A9E853 /* libLLVMAsmPrinter.a in Frameworks */,
@@ -184,6 +209,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4D9DE6A10EB5FE0003EEE90 /* libAuspicionLLVM.a in Frameworks */,
 				D407956F10EB284F0061CF6C /* Foundation.framework in Frameworks */,
 				D407957010EB284F0061CF6C /* libLLVMAnalysis.a in Frameworks */,
 				D407957110EB284F0061CF6C /* libLLVMAsmPrinter.a in Frameworks */,
@@ -206,6 +232,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D4D9DE5310EB5F4F003EEE90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -214,6 +247,7 @@
 			children = (
 				D2AAC07E0554694100DB518D /* libAuspicion.a */,
 				D407954F10EB27140061CF6C /* Auspicion.framework */,
+				D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -261,12 +295,14 @@
 			children = (
 				D405883810EA13EF00A9E853 /* LLVMBuilder.h */,
 				D405883910EA13EF00A9E853 /* LLVMBuilder.m */,
+				D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */,
+				D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */,
 				D405883410EA13E900A9E853 /* LLVMConcreteBuilder.h */,
 				D405883510EA13E900A9E853 /* LLVMConcreteBuilder.m */,
+				D4D9DCD410EB31D4003EEE90 /* LLVMConcreteCompiler.h */,
+				D4D9DCD510EB31D4003EEE90 /* LLVMConcreteCompiler.m */,
 				D405880410EA0CF000A9E853 /* LLVMConcreteContext.h */,
 				D405880510EA0CF000A9E853 /* LLVMConcreteContext.m */,
-				D4D9DCD410EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h */,
-				D4D9DCD510EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m */,
 				D40588D010EAC52400A9E853 /* LLVMConcreteFunction.h */,
 				D40588D110EAC52400A9E853 /* LLVMConcreteFunction.m */,
 				D405881610EA0EB100A9E853 /* LLVMConcreteModule.h */,
@@ -277,8 +313,6 @@
 				D405884510EA14EB00A9E853 /* LLVMConcreteValue.m */,
 				D405880610EA0CF000A9E853 /* LLVMContext.h */,
 				D405880710EA0CF000A9E853 /* LLVMContext.m */,
-				D4D9DCDA10EB31DC003EEE90 /* LLVMExecutionEngine.h */,
-				D4D9DCDB10EB31DC003EEE90 /* LLVMExecutionEngine.m */,
 				D40588D410EAC52C00A9E853 /* LLVMFunction.h */,
 				D40588D510EAC52C00A9E853 /* LLVMFunction.m */,
 				D405881810EA0EB100A9E853 /* LLVMModule.h */,
@@ -296,6 +330,8 @@
 			children = (
 				D407958910EB28E90061CF6C /* Auspicion.h */,
 				32DBCF5E0370ADEE00C91783 /* Auspicion.pch */,
+				D4D9DE6410EB5FBC003EEE90 /* AuspicionLLVM.cpp */,
+				D4D9DE6510EB5FBC003EEE90 /* AuspicionLLVM.h */,
 			);
 			path = "Other Sources";
 			sourceTree = "<group>";
@@ -327,8 +363,8 @@
 				D40588D610EAC52C00A9E853 /* LLVMFunction.h in Headers */,
 				D407953A10EB228E0061CF6C /* LLVMType.h in Headers */,
 				D407953E10EB22950061CF6C /* LLVMConcreteType.h in Headers */,
-				D4D9DCD810EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h in Headers */,
-				D4D9DCDE10EB31DC003EEE90 /* LLVMExecutionEngine.h in Headers */,
+				D4D9DCD810EB31D4003EEE90 /* LLVMConcreteCompiler.h in Headers */,
+				D4D9DCDE10EB31DC003EEE90 /* LLVMCompiler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,8 +379,16 @@
 				D407956110EB283F0061CF6C /* LLVMFunction.h in Headers */,
 				D407956210EB283F0061CF6C /* LLVMType.h in Headers */,
 				D407958A10EB28E90061CF6C /* Auspicion.h in Headers */,
-				D4D9DCD610EB31D4003EEE90 /* LLVMConcreteExecutionEngine.h in Headers */,
-				D4D9DCDC10EB31DC003EEE90 /* LLVMExecutionEngine.h in Headers */,
+				D4D9DCD610EB31D4003EEE90 /* LLVMConcreteCompiler.h in Headers */,
+				D4D9DCDC10EB31DC003EEE90 /* LLVMCompiler.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4D9DE5110EB5F4F003EEE90 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4D9DE6710EB5FBC003EEE90 /* AuspicionLLVM.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +406,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D4D9DE5B10EB5F62003EEE90 /* PBXTargetDependency */,
 			);
 			name = "Auspicion (Static Library)";
 			productName = Auspicion;
@@ -380,11 +425,29 @@
 			buildRules = (
 			);
 			dependencies = (
+				D4D9DE5910EB5F60003EEE90 /* PBXTargetDependency */,
 			);
 			name = "Auspicion (Framework)";
 			productName = "Auspicion (Framework)";
 			productReference = D407954F10EB27140061CF6C /* Auspicion.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		D4D9DE5410EB5F4F003EEE90 /* AuspicionLLVM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4D9DE6310EB5F6E003EEE90 /* Build configuration list for PBXNativeTarget "AuspicionLLVM" */;
+			buildPhases = (
+				D4D9DE5110EB5F4F003EEE90 /* Headers */,
+				D4D9DE5210EB5F4F003EEE90 /* Sources */,
+				D4D9DE5310EB5F4F003EEE90 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AuspicionLLVM;
+			productName = AuspicionLLVM;
+			productReference = D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -401,6 +464,7 @@
 			targets = (
 				D2AAC07D0554694100DB518D /* Auspicion (Static Library) */,
 				D407954E10EB27140061CF6C /* Auspicion (Framework) */,
+				D4D9DE5410EB5F4F003EEE90 /* AuspicionLLVM */,
 			);
 		};
 /* End PBXProject section */
@@ -432,8 +496,8 @@
 				D40588D710EAC52C00A9E853 /* LLVMFunction.m in Sources */,
 				D407953B10EB228E0061CF6C /* LLVMType.m in Sources */,
 				D407953F10EB22950061CF6C /* LLVMConcreteType.m in Sources */,
-				D4D9DCD910EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m in Sources */,
-				D4D9DCDF10EB31DC003EEE90 /* LLVMExecutionEngine.m in Sources */,
+				D4D9DCD910EB31D4003EEE90 /* LLVMConcreteCompiler.m in Sources */,
+				D4D9DCDF10EB31DC003EEE90 /* LLVMCompiler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,12 +517,33 @@
 				D407956C10EB28470061CF6C /* LLVMFunction.m in Sources */,
 				D407956D10EB28470061CF6C /* LLVMType.m in Sources */,
 				D407956E10EB28470061CF6C /* LLVMConcreteType.m in Sources */,
-				D4D9DCD710EB31D4003EEE90 /* LLVMConcreteExecutionEngine.m in Sources */,
-				D4D9DCDD10EB31DC003EEE90 /* LLVMExecutionEngine.m in Sources */,
+				D4D9DCD710EB31D4003EEE90 /* LLVMConcreteCompiler.m in Sources */,
+				D4D9DCDD10EB31DC003EEE90 /* LLVMCompiler.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4D9DE5210EB5F4F003EEE90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4D9DE6610EB5FBC003EEE90 /* AuspicionLLVM.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D4D9DE5910EB5F60003EEE90 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4D9DE5410EB5F4F003EEE90 /* AuspicionLLVM */;
+			targetProxy = D4D9DE5810EB5F60003EEE90 /* PBXContainerItemProxy */;
+		};
+		D4D9DE5B10EB5F62003EEE90 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4D9DE5410EB5F4F003EEE90 /* AuspicionLLVM */;
+			targetProxy = D4D9DE5A10EB5F62003EEE90 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1DEB921F08733DC00010E9CD /* Debug */ = {
@@ -479,6 +564,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/LLVM/Libraries\"",
+					"\"$(SRCROOT)/build/Debug\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Auspicion;
@@ -501,6 +587,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/LLVM/Libraries\"",
+					"\"$(SRCROOT)/build/Debug\"",
 				);
 				PRODUCT_NAME = Auspicion;
 				SDKROOT = macosx10.5;
@@ -536,7 +623,6 @@
 		D407955110EB27140061CF6C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -564,7 +650,6 @@
 		D407955210EB27140061CF6C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -584,6 +669,37 @@
 				);
 				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_NAME = Auspicion;
+				SDKROOT = macosx10.5;
+			};
+			name = Release;
+		};
+		D4D9DE5610EB5F4F003EEE90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/LLVM/Include/";
+				INSTALL_PATH = /usr/local/lib;
+				PREBINDING = NO;
+				PRODUCT_NAME = AuspicionLLVM;
+				SDKROOT = macosx10.5;
+			};
+			name = Debug;
+		};
+		D4D9DE5710EB5F4F003EEE90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/External/LLVM/Include/";
+				INSTALL_PATH = /usr/local/lib;
+				PREBINDING = NO;
+				PRODUCT_NAME = AuspicionLLVM;
 				SDKROOT = macosx10.5;
 			};
 			name = Release;
@@ -614,6 +730,15 @@
 			buildConfigurations = (
 				D407955110EB27140061CF6C /* Debug */,
 				D407955210EB27140061CF6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D4D9DE6310EB5F6E003EEE90 /* Build configuration list for PBXNativeTarget "AuspicionLLVM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4D9DE5610EB5F4F003EEE90 /* Debug */,
+				D4D9DE5710EB5F4F003EEE90 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -5,6 +5,7 @@
 #import <Foundation/Foundation.h>
 
 #import <Auspicion/LLVMBuilder.h>
+#import <Auspicion/LLVMCompiler.h>
 #import <Auspicion/LLVMContext.h>
 #import <Auspicion/LLVMFunction.h>
 #import <Auspicion/LLVMModule.h>

@@ -7,12 +7,14 @@
 @interface LLVMModule ()
 
 @property (nonatomic, readonly) LLVMModuleRef moduleRef;
+@property (nonatomic, readonly) LLVMModuleProviderRef moduleProviderRef;
 
 @end
 
 
 @interface LLVMConcreteModule : LLVMModule {
 	LLVMModuleRef moduleRef;
+	LLVMModuleProviderRef moduleProviderRef;
 }
 
 -(id)initWithName:(NSString *)_name context:(LLVMContext *)_context;
