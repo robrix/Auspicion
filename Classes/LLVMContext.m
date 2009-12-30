@@ -10,7 +10,11 @@
 @implementation LLVMContext
 
 +(LLVMContext *)sharedContext {
-	return [[[LLVMConcreteContext alloc] initWithContextRef: LLVMGetGlobalContext()] autorelease];
+	static LLVMContext *sharedContext = nil;
+	if(!sharedContext) {
+		sharedContext = [[[LLVMConcreteContext alloc] initWithContextRef: LLVMGetGlobalContext()] autorelease];
+	}
+	return sharedContext;
 }
 
 
