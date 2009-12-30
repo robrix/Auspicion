@@ -27,4 +27,15 @@
 	return nil;
 }
 
+
+-(LLVMValue *)add:(LLVMValue *)left and:(LLVMValue *)right {
+	[self doesNotRecognizeSelector: _cmd];
+	return nil;
+}
+
+-(LLVMValue *)not:(LLVMValue *)value {
+	[self doesNotRecognizeSelector: _cmd];
+	return nil;
+}
+
 @end

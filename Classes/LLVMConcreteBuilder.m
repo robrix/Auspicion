@@ -25,7 +25,16 @@
 }
 
 -(LLVMValue *)select:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue {
-	return nil;
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildSelect(builderRef, condition.valueRef, thenValue.valueRef, elseValue.valueRef, "")];
+}
+
+
+-(LLVMValue *)add:(LLVMValue *)left and:(LLVMValue *)right {
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildAdd(builderRef, left.valueRef, right.valueRef, "")];
+}
+
+-(LLVMValue *)not:(LLVMValue *)value {
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildNot(builderRef, value.valueRef, "")];
 }
 
 @end
