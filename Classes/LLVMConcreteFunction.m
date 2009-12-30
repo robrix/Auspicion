@@ -16,6 +16,7 @@
 -(id)initWithFunctionRef:(LLVMValueRef)_functionRef {
 	if(self = [super init]) {
 		functionRef = _functionRef;
+		NSParameterAssert(functionRef != NULL);
 	}
 	return self;
 }
