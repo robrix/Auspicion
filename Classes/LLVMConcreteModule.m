@@ -3,7 +3,9 @@
 // Copyright 2009 Monochrome Industries
 
 #import "LLVMConcreteContext.h"
+#import "LLVMConcreteFunction.h"
 #import "LLVMConcreteModule.h"
+#import "LLVMConcreteType.h"
 
 @implementation LLVMConcreteModule
 
@@ -18,9 +20,15 @@
 @synthesize moduleRef;
 
 
--(LLVMFunction *)functionWithName:(NSString *)_name {
-	return nil;
+-(LLVMFunction *)declareExternalFunctionWithName:(NSString *)name type:(LLVMType *)type {
+	LLVMFunction *function = [LLVMFunction functionInModule: self withName: name type: type];
+	function.linkage = LLVMExternalLinkage;
+	return function;
 }
+
+// -(LLVMFunction *)functionWithName:(NSString *)_name {
+// 	return nil;
+// }
 
 
 -(BOOL)verifyWithError:(NSError **)error {

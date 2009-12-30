@@ -4,6 +4,13 @@
 
 #import "LLVMFunction.h"
 
+@interface LLVMFunction ()
+
+@property (nonatomic) LLVMLinkage linkage;
+
+@end
+
+
 @interface LLVMConcreteFunction : LLVMFunction {
 	LLVMValueRef functionRef;
 }

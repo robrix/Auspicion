@@ -20,12 +20,12 @@
 }
 
 
--(LLVMFunctionLinkage)linkage {
+-(LLVMLinkage)linkage {
 	[self doesNotRecognizeSelector: _cmd];
 	return 0;
 }
 
--(void)setLinkage:(LLVMFunctionLinkage)_linkage {
+-(void)setLinkage:(LLVMLinkage)_linkage {
 	[self doesNotRecognizeSelector: _cmd];
 }
 
