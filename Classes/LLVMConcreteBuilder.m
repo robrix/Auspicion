@@ -20,8 +20,13 @@
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildRet(builderRef, value.valueRef)];
 }
 
--(LLVMValue *)functionCall:(LLVMFunction *)function arguments:(NSArray *)arguments {
-	return nil;
+-(LLVMValue *)call:(LLVMFunction *)function arguments:(NSArray *)arguments {
+	LLVMValueRef argumentRefs[arguments.count];
+	NSUInteger i = 0;
+	for(LLVMValue *argument in arguments) {
+		argumentRefs[i++] = argument.valueRef;
+	}
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildCall(builderRef, function.valueRef, argumentRefs, arguments.count)];
 }
 
 -(LLVMValue *)select:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue {
