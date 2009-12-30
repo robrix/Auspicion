@@ -8,4 +8,6 @@
 	LLVMValueRef functionRef;
 }
 
+-(id)initWithFunctionRef:(LLVMValueRef)_functionRef;
+
 @end
