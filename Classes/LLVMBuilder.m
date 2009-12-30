@@ -17,7 +17,7 @@
 	return nil;
 }
 
--(LLVMValue *)functionCall:(LLVMFunction *)function arguments:(NSArray *)arguments {
+-(LLVMValue *)call:(LLVMFunction *)function arguments:(NSArray *)arguments {
 	[self doesNotRecognizeSelector: _cmd];
 	return nil;
 }

@@ -12,7 +12,7 @@
 
 -(LLVMValue *)return:(LLVMValue *)value;
 
--(LLVMValue *)functionCall:(LLVMFunction *)function arguments:(NSArray *)arguments;
+-(LLVMValue *)call:(LLVMFunction *)function arguments:(NSArray *)arguments;
 
 -(LLVMValue *)select:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue;
 
