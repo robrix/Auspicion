@@ -60,12 +60,16 @@
 	return [LLVMConcreteType typeWithTypeRef: LLVMFunctionType(_returnType.typeRef, argumentTypeRefs, argumentTypes.count, variadic)];
 }
 
-+(LLVMType *)functionTypeWithReturnType:(LLVMType *)_returnType argumentTypes:(NSArray *)argumentTypes {
-	return [self functionTypeWithReturnType: _returnType argumentTypes: argumentTypes variadic: NO];
-}
-
-+(LLVMType *)functionTypeWithReturnType:(LLVMType *)_returnType argumentType:(LLVMType *)argumentType {
-	return [self functionTypeWithReturnType: _returnType argumentTypes: [NSArray arrayWithObject: argumentType] variadic: NO];
++(LLVMType *)functionType:(LLVMType *)returnType, ... {
+	va_list list;
+	NSMutableArray *argumentTypes = [NSMutableArray array];
+	va_start(list, returnType);
+	LLVMType *argumentType = nil;
+	while(argumentType = va_arg(list, LLVMType *)) {
+		[argumentTypes addObject: argumentType];
+	}
+	va_end(list);
+	return [self functionTypeWithReturnType: returnType argumentTypes: argumentTypes variadic: NO];
 }
 
 
