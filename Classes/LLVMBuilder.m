@@ -44,13 +44,29 @@
 	return [self call: function arguments: [NSArray arrayWithObject: argument]];
 }
 
+-(LLVMValue *)call:(LLVMFunction *)function, ... {
+	va_list list;
+	NSMutableArray *arguments = [NSMutableArray array];
+	va_start(list, function);
+	LLVMValue *argument = nil;
+	while(argument = va_arg(list, LLVMValue *)) {
+		[arguments addObject: argument];
+	}
+	va_end(list);
+	return [self call: function arguments: arguments];
+}
+
 
 -(LLVMValue *)condition:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue {
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildSelect(self.builderRef, condition.valueRef, thenValue.valueRef, elseValue.valueRef, "")];
 }
 
 
--(LLVMValue *)add:(LLVMValue *)left to:(LLVMValue *)right {
+-(LLVMValue *)add:(LLVMValue *)left, ... {
+	va_list list;
+	va_start(list, left);
+	LLVMValue *right = va_arg(list, LLVMValue *);
+	va_end(list);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildAdd(self.builderRef, left.valueRef, right.valueRef, "")];
 }
 
@@ -70,15 +86,28 @@
 }
 
 
--(LLVMValue *)valueIsTrue:(LLVMValue *)left andValueIsTrue:(LLVMValue *)right {
+-(LLVMValue *)and:(LLVMValue *)left, ... {
+	va_list list;
+	va_start(list, left);
+	LLVMValue *right = va_arg(list, LLVMValue *);
+	va_end(list);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildAnd(self.builderRef, left.valueRef, right.valueRef, "")];
 }
 
--(LLVMValue *)unsignedValue:(LLVMValue *)left isLessThanOrEqualTo:(LLVMValue *)right {
+
+-(LLVMValue *)unsignedLessOrEqual:(LLVMValue *)left, ... {
+	va_list list;
+	va_start(list, left);
+	LLVMValue *right = va_arg(list, LLVMValue *);
+	va_end(list);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntULE, left.valueRef, right.valueRef, "")];
 }
 
--(LLVMValue *)value:(LLVMValue *)left isEqualTo:(LLVMValue *)right {
+-(LLVMValue *)equal:(LLVMValue *)left, ... {
+	va_list list;
+	va_start(list, left);
+	LLVMValue *right = va_arg(list, LLVMValue *);
+	va_end(list);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntEQ, left.valueRef, right.valueRef, "")];
 }
 
