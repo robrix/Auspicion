@@ -30,4 +30,6 @@
 -(LLVMValue *)constantInt32:(int32_t)integer;
 -(LLVMValue *)constantUnsignedInt32:(uint32_t)integer;
 
+-(LLVMValue *)constantUntypedPointer:(void *)pointer;
+
 @end

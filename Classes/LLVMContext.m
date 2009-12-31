@@ -77,4 +77,9 @@
 	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.int32Type.typeRef, integer, 0)];
 }
 
+
+-(LLVMValue *)constantUntypedPointer:(void *)pointer {
+	return [LLVMConcreteValue valueWithValueRef: LLVMConstIntToPtr(LLVMConstInt(self.integerType.typeRef, (NSUInteger)pointer, 0), self.untypedPointerType.typeRef)];
+}
+
 @end
