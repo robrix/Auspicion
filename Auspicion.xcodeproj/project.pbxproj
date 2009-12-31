@@ -115,14 +115,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D4D9DE5410EB5F4F003EEE90 /* AuspicionLLVM */;
+			remoteGlobalIDString = D4D9DE5410EB5F4F003EEE90;
 			remoteInfo = AuspicionLLVM;
 		};
 		D4D9DE5A10EB5F62003EEE90 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D4D9DE5410EB5F4F003EEE90 /* AuspicionLLVM */;
+			remoteGlobalIDString = D4D9DE5410EB5F4F003EEE90;
 			remoteInfo = AuspicionLLVM;
 		};
 /* End PBXContainerItemProxy section */
