@@ -16,6 +16,7 @@
 
 
 -(void)positionAtEndOfFunction:(LLVMFunction *)function {
+	NSParameterAssert(function != nil);
 	LLVMPositionBuilderAtEnd(self.builderRef, LLVMGetEntryBasicBlock(function.valueRef));
 }
 
@@ -27,11 +28,13 @@
 
 
 -(LLVMValue *)return:(LLVMValue *)value {
+	NSParameterAssert(value != nil);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildRet(self.builderRef, value.valueRef)];
 }
 
 
 -(LLVMValue *)call:(LLVMFunction *)function arguments:(NSArray *)arguments {
+	NSParameterAssert(function != nil);
 	LLVMValueRef argumentRefs[arguments.count];
 	NSUInteger i = 0;
 	for(LLVMValue *argument in arguments) {
@@ -58,6 +61,9 @@
 
 
 -(LLVMValue *)condition:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue {
+	NSParameterAssert(condition != nil);
+	NSParameterAssert(thenValue != nil);
+	NSParameterAssert(elseValue != nil);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildSelect(self.builderRef, condition.valueRef, thenValue.valueRef, elseValue.valueRef, "")];
 }
 
@@ -67,23 +73,27 @@
 	va_start(list, left);
 	LLVMValue *right = va_arg(list, LLVMValue *);
 	va_end(list);
+	NSParameterAssert(left != nil);
+	NSParameterAssert(right != nil);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildAdd(self.builderRef, left.valueRef, right.valueRef, "")];
 }
 
 -(LLVMValue *)not:(LLVMValue *)value {
+	NSParameterAssert(value != nil);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildNot(self.builderRef, value.valueRef, "")];
 }
 
 
 -(LLVMValue *)stringPointer:(NSString *)string {
+	NSParameterAssert(string != nil);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildGlobalStringPtr(self.builderRef, [string UTF8String], "")];
 }
 
 
--(LLVMValue *)offsetPointer:(LLVMValue *)pointerValue by:(LLVMValue *)offsetValue {
-	LLVMValueRef offsetValueRefs[] = { offsetValue.valueRef };
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildGEP(self.builderRef, pointerValue.valueRef, offsetValueRefs, 1, "")];
-}
+// -(LLVMValue *)offsetPointer:(LLVMValue *)pointerValue by:(LLVMValue *)offsetValue {
+// 	LLVMValueRef offsetValueRefs[] = { offsetValue.valueRef };
+// 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildGEP(self.builderRef, pointerValue.valueRef, offsetValueRefs, 1, "")];
+// }
 
 
 -(LLVMValue *)and:(LLVMValue *)left, ... {
@@ -91,6 +101,8 @@
 	va_start(list, left);
 	LLVMValue *right = va_arg(list, LLVMValue *);
 	va_end(list);
+	NSParameterAssert(left != nil);
+	NSParameterAssert(right != nil);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildAnd(self.builderRef, left.valueRef, right.valueRef, "")];
 }
 
@@ -100,6 +112,8 @@
 	va_start(list, left);
 	LLVMValue *right = va_arg(list, LLVMValue *);
 	va_end(list);
+	NSParameterAssert(left != nil);
+	NSParameterAssert(right != nil);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntULE, left.valueRef, right.valueRef, "")];
 }
 
@@ -108,7 +122,19 @@
 	va_start(list, left);
 	LLVMValue *right = va_arg(list, LLVMValue *);
 	va_end(list);
+	NSParameterAssert(left != nil);
+	NSParameterAssert(right != nil);
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntEQ, left.valueRef, right.valueRef, "")];
+}
+
+-(LLVMValue *)notEqual:(LLVMValue *)left, ... {
+	va_list list;
+	va_start(list, left);
+	LLVMValue *right = va_arg(list, LLVMValue *);
+	va_end(list);
+	NSParameterAssert(left != nil);
+	NSParameterAssert(right != nil);
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntNE, left.valueRef, right.valueRef, "")];
 }
 
 @end
