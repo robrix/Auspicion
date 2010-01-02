@@ -32,11 +32,12 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 
 -(LLVMValue *)stringPointer:(NSString *)string;
 
--(LLVMValue *)offsetPointer:(LLVMValue *)pointerValue by:(LLVMValue *)offsetValue;
+// -(LLVMValue *)offsetPointer:(LLVMValue *)pointerValue by:(LLVMValue *)offsetValue;
 
 -(LLVMValue *)and:(LLVMValue *)left, ...;
 
 -(LLVMValue *)unsignedLessOrEqual:(LLVMValue *)left, ...;
 -(LLVMValue *)equal:(LLVMValue *)left, ...;
+-(LLVMValue *)notEqual:(LLVMValue *)left, ...;
 
 @end
