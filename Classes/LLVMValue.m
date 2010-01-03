@@ -6,6 +6,12 @@
 
 @implementation LLVMValue
 
+-(NSString *)name {
+	[self doesNotRecognizeSelector: _cmd];
+	return nil;
+}
+
+
 -(LLVMValueRef)valueRef {
 	[self doesNotRecognizeSelector: _cmd];
 	return NULL;

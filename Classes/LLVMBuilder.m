@@ -137,4 +137,25 @@
 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntNE, left.valueRef, right.valueRef, "")];
 }
 
+
+-(LLVMValue *)allocateLocal:(NSString *)name type:(LLVMType *)type {
+	NSParameterAssert(name != nil);
+	NSParameterAssert(type != nil);
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildAlloca(self.builderRef, type.typeRef, [name UTF8String]) name: name];
+}
+
+-(LLVMValue *)setLocal:(LLVMValue *)local, ... {
+	va_list list;
+	va_start(list, local);
+	LLVMValue *value = va_arg(list, LLVMValue *);
+	va_end(list);
+	NSParameterAssert(local != nil);
+	NSParameterAssert(value != nil);
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildStore(self.builderRef, value.valueRef, local.valueRef)];
+}
+
+-(LLVMValue *)getLocal:(LLVMValue *)local {
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildLoad(self.builderRef, local.valueRef, [local.name UTF8String])]
+}
+
 @end

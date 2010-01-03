@@ -6,6 +6,6 @@
 
 @interface LLVMValue : NSObject
 
-
+@property (nonatomic, readonly) NSString *name;
 
 @end
