@@ -40,4 +40,8 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 -(LLVMValue *)equal:(LLVMValue *)left, ...;
 -(LLVMValue *)notEqual:(LLVMValue *)left, ...;
 
+-(LLVMValue *)allocateLocal:(NSString *)name type:(LLVMType *)type;
+-(LLVMValue *)setLocal:(LLVMValue *)local value:(LLVMValue *)value;
+-(LLVMValue *)getLocal:(LLVMValue *)local;
+
 @end
