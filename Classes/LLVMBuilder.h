@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class LLVMContext, LLVMFunction, LLVMValue;
+@class LLVMBlock, LLVMContext, LLVMFunction, LLVMType, LLVMValue;
 
 /*
 Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder methods take exactly two arguments. For example, -add: is used like so:
@@ -16,7 +16,10 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 
 +(LLVMBuilder *)builderWithContext:(LLVMContext *)context;
 
+@property (nonatomic, readonly) LLVMContext *context;
+
 -(void)positionAtEndOfFunction:(LLVMFunction *)function;
+-(void)positionAtEndOfBlock:(LLVMBlock *)block;
 
 // can these be improved upon?
 -(LLVMValue *)return:(LLVMValue *)value;
@@ -33,6 +36,7 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 -(LLVMValue *)stringPointer:(NSString *)string;
 
 // -(LLVMValue *)offsetPointer:(LLVMValue *)pointerValue by:(LLVMValue *)offsetValue;
+-(LLVMValue *)dereference:(LLVMValue *)pointer;
 
 -(LLVMValue *)and:(LLVMValue *)left, ...;
 
@@ -41,7 +45,10 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 -(LLVMValue *)notEqual:(LLVMValue *)left, ...;
 
 -(LLVMValue *)allocateLocal:(NSString *)name type:(LLVMType *)type;
--(LLVMValue *)setLocal:(LLVMValue *)local value:(LLVMValue *)value;
+-(LLVMValue *)setLocal:(LLVMValue *)local, ...;
 -(LLVMValue *)getLocal:(LLVMValue *)local;
+
+-(LLVMValue *)if:(LLVMValue *)condition then:(LLVMBlock *)thenBlock else:(LLVMBlock *)elseBlock;
+-(LLVMValue *)jumpToBlock:(LLVMBlock *)block;
 
 @end

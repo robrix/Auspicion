@@ -9,14 +9,16 @@
 
 @implementation LLVMConcreteBuilder
 
--(id)initWithContext:(LLVMContext *)context {
+-(id)initWithContext:(LLVMContext *)_context {
 	if(self = [super init]) {
-		builderRef = LLVMCreateBuilderInContext(context.contextRef);
+		builderRef = LLVMCreateBuilderInContext(_context.contextRef);
+		context = [_context retain];
 	}
 	return self;
 }
 
 
 @synthesize builderRef;
+@synthesize context;
 
 @end

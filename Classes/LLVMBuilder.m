@@ -3,9 +3,11 @@
 // Copyright 2009 Monochrome Industries
 
 #import "LLVMBuilder.h"
+#import "LLVMConcreteBlock.h"
 #import "LLVMConcreteBuilder.h"
 #import "LLVMConcreteContext.h"
 #import "LLVMConcreteFunction.h"
+#import "LLVMConcreteType.h"
 #import "LLVMConcreteValue.h"
 
 @implementation LLVMBuilder
@@ -15,15 +17,25 @@
 }
 
 
--(void)positionAtEndOfFunction:(LLVMFunction *)function {
-	NSParameterAssert(function != nil);
-	LLVMPositionBuilderAtEnd(self.builderRef, LLVMGetEntryBasicBlock(function.valueRef));
-}
-
-
 -(LLVMBuilderRef)builderRef {
 	[self doesNotRecognizeSelector: _cmd];
 	return NULL;
+}
+
+-(LLVMContext *)context {
+	[self doesNotRecognizeSelector: _cmd];
+	return nil;
+}
+
+
+-(void)positionAtEndOfFunction:(LLVMFunction *)function {
+	NSParameterAssert(function != nil);
+	[self positionAtEndOfBlock: function.entryBlock];
+}
+
+-(void)positionAtEndOfBlock:(LLVMBlock *)block {
+	NSParameterAssert(block != nil);
+	LLVMPositionBuilderAtEnd(self.builderRef, block.blockRef);
 }
 
 
@@ -40,7 +52,7 @@
 	for(LLVMValue *argument in arguments) {
 		argumentRefs[i++] = argument.valueRef;
 	}
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildCall(self.builderRef, function.valueRef, argumentRefs, arguments.count, "")];
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildCall(self.builderRef, function.functionRef, argumentRefs, arguments.count, "")];
 }
 
 -(LLVMValue *)call:(LLVMFunction *)function argument:(LLVMValue *)argument {
@@ -94,6 +106,10 @@
 // 	LLVMValueRef offsetValueRefs[] = { offsetValue.valueRef };
 // 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildGEP(self.builderRef, pointerValue.valueRef, offsetValueRefs, 1, "")];
 // }
+
+-(LLVMValue *)dereference:(LLVMValue *)pointer {
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildGEP(self.builderRef, pointer.valueRef, (LLVMValueRef[]){ /*[self.context constantInteger: 0].valueRef*/ }, 0, "")];
+}
 
 
 -(LLVMValue *)and:(LLVMValue *)left, ... {
@@ -155,7 +171,16 @@
 }
 
 -(LLVMValue *)getLocal:(LLVMValue *)local {
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildLoad(self.builderRef, local.valueRef, [local.name UTF8String])]
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildLoad(self.builderRef, local.valueRef, [local.name UTF8String])];
+}
+
+
+-(LLVMValue *)if:(LLVMValue *)condition then:(LLVMBlock *)thenBlock else:(LLVMBlock *)elseBlock {
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildCondBr(self.builderRef, condition.valueRef, thenBlock.blockRef, elseBlock.blockRef)];
+}
+
+-(LLVMValue *)jumpToBlock:(LLVMBlock *)block {
+	return [LLVMConcreteValue valueWithValueRef: LLVMBuildBr(self.builderRef, block.blockRef)];
 }
 
 @end
