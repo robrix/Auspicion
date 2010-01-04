@@ -16,6 +16,7 @@ extern "C" {
 #endif
 
 void *AuspicionLLVMGetPointerToFunction(LLVMExecutionEngineRef compiler, LLVMValueRef function);
+LLVMTypeRef AuspicionLLVMGetFunctionType(LLVMValueRef function);
 
 #ifdef __cplusplus
 }
