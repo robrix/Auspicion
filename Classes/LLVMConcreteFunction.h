@@ -6,6 +6,7 @@
 
 @interface LLVMFunction ()
 
+@property (nonatomic, readonly) LLVMValueRef functionRef;
 @property (nonatomic) LLVMLinkage linkage;
 
 @end

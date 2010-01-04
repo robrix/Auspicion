@@ -1,6 +1,7 @@
 Builder:
 - in call:, determine the number of arguments from the arity of the function.
 	- require nil termination for varargs functions.
+- in the presence of block support, implement -if:then:else: with blocks taking builders operating on basic blocks.
 
 Compiler:
 - implement static compilation.

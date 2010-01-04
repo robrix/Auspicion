@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D404EA2510F1E9F6007612E9 /* LLVMBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = D404EA2310F1E9F6007612E9 /* LLVMBlock.h */; };
+		D404EA2610F1E9F6007612E9 /* LLVMBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = D404EA2410F1E9F6007612E9 /* LLVMBlock.m */; };
+		D404EA2710F1E9F6007612E9 /* LLVMBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = D404EA2310F1E9F6007612E9 /* LLVMBlock.h */; };
+		D404EA2810F1E9F6007612E9 /* LLVMBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = D404EA2410F1E9F6007612E9 /* LLVMBlock.m */; };
+		D404EA2B10F1E9FF007612E9 /* LLVMConcreteBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = D404EA2910F1E9FF007612E9 /* LLVMConcreteBlock.h */; };
+		D404EA2C10F1E9FF007612E9 /* LLVMConcreteBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = D404EA2A10F1E9FF007612E9 /* LLVMConcreteBlock.m */; };
+		D404EA2D10F1E9FF007612E9 /* LLVMConcreteBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = D404EA2910F1E9FF007612E9 /* LLVMConcreteBlock.h */; };
+		D404EA2E10F1E9FF007612E9 /* LLVMConcreteBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = D404EA2A10F1E9FF007612E9 /* LLVMConcreteBlock.m */; };
 		D405880210EA0CE100A9E853 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		D405880810EA0CF000A9E853 /* LLVMConcreteContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D405880410EA0CF000A9E853 /* LLVMConcreteContext.h */; };
 		D405880910EA0CF000A9E853 /* LLVMConcreteContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D405880510EA0CF000A9E853 /* LLVMConcreteContext.m */; };
@@ -131,6 +139,10 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF5E0370ADEE00C91783 /* Auspicion.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Auspicion.pch; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libAuspicion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAuspicion.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D404EA2310F1E9F6007612E9 /* LLVMBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMBlock.h; path = Classes/LLVMBlock.h; sourceTree = "<group>"; };
+		D404EA2410F1E9F6007612E9 /* LLVMBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMBlock.m; path = Classes/LLVMBlock.m; sourceTree = "<group>"; };
+		D404EA2910F1E9FF007612E9 /* LLVMConcreteBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMConcreteBlock.h; path = Classes/LLVMConcreteBlock.h; sourceTree = "<group>"; };
+		D404EA2A10F1E9FF007612E9 /* LLVMConcreteBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMConcreteBlock.m; path = Classes/LLVMConcreteBlock.m; sourceTree = "<group>"; };
 		D405880410EA0CF000A9E853 /* LLVMConcreteContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMConcreteContext.h; path = Classes/LLVMConcreteContext.h; sourceTree = "<group>"; };
 		D405880510EA0CF000A9E853 /* LLVMConcreteContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMConcreteContext.m; path = Classes/LLVMConcreteContext.m; sourceTree = "<group>"; };
 		D405880610EA0CF000A9E853 /* LLVMContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMContext.h; path = Classes/LLVMContext.h; sourceTree = "<group>"; };
@@ -305,10 +317,14 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D404EA2310F1E9F6007612E9 /* LLVMBlock.h */,
+				D404EA2410F1E9F6007612E9 /* LLVMBlock.m */,
 				D405883810EA13EF00A9E853 /* LLVMBuilder.h */,
 				D405883910EA13EF00A9E853 /* LLVMBuilder.m */,
 				D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */,
 				D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */,
+				D404EA2910F1E9FF007612E9 /* LLVMConcreteBlock.h */,
+				D404EA2A10F1E9FF007612E9 /* LLVMConcreteBlock.m */,
 				D405883410EA13E900A9E853 /* LLVMConcreteBuilder.h */,
 				D405883510EA13E900A9E853 /* LLVMConcreteBuilder.m */,
 				D4D9DCD410EB31D4003EEE90 /* LLVMConcreteCompiler.h */,
@@ -383,6 +399,8 @@
 				D4D9DCDE10EB31DC003EEE90 /* LLVMCompiler.h in Headers */,
 				D4D9DEB810EB68FB003EEE90 /* LLVMConcreteOptimizer.h in Headers */,
 				D4D9DEBE10EB6903003EEE90 /* LLVMOptimizer.h in Headers */,
+				D404EA2510F1E9F6007612E9 /* LLVMBlock.h in Headers */,
+				D404EA2B10F1E9FF007612E9 /* LLVMConcreteBlock.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,6 +419,8 @@
 				D4D9DCDC10EB31DC003EEE90 /* LLVMCompiler.h in Headers */,
 				D4D9DEB610EB68FB003EEE90 /* LLVMConcreteOptimizer.h in Headers */,
 				D4D9DEBC10EB6903003EEE90 /* LLVMOptimizer.h in Headers */,
+				D404EA2710F1E9F6007612E9 /* LLVMBlock.h in Headers */,
+				D404EA2D10F1E9FF007612E9 /* LLVMConcreteBlock.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,6 +540,8 @@
 				D4D9DCDF10EB31DC003EEE90 /* LLVMCompiler.m in Sources */,
 				D4D9DEB910EB68FB003EEE90 /* LLVMConcreteOptimizer.m in Sources */,
 				D4D9DEBF10EB6903003EEE90 /* LLVMOptimizer.m in Sources */,
+				D404EA2610F1E9F6007612E9 /* LLVMBlock.m in Sources */,
+				D404EA2C10F1E9FF007612E9 /* LLVMConcreteBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +565,8 @@
 				D4D9DCDD10EB31DC003EEE90 /* LLVMCompiler.m in Sources */,
 				D4D9DEB710EB68FB003EEE90 /* LLVMConcreteOptimizer.m in Sources */,
 				D4D9DEBD10EB6903003EEE90 /* LLVMOptimizer.m in Sources */,
+				D404EA2810F1E9F6007612E9 /* LLVMBlock.m in Sources */,
+				D404EA2E10F1E9FF007612E9 /* LLVMConcreteBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

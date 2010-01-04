@@ -13,6 +13,7 @@
 
 @interface LLVMConcreteBuilder : LLVMBuilder {
 	LLVMBuilderRef builderRef;
+	LLVMContext *context;
 }
 
 -(id)initWithContext:(LLVMContext *)context;

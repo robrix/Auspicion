@@ -7,8 +7,6 @@
 
 @implementation LLVMConcreteFunction
 
-@synthesize valueRef=functionRef;
-
 +(id)functionWithFunctionRef:(LLVMValueRef)_functionRef {
 	return [[[self alloc] initWithFunctionRef: _functionRef] autorelease];
 }
@@ -22,28 +20,6 @@
 }
 
 
--(LLVMValue *)argumentValueAtIndex:(NSUInteger)index {
-	return [LLVMConcreteValue valueWithValueRef: LLVMGetParam(functionRef, index)];
-}
-
-
--(LLVMLinkage)linkage {
-	return LLVMGetLinkage(functionRef);
-}
-
--(void)setLinkage:(LLVMLinkage)_linkage {
-	LLVMSetLinkage(functionRef, _linkage);
-}
-
-
--(BOOL)verifyWithError:(NSError **)error {
-	BOOL result = YES;
-	if(LLVMVerifyFunction(functionRef, LLVMReturnStatusAction) == 1) {
-		if(error)
-			*error = [NSError errorWithDomain: @"com.monochromeindustries.Auspicion" code: -2 userInfo: nil];
-		result = NO;
-	}
-	return result;
-}
+@synthesize functionRef;
 
 @end
