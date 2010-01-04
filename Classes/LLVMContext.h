@@ -32,4 +32,6 @@
 
 -(LLVMValue *)constantUntypedPointer:(void *)pointer;
 
+-(LLVMValue *)constantNullOfType:(LLVMType *)type;
+
 @end
