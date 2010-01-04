@@ -78,4 +78,9 @@
 	return NULL;
 }
 
+
+-(LLVMContext *)context {
+	return [[[LLVMConcreteContext alloc] initWithContextRef: LLVMGetTypeContext(self.typeRef)] autorelease];
+}
+
 @end
