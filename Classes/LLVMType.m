@@ -51,6 +51,11 @@
 }
 
 
++(LLVMType *)voidTypeInContext:(LLVMContext *)context {
+	return [LLVMConcreteType typeWithTypeRef: LLVMVoidTypeInContext(context.contextRef)];
+}
+
+
 +(LLVMType *)functionTypeWithReturnType:(LLVMType *)_returnType argumentTypes:(NSArray *)argumentTypes variadic:(BOOL)variadic {
 	LLVMTypeRef argumentTypeRefs[argumentTypes.count];
 	NSUInteger i = 0;

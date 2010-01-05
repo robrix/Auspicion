@@ -22,7 +22,10 @@
 @property (nonatomic, readonly) LLVMType *int32Type;
 @property (nonatomic, readonly) LLVMType *int64Type;
 
--(LLVMType *)untypedPointerType;
+@property (nonatomic, readonly) LLVMType *untypedPointerType;
+
+@property (nonatomic, readonly) LLVMType *voidType;
+
 
 // constants
 -(LLVMValue *)constantInteger:(NSInteger)integer;

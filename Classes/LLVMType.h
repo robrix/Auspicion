@@ -21,6 +21,8 @@
 +(LLVMType *)pointerTypeToType:(LLVMType *)type; // implied address space of 0
 +(LLVMType *)untypedPointerTypeInContext:(LLVMContext *)context; // implied address space of 0, destination type of int8
 
++(LLVMType *)voidTypeInContext:(LLVMContext *)context;
+
 +(LLVMType *)functionTypeWithReturnType:(LLVMType *)_returnType argumentTypes:(NSArray *)argumentTypes variadic:(BOOL)variadic;
 +(LLVMType *)functionType:(LLVMType *)_returnType, ... NS_REQUIRES_NIL_TERMINATION; // implied non-variadic
 
