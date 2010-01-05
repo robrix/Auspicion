@@ -60,6 +60,11 @@
 }
 
 
+-(LLVMType *)voidType {
+	return [LLVMType voidTypeInContext: self];
+}
+
+
 // constants
 -(LLVMValue *)constantInteger:(NSInteger)integer {
 	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.integerType.typeRef, integer, 1)];
