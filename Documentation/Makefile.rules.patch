@@ -1,0 +1,30 @@
+Index: Makefile.rules
+===================================================================
+--- Makefile.rules	(revision 91905)
++++ Makefile.rules	(working copy)
+@@ -550,7 +550,11 @@
+   SharedLinkOptions=-Wl,-flat_namespace -Wl,-undefined -Wl,suppress \
+                     -dynamiclib
+   ifneq ($(ARCH),ARM)
+-    SharedLinkOptions += -mmacosx-version-min=$(DARWIN_VERSION)
++	ifdef UNIVERSAL_SDK_PATH
++        SharedLinkOptions += -mmacosx-version-min=$(shell echo $(UNIVERSAL_SDK_PATH)| sed -E 's/.+(10\.[0-9]).*/\1/')
++	else
++        SharedLinkOptions += -mmacosx-version-min=$(DARWIN_VERSION)
++	endif
+   endif
+ else
+   ifeq ($(HOST_OS),Cygwin)
+@@ -563,7 +567,11 @@
+ 
+ ifeq ($(TARGET_OS),Darwin)
+   ifneq ($(ARCH),ARM)
+-    TargetCommonOpts += -mmacosx-version-min=$(DARWIN_VERSION)
++    ifdef UNIVERSAL_SDK_PATH
++        TargetCommonOpts += -mmacosx-version-min=$(shell echo $(UNIVERSAL_SDK_PATH)| sed -E 's/.+(10\.[0-9]).*/\1/')
++    else
++        TargetCommonOpts += -mmacosx-version-min=$(DARWIN_VERSION)
++    endif
+   else
+     TargetCommonOpts += -marm
+   endif
