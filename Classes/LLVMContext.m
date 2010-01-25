@@ -64,6 +64,17 @@
 	return [LLVMType voidTypeInContext: self];
 }
 
+-(LLVMType *)structTypeWithTypes:(LLVMType *)type, ... {
+	NSMutableArray *types = [NSMutableArray arrayWithObject: type];
+	va_list list;
+	va_start(list, type);
+	while(type = va_arg(list, LLVMType *)) {
+		[types addObject: type];
+	}
+	va_end(list);
+	return [LLVMType structTypeInContext: self withTypes: types];
+}
+
 
 // constants
 -(LLVMValue *)constantInteger:(NSInteger)integer {
@@ -90,6 +101,24 @@
 
 -(LLVMValue *)constantNullOfType:(LLVMType *)type {
 	return [LLVMConcreteValue valueWithValueRef: LLVMConstNull(type.typeRef)];
+}
+
+
+-(LLVMValue *)constantStruct:(LLVMValue *)value, ... {
+	NSUInteger count = 0, i = 0;
+	va_list list;
+	va_start(list, value);
+	while(value = va_arg(list, LLVMValue *)) {
+		count++;
+	}
+	va_end(list);
+	LLVMValueRef valueRefs[count];
+	va_start(list, value);
+	for(i = 0; i < count; i++) {
+		valueRefs[i] = [va_arg(list, LLVMValue *) valueRef];
+	}
+	va_end(list);
+	return [LLVMConcreteValue valueWithValueRef: LLVMConstStructInContext(self.contextRef, valueRefs, count, YES)];
 }
 
 @end

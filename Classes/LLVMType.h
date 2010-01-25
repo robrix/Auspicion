@@ -26,6 +26,8 @@
 +(LLVMType *)functionTypeWithReturnType:(LLVMType *)_returnType argumentTypes:(NSArray *)argumentTypes variadic:(BOOL)variadic;
 +(LLVMType *)functionType:(LLVMType *)_returnType, ... NS_REQUIRES_NIL_TERMINATION; // implied non-variadic
 
++(LLVMType *)structTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types;
+
 @property (nonatomic, readonly) LLVMContext *context;
 
 @end
