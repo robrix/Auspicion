@@ -10,8 +10,16 @@
 
 @implementation LLVMModule
 
-+(LLVMModule *)moduleWithName:(NSString *)_name inContext:(LLVMContext *)context {
-	return [[[LLVMConcreteModule alloc] initWithName: _name context: context] autorelease];
++(LLVMModule *)moduleWithName:(NSString *)_name inContext:(LLVMContext *)_context {
+	return [[[LLVMConcreteModule alloc] initWithName: _name context: _context] autorelease];
+}
+
+
+-(id)init {
+	if(self = [super init]) {
+		typesByName = [[NSMutableDictionary alloc] init];
+	}
+	return self;
 }
 
 
@@ -47,6 +55,10 @@
 	return function;
 }
 
+-(LLVMFunction *)functionWithName:(NSString *)name typeName:(NSString *)typeName {
+	return [self functionWithName: name type: [self typeForName: typeName]];
+}
+
 
 -(BOOL)verifyWithError:(NSError **)error {
 	char *errorMessage = NULL;
@@ -60,6 +72,21 @@
 		result = NO;
 	}
 	return result;
+}
+
+
+-(LLVMContext *)context {
+	return nil;
+}
+
+
+-(LLVMType *)typeForName:(NSString *)name {
+	return [typesByName objectForKey: name];
+}
+
+-(void)setType:(LLVMType *)type forName:(NSString *)name {
+	LLVMAddTypeName(self.moduleRef, [name UTF8String], type.typeRef);
+	[typesByName setObject: type forKey: name];
 }
 
 @end
