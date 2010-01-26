@@ -59,7 +59,7 @@
 }
 
 
--(LLVMValue *)argumentValueAtIndex:(NSUInteger)index {
+-(LLVMValue *)parameterAtIndex:(NSUInteger)index {
 	return [LLVMConcreteValue valueWithValueRef: LLVMGetParam(self.functionRef, index)];
 }
 
