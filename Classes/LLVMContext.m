@@ -105,20 +105,21 @@
 
 
 -(LLVMValue *)constantStruct:(LLVMValue *)value, ... {
-	NSUInteger count = 0, i = 0;
+	NSParameterAssert(value != nil);
+	NSMutableArray *values = [NSMutableArray arrayWithObject: value];
 	va_list list;
 	va_start(list, value);
 	while(value = va_arg(list, LLVMValue *)) {
-		count++;
+		[values addObject: value];
 	}
 	va_end(list);
-	LLVMValueRef valueRefs[count];
-	va_start(list, value);
-	for(i = 0; i < count; i++) {
-		valueRefs[i] = [va_arg(list, LLVMValue *) valueRef];
+	NSParameterAssert(values.count > 1);
+	LLVMValueRef valueRefs[values.count];
+	NSUInteger i = 0;
+	for(LLVMValue *value in values) {
+		valueRefs[i++] = value.valueRef;
 	}
-	va_end(list);
-	return [LLVMConcreteValue valueWithValueRef: LLVMConstStructInContext(self.contextRef, valueRefs, count, YES)];
+	return [LLVMConcreteValue valueWithValueRef: LLVMConstStructInContext(self.contextRef, valueRefs, values.count, NO)];
 }
 
 @end

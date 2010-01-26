@@ -84,7 +84,9 @@
 	for(LLVMType *type in types) {
 		typeRefs[i++] = type.typeRef;
 	}
-	return [LLVMConcreteType typeWithTypeRef: LLVMStructTypeInContext(context.contextRef, typeRefs, types.count, YES)];
+	NSParameterAssert(context != nil);
+	NSParameterAssert(types.count > 0);
+	return [LLVMConcreteType typeWithTypeRef: LLVMStructTypeInContext(context.contextRef, typeRefs, types.count, NO)];
 }
 
 

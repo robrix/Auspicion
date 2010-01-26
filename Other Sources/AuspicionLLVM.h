@@ -18,6 +18,9 @@ extern "C" {
 void *AuspicionLLVMGetPointerToFunction(LLVMExecutionEngineRef compiler, LLVMValueRef function);
 LLVMTypeRef AuspicionLLVMGetFunctionType(LLVMValueRef function);
 
+// must free the resulting string
+char *AuspicionLLVMPrintValue(LLVMValueRef value);
+
 #ifdef __cplusplus
 }
 #endif
