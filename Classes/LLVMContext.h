@@ -26,6 +26,8 @@
 
 @property (nonatomic, readonly) LLVMType *voidType;
 
+-(LLVMType *)structTypeWithTypes:(LLVMType *)type, ... NS_REQUIRES_NIL_TERMINATION;
+
 
 // constants
 -(LLVMValue *)constantInteger:(NSInteger)integer;
@@ -36,5 +38,7 @@
 -(LLVMValue *)constantUntypedPointer:(void *)pointer;
 
 -(LLVMValue *)constantNullOfType:(LLVMType *)type;
+
+-(LLVMValue *)constantStruct:(LLVMValue *)value, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end
