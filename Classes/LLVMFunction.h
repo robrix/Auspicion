@@ -17,7 +17,7 @@
 
 @property (nonatomic, readonly) LLVMContext *context;
 
--(LLVMValue *)argumentValueAtIndex:(NSUInteger)index;
+-(LLVMValue *)parameterAtIndex:(NSUInteger)index;
 
 -(BOOL)verifyWithError:(NSError **)error;
 
