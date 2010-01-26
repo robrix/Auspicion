@@ -3,6 +3,7 @@
 // Copyright 2009 Monochrome Industries
 
 #import "LLVMValue.h"
+#import "AuspicionLLVM.h"
 
 @implementation LLVMValue
 
@@ -15,6 +16,14 @@
 -(LLVMValueRef)valueRef {
 	[self doesNotRecognizeSelector: _cmd];
 	return NULL;
+}
+
+
+-(NSString *)description {
+	char *bytes = AuspicionLLVMPrintValue(self.valueRef);
+	NSString *result = [NSString stringWithCString: bytes encoding: NSUTF8StringEncoding];
+	free(bytes);
+	return result;
 }
 
 @end

@@ -84,4 +84,12 @@
 	return [LLVMConcreteBlock blockWithBlockRef: LLVMGetEntryBasicBlock(self.functionRef)];
 }
 
+
+-(NSString *)description {
+	char *bytes = AuspicionLLVMPrintValue(self.functionRef);
+	NSString *result = [NSString stringWithCString: bytes encoding: NSUTF8StringEncoding];
+	free(bytes);
+	return result;
+}
+
 @end

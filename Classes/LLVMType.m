@@ -78,6 +78,18 @@
 }
 
 
++(LLVMType *)structTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types {
+	LLVMTypeRef typeRefs[types.count];
+	NSUInteger i = 0;
+	for(LLVMType *type in types) {
+		typeRefs[i++] = type.typeRef;
+	}
+	NSParameterAssert(context != nil);
+	NSParameterAssert(types.count > 0);
+	return [LLVMConcreteType typeWithTypeRef: LLVMStructTypeInContext(context.contextRef, typeRefs, types.count, NO)];
+}
+
+
 -(LLVMTypeRef)typeRef {
 	[self doesNotRecognizeSelector: _cmd];
 	return NULL;
