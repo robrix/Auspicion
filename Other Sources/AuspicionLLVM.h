@@ -20,6 +20,7 @@ LLVMTypeRef AuspicionLLVMGetFunctionType(LLVMValueRef function);
 
 // must free the resulting string
 char *AuspicionLLVMPrintValue(LLVMValueRef value);
+char *AuspicionLLVMPrintType(LLVMTypeRef type);
 
 #ifdef __cplusplus
 }

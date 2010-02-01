@@ -16,16 +16,12 @@
 
 -(id)initWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)_name {
 	if(self = [super init]) {
-		name = [_name copy];
-		NSParameterAssert(name != NULL);
 		valueRef = _valueRef;
 		NSParameterAssert(valueRef != NULL);
 	}
 	return self;
 }
 
-
-@synthesize name;
 
 @synthesize valueRef;
 

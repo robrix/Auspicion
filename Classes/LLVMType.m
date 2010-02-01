@@ -5,14 +5,15 @@
 #import "LLVMConcreteContext.h"
 #import "LLVMConcreteType.h"
 #import "LLVMType.h"
+#import "AuspicionLLVM.h"
 
 @implementation LLVMType
 
 +(LLVMType *)integerTypeInContext:(LLVMContext *)context {
 #ifdef __LP64__
-	return [LLVMConcreteType typeWithTypeRef: LLVMInt64TypeInContext(context.contextRef)];
+	return [self int64TypeInContext: context];
 #else
-	return [LLVMConcreteType typeWithTypeRef: LLVMInt32TypeInContext(context.contextRef)];
+	return [self int32TypeInContext: context];
 #endif
 }
 
@@ -98,6 +99,14 @@
 
 -(LLVMContext *)context {
 	return [[[LLVMConcreteContext alloc] initWithContextRef: LLVMGetTypeContext(self.typeRef)] autorelease];
+}
+
+
+-(NSString *)description {
+	char *bytes = AuspicionLLVMPrintType(self.typeRef);
+	NSString *result = [NSString stringWithCString: bytes encoding: NSUTF8StringEncoding];
+	free(bytes);
+	return result;
 }
 
 @end

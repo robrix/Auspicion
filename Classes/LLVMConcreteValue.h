@@ -13,7 +13,6 @@
 
 @interface LLVMConcreteValue : LLVMValue {
 	LLVMValueRef valueRef;
-	NSString *name;
 }
 
 +(id)valueWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)name;

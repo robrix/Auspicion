@@ -32,3 +32,15 @@ char *AuspicionLLVMPrintValue(LLVMValueRef value) {
 	memcpy((void *)result, (const void *)cString, length);
 	return result;
 }
+
+char *AuspicionLLVMPrintType(LLVMTypeRef type) {
+	std::string string;
+	llvm::raw_string_ostream ostream(string);
+	llvm::Type *cppType = llvm::unwrap<llvm::Type>(type);
+	cppType->print(ostream);
+	const char *cString = ostream.str().c_str();
+	size_t length = ostream.str().length();
+	char *result = (char *)malloc(length);
+	memcpy((void *)result, (const void *)cString, length);
+	return result;
+}
