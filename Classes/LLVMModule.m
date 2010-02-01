@@ -46,7 +46,7 @@
 
 -(LLVMFunction *)functionWithName:(NSString *)name {
 	LLVMValueRef functionRef = LLVMGetNamedFunction(self.moduleRef, [name UTF8String]);
-	return functionRef ? [LLVMConcreteFunction functionWithFunctionRef: functionRef] : nil;
+	return functionRef ? [LLVMConcreteFunction functionWithFunctionRef: functionRef inModule: self] : nil;
 }
 
 -(LLVMFunction *)functionWithName:(NSString *)name type:(LLVMType *)type {

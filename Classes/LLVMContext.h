@@ -32,6 +32,8 @@
 // constants
 -(LLVMValue *)constantInteger:(NSInteger)integer;
 -(LLVMValue *)constantUnsignedInteger:(NSUInteger)integer;
+-(LLVMValue *)constantInt64:(int64_t)integer;
+-(LLVMValue *)constantUnsignedInt64:(uint64_t)integer;
 -(LLVMValue *)constantInt32:(int32_t)integer;
 -(LLVMValue *)constantUnsignedInt32:(uint32_t)integer;
 

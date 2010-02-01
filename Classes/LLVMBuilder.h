@@ -24,29 +24,35 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 // can these be improved upon?
 -(LLVMValue *)return:(LLVMValue *)value;
 
--(LLVMValue *)call:(LLVMFunction *)function arguments:(NSArray *)arguments;
--(LLVMValue *)call:(LLVMFunction *)function argument:(LLVMValue *)argument;
--(LLVMValue *)call:(LLVMFunction *)function, ... NS_REQUIRES_NIL_TERMINATION;
+-(LLVMValue *)call:(LLVMValue *)function arguments:(NSArray *)arguments;
+-(LLVMValue *)call:(LLVMValue *)function argument:(LLVMValue *)argument;
+-(LLVMValue *)call:(LLVMValue *)function, ... NS_REQUIRES_NIL_TERMINATION;
 
 -(LLVMValue *)condition:(LLVMValue *)condition then:(LLVMValue *)thenValue else:(LLVMValue *)elseValue;
 
 -(LLVMValue *)add:(LLVMValue *)left, ...;
+-(LLVMValue *)subtract:(LLVMValue *)left, ...;
 -(LLVMValue *)not:(LLVMValue *)value;
 
 -(LLVMValue *)stringPointer:(NSString *)string;
 
 // -(LLVMValue *)offsetPointer:(LLVMValue *)pointerValue by:(LLVMValue *)offsetValue;
--(LLVMValue *)dereference:(LLVMValue *)pointer;
+// -(LLVMValue *)dereference:(LLVMValue *)pointer;
 
 -(LLVMValue *)and:(LLVMValue *)left, ...;
+-(LLVMValue *)or:(LLVMValue *)left, ...;
 
 -(LLVMValue *)unsignedLessOrEqual:(LLVMValue *)left, ...;
+-(LLVMValue *)unsignedLessThan:(LLVMValue *)left, ...;
 -(LLVMValue *)equal:(LLVMValue *)left, ...;
 -(LLVMValue *)notEqual:(LLVMValue *)left, ...;
 
 -(LLVMValue *)allocateLocal:(NSString *)name type:(LLVMType *)type;
--(LLVMValue *)setLocal:(LLVMValue *)local, ...;
--(LLVMValue *)getLocal:(LLVMValue *)local;
+
+-(LLVMValue *)set:(LLVMValue *)address, ...;
+-(LLVMValue *)setElements:(LLVMValue *)address, ... NS_REQUIRES_NIL_TERMINATION;
+-(LLVMValue *)get:(LLVMValue *)address;
+-(LLVMValue *)getElement:(LLVMValue *)address atIndex:(NSUInteger)index;
 
 -(LLVMValue *)if:(LLVMValue *)condition then:(LLVMBlock *)thenBlock else:(LLVMBlock *)elseBlock;
 -(LLVMValue *)jumpToBlock:(LLVMBlock *)block;

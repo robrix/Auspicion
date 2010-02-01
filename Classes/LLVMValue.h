@@ -4,8 +4,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class LLVMType;
+
 @interface LLVMValue : NSObject
 
-@property (nonatomic, readonly) NSString *name;
+@property (nonatomic, copy) NSString *name;
+
+@property (nonatomic, readonly) LLVMType *type;
 
 @end

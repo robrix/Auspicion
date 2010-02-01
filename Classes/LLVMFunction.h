@@ -2,11 +2,11 @@
 // Created by Rob Rix on 2009-12-29
 // Copyright 2009 Monochrome Industries
 
-#import <Foundation/Foundation.h>
+#import <Auspicion/LLVMValue.h>
 
-@class LLVMContext, LLVMBlock, LLVMModule, LLVMType, LLVMValue;
+@class LLVMContext, LLVMBlock, LLVMModule, LLVMType;
 
-@interface LLVMFunction : NSObject
+@interface LLVMFunction : LLVMValue
 
 +(id)functionInModule:(LLVMModule *)module withName:(NSString *)name type:(LLVMType *)type;
 
@@ -16,6 +16,7 @@
 @property (nonatomic, readonly) NSArray *argumentTypes;
 
 @property (nonatomic, readonly) LLVMContext *context;
+@property (nonatomic, readonly) LLVMModule *module;
 
 -(LLVMValue *)parameterAtIndex:(NSUInteger)index;
 

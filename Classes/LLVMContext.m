@@ -85,6 +85,14 @@
 	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.integerType.typeRef, integer, 0)];
 }
 
+-(LLVMValue *)constantInt64:(int64_t)integer {
+	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.int64Type.typeRef, integer, 1)];
+}
+
+-(LLVMValue *)constantUnsignedInt64:(uint64_t)integer {
+	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.int64Type.typeRef, integer, 0)];
+}
+
 -(LLVMValue *)constantInt32:(int32_t)integer {
 	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.int32Type.typeRef, integer, 1)];
 }

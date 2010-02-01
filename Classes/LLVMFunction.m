@@ -14,13 +14,17 @@
 @implementation LLVMFunction
 
 +(id)functionInModule:(LLVMModule *)module withName:(NSString *)name type:(LLVMType *)type {
-	return [LLVMConcreteFunction functionWithFunctionRef: LLVMAddFunction(module.moduleRef, [name UTF8String], type.typeRef)];
+	return [LLVMConcreteFunction functionWithFunctionRef: LLVMAddFunction(module.moduleRef, [name UTF8String], type.typeRef) inModule: module];
 }
 
 
 -(LLVMValueRef)functionRef {
 	[self doesNotRecognizeSelector: _cmd];
 	return NULL;
+}
+
+-(LLVMValueRef)valueRef {
+	return self.functionRef;
 }
 
 
@@ -58,6 +62,11 @@
 	return self.functionType.context;
 }
 
+-(LLVMModule *)module {
+	[self doesNotRecognizeSelector: _cmd];
+	return nil;
+}
+
 
 -(LLVMValue *)parameterAtIndex:(NSUInteger)index {
 	return [LLVMConcreteValue valueWithValueRef: LLVMGetParam(self.functionRef, index)];
@@ -85,11 +94,11 @@
 }
 
 
--(NSString *)description {
-	char *bytes = AuspicionLLVMPrintValue(self.functionRef);
-	NSString *result = [NSString stringWithCString: bytes encoding: NSUTF8StringEncoding];
-	free(bytes);
-	return result;
-}
+// -(NSString *)description {
+// 	char *bytes = AuspicionLLVMPrintValue(self.functionRef);
+// 	NSString *result = [NSString stringWithCString: bytes encoding: NSUTF8StringEncoding];
+// 	free(bytes);
+// 	return result;
+// }
 
 @end
