@@ -82,7 +82,9 @@ public:
   /// getAlignment - Return the alignment of the memory that is being allocated
   /// by the instruction.
   ///
-  unsigned getAlignment() const { return (1u << SubclassData) >> 1; }
+  unsigned getAlignment() const {
+    return (1u << getSubclassDataFromInstruction()) >> 1;
+  }
   void setAlignment(unsigned Align);
 
   /// isStaticAlloca - Return true if this alloca is in the entry block of the
@@ -97,6 +99,12 @@ public:
   }
   static inline bool classof(const Value *V) {
     return isa<Instruction>(V) && classof(cast<Instruction>(V));
+  }
+private:
+  // Shadow Instruction::setInstructionSubclassData with a private forwarding
+  // method so that subclasses cannot accidentally use it.
+  void setInstructionSubclassData(unsigned short D) {
+    Instruction::setInstructionSubclassData(D);
   }
 };
 
@@ -134,18 +142,19 @@ public:
   /// isVolatile - Return true if this is a load from a volatile memory
   /// location.
   ///
-  bool isVolatile() const { return SubclassData & 1; }
+  bool isVolatile() const { return getSubclassDataFromInstruction() & 1; }
 
   /// setVolatile - Specify whether this is a volatile load or not.
   ///
   void setVolatile(bool V) {
-    SubclassData = (SubclassData & ~1) | (V ? 1 : 0);
+    setInstructionSubclassData((getSubclassDataFromInstruction() & ~1) |
+                               (V ? 1 : 0));
   }
 
   /// getAlignment - Return the alignment of the access that is being performed
   ///
   unsigned getAlignment() const {
-    return (1 << (SubclassData>>1)) >> 1;
+    return (1 << (getSubclassDataFromInstruction() >> 1)) >> 1;
   }
 
   void setAlignment(unsigned Align);
@@ -166,6 +175,12 @@ public:
   }
   static inline bool classof(const Value *V) {
     return isa<Instruction>(V) && classof(cast<Instruction>(V));
+  }
+private:
+  // Shadow Instruction::setInstructionSubclassData with a private forwarding
+  // method so that subclasses cannot accidentally use it.
+  void setInstructionSubclassData(unsigned short D) {
+    Instruction::setInstructionSubclassData(D);
   }
 };
 
@@ -200,12 +215,13 @@ public:
   /// isVolatile - Return true if this is a load from a volatile memory
   /// location.
   ///
-  bool isVolatile() const { return SubclassData & 1; }
+  bool isVolatile() const { return getSubclassDataFromInstruction() & 1; }
 
   /// setVolatile - Specify whether this is a volatile load or not.
   ///
   void setVolatile(bool V) {
-    SubclassData = (SubclassData & ~1) | (V ? 1 : 0);
+    setInstructionSubclassData((getSubclassDataFromInstruction() & ~1) |
+                               (V ? 1 : 0));
   }
 
   /// Transparently provide more efficient getOperand methods.
@@ -214,7 +230,7 @@ public:
   /// getAlignment - Return the alignment of the access that is being performed
   ///
   unsigned getAlignment() const {
-    return (1 << (SubclassData>>1)) >> 1;
+    return (1 << (getSubclassDataFromInstruction() >> 1)) >> 1;
   }
 
   void setAlignment(unsigned Align);
@@ -234,6 +250,12 @@ public:
   }
   static inline bool classof(const Value *V) {
     return isa<Instruction>(V) && classof(cast<Instruction>(V));
+  }
+private:
+  // Shadow Instruction::setInstructionSubclassData with a private forwarding
+  // method so that subclasses cannot accidentally use it.
+  void setInstructionSubclassData(unsigned short D) {
+    Instruction::setInstructionSubclassData(D);
   }
 };
 
@@ -568,8 +590,8 @@ public:
     assert(getOperand(0)->getType() == getOperand(1)->getType() &&
           "Both operands to ICmp instruction are not of the same type!");
     // Check that the operands are the right type
-    assert((getOperand(0)->getType()->isIntOrIntVector() ||
-            isa<PointerType>(getOperand(0)->getType())) &&
+    assert((getOperand(0)->getType()->isIntOrIntVectorTy() ||
+            getOperand(0)->getType()->isPointerTy()) &&
            "Invalid operand types for ICmp instruction");
   }
 
@@ -589,8 +611,8 @@ public:
     assert(getOperand(0)->getType() == getOperand(1)->getType() &&
           "Both operands to ICmp instruction are not of the same type!");
     // Check that the operands are the right type
-    assert((getOperand(0)->getType()->isIntOrIntVector() ||
-            isa<PointerType>(getOperand(0)->getType())) &&
+    assert((getOperand(0)->getType()->isIntOrIntVectorTy() ||
+            getOperand(0)->getType()->isPointerTy()) &&
            "Invalid operand types for ICmp instruction");
   }
 
@@ -608,8 +630,8 @@ public:
     assert(getOperand(0)->getType() == getOperand(1)->getType() &&
           "Both operands to ICmp instruction are not of the same type!");
     // Check that the operands are the right type
-    assert((getOperand(0)->getType()->isIntOrIntVector() ||
-            isa<PointerType>(getOperand(0)->getType())) &&
+    assert((getOperand(0)->getType()->isIntOrIntVectorTy() ||
+            getOperand(0)->getType()->isPointerTy()) &&
            "Invalid operand types for ICmp instruction");
   }
 
@@ -675,7 +697,7 @@ public:
   /// (e.g. ult).
   /// @brief Swap operands and adjust predicate.
   void swapOperands() {
-    SubclassData = getSwappedPredicate();
+    setPredicate(getSwappedPredicate());
     Op<0>().swap(Op<1>());
   }
 
@@ -718,7 +740,7 @@ public:
     assert(getOperand(0)->getType() == getOperand(1)->getType() &&
            "Both operands to FCmp instruction are not of the same type!");
     // Check that the operands are the right type
-    assert(getOperand(0)->getType()->isFPOrFPVector() &&
+    assert(getOperand(0)->getType()->isFPOrFPVectorTy() &&
            "Invalid operand types for FCmp instruction");
   }
   
@@ -737,7 +759,7 @@ public:
     assert(getOperand(0)->getType() == getOperand(1)->getType() &&
            "Both operands to FCmp instruction are not of the same type!");
     // Check that the operands are the right type
-    assert(getOperand(0)->getType()->isFPOrFPVector() &&
+    assert(getOperand(0)->getType()->isFPOrFPVectorTy() &&
            "Invalid operand types for FCmp instruction");
   }
 
@@ -754,25 +776,25 @@ public:
     assert(getOperand(0)->getType() == getOperand(1)->getType() &&
            "Both operands to FCmp instruction are not of the same type!");
     // Check that the operands are the right type
-    assert(getOperand(0)->getType()->isFPOrFPVector() &&
+    assert(getOperand(0)->getType()->isFPOrFPVectorTy() &&
            "Invalid operand types for FCmp instruction");
   }
 
   /// @returns true if the predicate of this instruction is EQ or NE.
   /// @brief Determine if this is an equality predicate.
   bool isEquality() const {
-    return SubclassData == FCMP_OEQ || SubclassData == FCMP_ONE ||
-           SubclassData == FCMP_UEQ || SubclassData == FCMP_UNE;
+    return getPredicate() == FCMP_OEQ || getPredicate() == FCMP_ONE ||
+           getPredicate() == FCMP_UEQ || getPredicate() == FCMP_UNE;
   }
 
   /// @returns true if the predicate of this instruction is commutative.
   /// @brief Determine if this is a commutative predicate.
   bool isCommutative() const {
     return isEquality() ||
-           SubclassData == FCMP_FALSE ||
-           SubclassData == FCMP_TRUE ||
-           SubclassData == FCMP_ORD ||
-           SubclassData == FCMP_UNO;
+           getPredicate() == FCMP_FALSE ||
+           getPredicate() == FCMP_TRUE ||
+           getPredicate() == FCMP_ORD ||
+           getPredicate() == FCMP_UNO;
   }
 
   /// @returns true if the predicate is relational (not EQ or NE).
@@ -785,7 +807,7 @@ public:
   /// (e.g. ult).
   /// @brief Swap operands and adjust predicate.
   void swapOperands() {
-    SubclassData = getSwappedPredicate();
+    setPredicate(getSwappedPredicate());
     Op<0>().swap(Op<1>());
   }
 
@@ -800,14 +822,11 @@ public:
 };
 
 //===----------------------------------------------------------------------===//
-//                                 CallInst Class
-//===----------------------------------------------------------------------===//
 /// CallInst - This class represents a function call, abstracting a target
 /// machine's calling convention.  This class uses low bit of the SubClassData
 /// field to indicate whether or not this is a tail call.  The rest of the bits
 /// hold the calling convention of the call.
 ///
-
 class CallInst : public Instruction {
   AttrListPtr AttributeList; ///< parameter attributes for call
   CallInst(const CallInst &CI);
@@ -912,9 +931,10 @@ public:
 
   ~CallInst();
 
-  bool isTailCall() const           { return SubclassData & 1; }
+  bool isTailCall() const { return getSubclassDataFromInstruction() & 1; }
   void setTailCall(bool isTC = true) {
-    SubclassData = (SubclassData & ~1) | unsigned(isTC);
+    setInstructionSubclassData((getSubclassDataFromInstruction() & ~1) |
+                               unsigned(isTC));
   }
 
   /// Provide fast operand accessors
@@ -923,10 +943,11 @@ public:
   /// getCallingConv/setCallingConv - Get or set the calling convention of this
   /// function call.
   CallingConv::ID getCallingConv() const {
-    return static_cast<CallingConv::ID>(SubclassData >> 1);
+    return static_cast<CallingConv::ID>(getSubclassDataFromInstruction() >> 1);
   }
   void setCallingConv(CallingConv::ID CC) {
-    SubclassData = (SubclassData & 1) | (static_cast<unsigned>(CC) << 1);
+    setInstructionSubclassData((getSubclassDataFromInstruction() & 1) |
+                               (static_cast<unsigned>(CC) << 1));
   }
 
   /// getAttributes - Return the parameter attributes for this call.
@@ -949,6 +970,13 @@ public:
   /// @brief Extract the alignment for a call or parameter (0=unknown).
   unsigned getParamAlignment(unsigned i) const {
     return AttributeList.getParamAlignment(i);
+  }
+  
+  /// @brief Return true if the call should not be inlined.
+  bool isNoInline() const { return paramHasAttr(~0, Attribute::NoInline); }
+  void setIsNoInline(bool Value) {
+    if (Value) addAttribute(~0, Attribute::NoInline);
+    else removeAttribute(~0, Attribute::NoInline);
   }
 
   /// @brief Determine if the call does not access memory.
@@ -1023,6 +1051,12 @@ public:
   }
   static inline bool classof(const Value *V) {
     return isa<Instruction>(V) && classof(cast<Instruction>(V));
+  }
+private:
+  // Shadow Instruction::setInstructionSubclassData with a private forwarding
+  // method so that subclasses cannot accidentally use it.
+  void setInstructionSubclassData(unsigned short D) {
+    Instruction::setInstructionSubclassData(D);
   }
 };
 
@@ -1778,7 +1812,7 @@ public:
     return i/2;
   }
 
-  /// getIncomingBlock - Return incoming basic block #i.
+  /// getIncomingBlock - Return incoming basic block number @p i.
   ///
   BasicBlock *getIncomingBlock(unsigned i) const {
     return cast<BasicBlock>(getOperand(i*2+1));
@@ -1957,7 +1991,7 @@ public:
 };
 
 template <>
-struct OperandTraits<ReturnInst> : public OptionalOperandTraits<> {
+struct OperandTraits<ReturnInst> : public VariadicOperandTraits<> {
 };
 
 DEFINE_TRANSPARENT_OPERAND_ACCESSORS(ReturnInst, Value)
@@ -2401,10 +2435,10 @@ public:
   /// getCallingConv/setCallingConv - Get or set the calling convention of this
   /// function call.
   CallingConv::ID getCallingConv() const {
-    return static_cast<CallingConv::ID>(SubclassData);
+    return static_cast<CallingConv::ID>(getSubclassDataFromInstruction());
   }
   void setCallingConv(CallingConv::ID CC) {
-    SubclassData = static_cast<unsigned>(CC);
+    setInstructionSubclassData(static_cast<unsigned>(CC));
   }
 
   /// getAttributes - Return the parameter attributes for this invoke.
@@ -2429,6 +2463,13 @@ public:
     return AttributeList.getParamAlignment(i);
   }
 
+  /// @brief Return true if the call should not be inlined.
+  bool isNoInline() const { return paramHasAttr(~0, Attribute::NoInline); }
+  void setIsNoInline(bool Value) {
+    if (Value) addAttribute(~0, Attribute::NoInline);
+    else removeAttribute(~0, Attribute::NoInline);
+  }
+  
   /// @brief Determine if the call does not access memory.
   bool doesNotAccessMemory() const {
     return paramHasAttr(~0, Attribute::ReadNone);
@@ -2481,27 +2522,31 @@ public:
   /// indirect function invocation.
   ///
   Function *getCalledFunction() const {
-    return dyn_cast<Function>(getOperand(0));
+    return dyn_cast<Function>(Op<-3>());
   }
 
   /// getCalledValue - Get a pointer to the function that is invoked by this
   /// instruction
-  const Value *getCalledValue() const { return getOperand(0); }
-        Value *getCalledValue()       { return getOperand(0); }
+  const Value *getCalledValue() const { return Op<-3>(); }
+        Value *getCalledValue()       { return Op<-3>(); }
+
+  /// setCalledFunction - Set the function called.
+  void setCalledFunction(Value* Fn) {
+    Op<-3>() = Fn;
+  }
 
   // get*Dest - Return the destination basic blocks...
   BasicBlock *getNormalDest() const {
-    return cast<BasicBlock>(getOperand(1));
+    return cast<BasicBlock>(Op<-2>());
   }
   BasicBlock *getUnwindDest() const {
-    return cast<BasicBlock>(getOperand(2));
+    return cast<BasicBlock>(Op<-1>());
   }
   void setNormalDest(BasicBlock *B) {
-    setOperand(1, (Value*)B);
+    Op<-2>() = reinterpret_cast<Value*>(B);
   }
-
   void setUnwindDest(BasicBlock *B) {
-    setOperand(2, (Value*)B);
+    Op<-1>() = reinterpret_cast<Value*>(B);
   }
 
   BasicBlock *getSuccessor(unsigned i) const {
@@ -2511,7 +2556,7 @@ public:
 
   void setSuccessor(unsigned idx, BasicBlock *NewSucc) {
     assert(idx < 2 && "Successor # out of range for invoke!");
-    setOperand(idx+1, (Value*)NewSucc);
+    *(&Op<-2>() + idx) = reinterpret_cast<Value*>(NewSucc);
   }
 
   unsigned getNumSuccessors() const { return 2; }
@@ -2524,10 +2569,17 @@ public:
   static inline bool classof(const Value *V) {
     return isa<Instruction>(V) && classof(cast<Instruction>(V));
   }
+
 private:
   virtual BasicBlock *getSuccessorV(unsigned idx) const;
   virtual unsigned getNumSuccessorsV() const;
   virtual void setSuccessorV(unsigned idx, BasicBlock *B);
+
+  // Shadow Instruction::setInstructionSubclassData with a private forwarding
+  // method so that subclasses cannot accidentally use it.
+  void setInstructionSubclassData(unsigned short D) {
+    Instruction::setInstructionSubclassData(D);
+  }
 };
 
 template <>

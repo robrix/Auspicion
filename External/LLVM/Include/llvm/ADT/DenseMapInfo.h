@@ -15,7 +15,7 @@
 #define LLVM_ADT_DENSEMAPINFO_H
 
 #include "llvm/Support/PointerLikeTypeTraits.h"
-#include <utility>
+#include "llvm/Support/type_traits.h"
 
 namespace llvm {
 
@@ -25,7 +25,6 @@ struct DenseMapInfo {
   //static inline T getTombstoneKey();
   //static unsigned getHashValue(const T &Val);
   //static bool isEqual(const T &LHS, const T &RHS);
-  //static bool isPod()
 };
 
 // Provide DenseMapInfo for all pointers.
@@ -46,7 +45,6 @@ struct DenseMapInfo<T*> {
            (unsigned((uintptr_t)PtrVal) >> 9);
   }
   static bool isEqual(const T *LHS, const T *RHS) { return LHS == RHS; }
-  static bool isPod() { return true; }
 };
 
 // Provide DenseMapInfo for chars.
@@ -54,7 +52,6 @@ template<> struct DenseMapInfo<char> {
   static inline char getEmptyKey() { return ~0; }
   static inline char getTombstoneKey() { return ~0 - 1; }
   static unsigned getHashValue(const char& Val) { return Val * 37; }
-  static bool isPod() { return true; }
   static bool isEqual(const char &LHS, const char &RHS) {
     return LHS == RHS;
   }
@@ -65,7 +62,6 @@ template<> struct DenseMapInfo<unsigned> {
   static inline unsigned getEmptyKey() { return ~0; }
   static inline unsigned getTombstoneKey() { return ~0U - 1; }
   static unsigned getHashValue(const unsigned& Val) { return Val * 37; }
-  static bool isPod() { return true; }
   static bool isEqual(const unsigned& LHS, const unsigned& RHS) {
     return LHS == RHS;
   }
@@ -78,7 +74,6 @@ template<> struct DenseMapInfo<unsigned long> {
   static unsigned getHashValue(const unsigned long& Val) {
     return (unsigned)(Val * 37UL);
   }
-  static bool isPod() { return true; }
   static bool isEqual(const unsigned long& LHS, const unsigned long& RHS) {
     return LHS == RHS;
   }
@@ -91,9 +86,31 @@ template<> struct DenseMapInfo<unsigned long long> {
   static unsigned getHashValue(const unsigned long long& Val) {
     return (unsigned)(Val * 37ULL);
   }
-  static bool isPod() { return true; }
   static bool isEqual(const unsigned long long& LHS,
                       const unsigned long long& RHS) {
+    return LHS == RHS;
+  }
+};
+
+// Provide DenseMapInfo for ints.
+template<> struct DenseMapInfo<int> {
+  static inline int getEmptyKey() { return 0x7fffffff; }
+  static inline int getTombstoneKey() { return -0x7fffffff - 1; }
+  static unsigned getHashValue(const int& Val) { return (unsigned)(Val * 37); }
+  static bool isEqual(const int& LHS, const int& RHS) {
+    return LHS == RHS;
+  }
+};
+
+// Provide DenseMapInfo for long longs.
+template<> struct DenseMapInfo<long long> {
+  static inline long long getEmptyKey() { return 0x7fffffffffffffffLL; }
+  static inline long long getTombstoneKey() { return -0x7fffffffffffffffLL-1; }
+  static unsigned getHashValue(const long long& Val) {
+    return (unsigned)(Val * 37LL);
+  }
+  static bool isEqual(const long long& LHS,
+                      const long long& RHS) {
     return LHS == RHS;
   }
 };
@@ -127,7 +144,6 @@ struct DenseMapInfo<std::pair<T, U> > {
     return (unsigned)key;
   }
   static bool isEqual(const Pair& LHS, const Pair& RHS) { return LHS == RHS; }
-  static bool isPod() { return FirstInfo::isPod() && SecondInfo::isPod(); }
 };
 
 } // end namespace llvm

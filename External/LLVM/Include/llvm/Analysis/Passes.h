@@ -81,17 +81,11 @@ namespace llvm {
 
   //===--------------------------------------------------------------------===//
   //
-  // createAndersensPass - This pass implements Andersen's interprocedural alias
-  // analysis.
-  //
-  ModulePass *createAndersensPass();
-
-  //===--------------------------------------------------------------------===//
-  //
   // createProfileLoaderPass - This pass loads information from a profile dump
   // file.
   //
   ModulePass *createProfileLoaderPass();
+  extern const PassInfo *ProfileLoaderPassID;
 
   //===--------------------------------------------------------------------===//
   //
@@ -159,6 +153,9 @@ namespace llvm {
 
   // print debug info intrinsics in human readable form
   FunctionPass *createDbgInfoPrinterPass();
+
+  // Print module-level debug info metadata in human-readable form.
+  ModulePass *createModuleDebugInfoPrinterPass();
 }
 
 #endif

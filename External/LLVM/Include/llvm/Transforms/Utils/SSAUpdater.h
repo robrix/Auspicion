@@ -19,34 +19,31 @@ namespace llvm {
   class BasicBlock;
   class Use;
   class PHINode;
-  template<typename T>
-  class SmallVectorImpl;
+  template<typename T> class SmallVectorImpl;
+  template<typename T> class SSAUpdaterTraits;
+  class BumpPtrAllocator;
 
 /// SSAUpdater - This class updates SSA form for a set of values defined in
 /// multiple blocks.  This is used when code duplication or another unstructured
 /// transformation wants to rewrite a set of uses of one value with uses of a
 /// set of values.
 class SSAUpdater {
+  friend class SSAUpdaterTraits<SSAUpdater>;
+
+private:
   /// AvailableVals - This keeps track of which value to use on a per-block
-  /// basis.  When we insert PHI nodes, we keep track of them here.  We use
-  /// WeakVH's for the value of the map because we RAUW PHI nodes when we
-  /// eliminate them, and want the WeakVH to track this.
-  //typedef DenseMap<BasicBlock*, TrackingVH<Value> > AvailableValsTy;
+  /// basis.  When we insert PHI nodes, we keep track of them here.
+  //typedef DenseMap<BasicBlock*, Value*> AvailableValsTy;
   void *AV;
 
   /// PrototypeValue is an arbitrary representative value, which we derive names
   /// and a type for PHI nodes.
   Value *PrototypeValue;
 
-  /// IncomingPredInfo - We use this as scratch space when doing our recursive
-  /// walk.  This should only be used in GetValueInBlockInternal, normally it
-  /// should be empty.
-  //std::vector<std::pair<BasicBlock*, TrackingVH<Value> > > IncomingPredInfo;
-  void *IPI;
-
   /// InsertedPHIs - If this is non-null, the SSAUpdater adds all PHI nodes that
   /// it creates to the vector.
   SmallVectorImpl<PHINode*> *InsertedPHIs;
+
 public:
   /// SSAUpdater constructor.  If InsertedPHIs is specified, it will be filled
   /// in with all PHI Nodes created by rewriting.
@@ -99,6 +96,7 @@ public:
 
 private:
   Value *GetValueAtEndOfBlockInternal(BasicBlock *BB);
+
   void operator=(const SSAUpdater&); // DO NOT IMPLEMENT
   SSAUpdater(const SSAUpdater&);     // DO NOT IMPLEMENT
 };

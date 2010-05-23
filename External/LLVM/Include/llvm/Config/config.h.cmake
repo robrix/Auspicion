@@ -312,6 +312,9 @@
 /* Define to 1 if you have the `roundf' function. */
 #undef HAVE_ROUNDF
 
+/* Define to 1 if you have the `round' function. */
+#cmakedefine HAVE_ROUND ${HAVE_ROUND}
+
 /* Define to 1 if you have the `sbrk' function. */
 #cmakedefine HAVE_SBRK ${HAVE_SBRK}
 
@@ -451,6 +454,9 @@
 
 /* Define to 1 if the system has the type `u_int64_t'. */
 #undef HAVE_U_INT64_T
+
+/* Define to 1 if you have the <valgrind/valgrind.h> header file. */
+#cmakedefine HAVE_VALGRIND_VALGRIND_H ${HAVE_VALGRIND_VALGRIND_H}
 
 /* Define to 1 if you have the <windows.h> header file. */
 #cmakedefine HAVE_WINDOWS_H ${HAVE_WINDOWS_H}

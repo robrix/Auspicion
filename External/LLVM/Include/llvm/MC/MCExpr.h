@@ -15,6 +15,7 @@
 
 namespace llvm {
 class MCAsmInfo;
+class MCAsmLayout;
 class MCContext;
 class MCSymbol;
 class MCValue;
@@ -29,7 +30,8 @@ public:
     Binary,    ///< Binary expressions.
     Constant,  ///< Constant expressions.
     SymbolRef, ///< References to labels and assigned expressions.
-    Unary      ///< Unary expressions.
+    Unary,     ///< Unary expressions.
+    Target     ///< Target specific expression.
   };
 
 private:
@@ -39,7 +41,7 @@ private:
   void operator=(const MCExpr&); // DO NOT IMPLEMENT
 
 protected:
-  MCExpr(ExprKind _Kind) : Kind(_Kind) {}
+  explicit MCExpr(ExprKind _Kind) : Kind(_Kind) {}
 
 public:
   /// @name Accessors
@@ -51,7 +53,7 @@ public:
   /// @name Utility Methods
   /// @{
 
-  void print(raw_ostream &OS, const MCAsmInfo *MAI) const;
+  void print(raw_ostream &OS) const;
   void dump() const;
 
   /// @}
@@ -61,26 +63,35 @@ public:
   /// EvaluateAsAbsolute - Try to evaluate the expression to an absolute value.
   ///
   /// @param Res - The absolute value, if evaluation succeeds.
+  /// @param Layout - The assembler layout object to use for evaluating symbol
+  /// values. If not given, then only non-symbolic expressions will be
+  /// evaluated.
   /// @result - True on success.
-  bool EvaluateAsAbsolute(int64_t &Res) const;
+  bool EvaluateAsAbsolute(int64_t &Res, const MCAsmLayout *Layout = 0) const;
 
   /// EvaluateAsRelocatable - Try to evaluate the expression to a relocatable
   /// value, i.e. an expression of the fixed form (a - b + constant).
   ///
   /// @param Res - The relocatable value, if evaluation succeeds.
+  /// @param Layout - The assembler layout object to use for evaluating values.
   /// @result - True on success.
-  bool EvaluateAsRelocatable(MCValue &Res) const;
+  bool EvaluateAsRelocatable(MCValue &Res, const MCAsmLayout *Layout = 0) const;
 
   /// @}
 
   static bool classof(const MCExpr *) { return true; }
 };
 
+inline raw_ostream &operator<<(raw_ostream &OS, const MCExpr &E) {
+  E.print(OS);
+  return OS;
+}
+
 //// MCConstantExpr - Represent a constant integer expression.
 class MCConstantExpr : public MCExpr {
   int64_t Value;
 
-  MCConstantExpr(int64_t _Value)
+  explicit MCConstantExpr(int64_t _Value)
     : MCExpr(MCExpr::Constant), Value(_Value) {}
 
 public:
@@ -110,23 +121,62 @@ public:
 /// assembler variable (defined constant), or constitute an implicit definition
 /// of the symbol as external.
 class MCSymbolRefExpr : public MCExpr {
+public:
+  enum VariantKind {
+    VK_None,
+    VK_Invalid,
+
+    VK_GOT,
+    VK_GOTOFF,
+    VK_GOTPCREL,
+    VK_GOTTPOFF,
+    VK_INDNTPOFF,
+    VK_NTPOFF,
+    VK_PLT,
+    VK_TLSGD,
+    VK_TPOFF,
+    VK_ARM_HI16, // The R_ARM_MOVT_ABS relocation (:upper16: in the asm file)
+    VK_ARM_LO16 // The R_ARM_MOVW_ABS_NC relocation (:lower16: in the asm file)
+  };
+
+private:
+  /// The symbol being referenced.
   const MCSymbol *Symbol;
 
-  MCSymbolRefExpr(const MCSymbol *_Symbol)
-    : MCExpr(MCExpr::SymbolRef), Symbol(_Symbol) {}
+  /// The symbol reference modifier.
+  const VariantKind Kind;
+
+  explicit MCSymbolRefExpr(const MCSymbol *_Symbol, VariantKind _Kind)
+    : MCExpr(MCExpr::SymbolRef), Symbol(_Symbol), Kind(_Kind) {}
 
 public:
   /// @name Construction
   /// @{
 
-  static const MCSymbolRefExpr *Create(const MCSymbol *Symbol, MCContext &Ctx);
-  static const MCSymbolRefExpr *Create(StringRef Name, MCContext &Ctx);
+  static const MCSymbolRefExpr *Create(const MCSymbol *Symbol, MCContext &Ctx) {
+    return MCSymbolRefExpr::Create(Symbol, VK_None, Ctx);
+  }
 
+  static const MCSymbolRefExpr *Create(const MCSymbol *Symbol, VariantKind Kind,
+                                       MCContext &Ctx);
+  static const MCSymbolRefExpr *Create(StringRef Name, VariantKind Kind,
+                                       MCContext &Ctx);
+  
   /// @}
   /// @name Accessors
   /// @{
 
   const MCSymbol &getSymbol() const { return *Symbol; }
+
+  VariantKind getKind() const { return Kind; }
+
+  /// @}
+  /// @name Static Utility Functions
+  /// @{
+
+  static StringRef getVariantKindName(VariantKind Kind);
+
+  static VariantKind getVariantKindForName(StringRef Name);
 
   /// @}
 
@@ -196,20 +246,24 @@ public:
   enum Opcode {
     Add,  ///< Addition.
     And,  ///< Bitwise and.
-    Div,  ///< Division.
+    Div,  ///< Signed division.
     EQ,   ///< Equality comparison.
-    GT,   ///< Greater than comparison.
-    GTE,  ///< Greater than or equal comparison.
+    GT,   ///< Signed greater than comparison (result is either 0 or some
+          ///< target-specific non-zero value)
+    GTE,  ///< Signed greater than or equal comparison (result is either 0 or
+          ///< some target-specific non-zero value).
     LAnd, ///< Logical and.
     LOr,  ///< Logical or.
-    LT,   ///< Less than comparison.
-    LTE,  ///< Less than or equal comparison.
-    Mod,  ///< Modulus.
+    LT,   ///< Signed less than comparison (result is either 0 or
+          ///< some target-specific non-zero value).
+    LTE,  ///< Signed less than or equal comparison (result is either 0 or
+          ///< some target-specific non-zero value).
+    Mod,  ///< Signed remainder.
     Mul,  ///< Multiplication.
     NE,   ///< Inequality comparison.
     Or,   ///< Bitwise or.
-    Shl,  ///< Bitwise shift left.
-    Shr,  ///< Bitwise shift right.
+    Shl,  ///< Shift left.
+    Shr,  ///< Shift right (arithmetic or logical, depending on target)
     Sub,  ///< Subtraction.
     Xor   ///< Bitwise exclusive or.
   };
@@ -319,6 +373,29 @@ public:
     return E->getKind() == MCExpr::Binary;
   }
   static bool classof(const MCBinaryExpr *) { return true; }
+};
+
+/// MCTargetExpr - This is an extension point for target-specific MCExpr
+/// subclasses to implement.
+///
+/// NOTE: All subclasses are required to have trivial destructors because
+/// MCExprs are bump pointer allocated and not destructed.
+class MCTargetExpr : public MCExpr {
+  virtual void Anchor();
+protected:
+  MCTargetExpr() : MCExpr(Target) {}
+  virtual ~MCTargetExpr() {}
+public:
+
+  virtual void PrintImpl(raw_ostream &OS) const = 0;
+  virtual bool EvaluateAsRelocatableImpl(MCValue &Res,
+                                         const MCAsmLayout *Layout) const = 0;
+
+
+  static bool classof(const MCExpr *E) {
+    return E->getKind() == MCExpr::Target;
+  }
+  static bool classof(const MCTargetExpr *) { return true; }
 };
 
 } // end namespace llvm

@@ -21,6 +21,8 @@ namespace llvm {
 
 class BasicBlock;
 class MachineFunction;
+class MCSymbol;
+class StringRef;
 class raw_ostream;
 
 template <>
@@ -199,12 +201,9 @@ public:
 
   // Iteration support for live in sets.  These sets are kept in sorted
   // order by their register number.
-  typedef std::vector<unsigned>::iterator       livein_iterator;
-  typedef std::vector<unsigned>::const_iterator const_livein_iterator;
-  livein_iterator       livein_begin()       { return LiveIns.begin(); }
-  const_livein_iterator livein_begin() const { return LiveIns.begin(); }
-  livein_iterator       livein_end()         { return LiveIns.end(); }
-  const_livein_iterator livein_end()   const { return LiveIns.end(); }
+  typedef std::vector<unsigned>::const_iterator livein_iterator;
+  livein_iterator livein_begin() const { return LiveIns.begin(); }
+  livein_iterator livein_end()   const { return LiveIns.end(); }
   bool            livein_empty() const { return LiveIns.empty(); }
 
   /// getAlignment - Return alignment of the basic block.
@@ -282,11 +281,6 @@ public:
   /// it returns end()
   iterator getFirstTerminator();
 
-  /// isOnlyReachableViaFallthough - Return true if this basic block has
-  /// exactly one predecessor and the control transfer mechanism between
-  /// the predecessor and this block is a fall-through.
-  bool isOnlyReachableByFallthrough() const;
-
   void pop_front() { Insts.pop_front(); }
   void pop_back() { Insts.pop_back(); }
   void push_back(MachineInstr *MI) { Insts.push_back(MI); }
@@ -337,6 +331,10 @@ public:
                             MachineBasicBlock *DestB,
                             bool isCond);
 
+  /// findDebugLoc - find the next valid DebugLoc starting at MBBI, skipping
+  /// any DBG_VALUE instructions.  Return UnknownLoc if there is none.
+  DebugLoc findDebugLoc(MachineBasicBlock::iterator &MBBI);
+
   // Debugging methods.
   void dump() const;
   void print(raw_ostream &OS) const;
@@ -348,6 +346,10 @@ public:
   int getNumber() const { return Number; }
   void setNumber(int N) { Number = N; }
 
+  /// getSymbol - Return the MCSymbol for this basic block.
+  ///
+  MCSymbol *getSymbol() const;
+  
 private:   // Methods used to maintain doubly linked list of blocks...
   friend struct ilist_traits<MachineBasicBlock>;
 

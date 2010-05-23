@@ -55,7 +55,7 @@ namespace llvm {
 
     /// Special pool allocator for VNInfo's (LiveInterval val#).
     ///
-    BumpPtrAllocator VNInfoAllocator;
+    VNInfo::Allocator VNInfoAllocator;
 
     typedef DenseMap<unsigned, LiveInterval*> Reg2IntervalMap;
     Reg2IntervalMap r2iMap_;
@@ -70,8 +70,15 @@ namespace llvm {
     static char ID; // Pass identification, replacement for typeid
     LiveIntervals() : MachineFunctionPass(&ID) {}
 
-    static float getSpillWeight(bool isDef, bool isUse, unsigned loopDepth) {
-      return (isDef + isUse) * powf(10.0F, (float)loopDepth);
+    // Calculate the spill weight to assign to a single instruction.
+    static float getSpillWeight(bool isDef, bool isUse, unsigned loopDepth);
+
+    // After summing the spill weights of all defs and uses, the final weight
+    // should be normalized, dividing the weight of the interval by its size.
+    // This encourages spilling of intervals that are large and have few uses,
+    // and discourages spilling of small intervals with many uses.
+    void normalizeSpillWeight(LiveInterval &li) {
+      li.weight /= getApproximateInstructionCount(li) + 25;
     }
 
     typedef Reg2IntervalMap::iterator iterator;
@@ -104,6 +111,12 @@ namespace llvm {
     double getScaledIntervalSize(LiveInterval& I) {
       return (1000.0 * I.getSize()) / indexes_->getIndexesLength();
     }
+
+    /// getFuncInstructionCount - Return the number of instructions in the
+    /// current function.
+    unsigned getFuncInstructionCount() {
+      return indexes_->getFunctionSize();
+    }
     
     /// getApproximateInstructionCount - computes an estimate of the number
     /// of instructions in a given LiveInterval.
@@ -112,16 +125,19 @@ namespace llvm {
       return (unsigned)(IntervalPercentage * indexes_->getFunctionSize());
     }
 
-    /// conflictsWithPhysRegDef - Returns true if the specified register
-    /// is defined during the duration of the specified interval.
-    bool conflictsWithPhysRegDef(const LiveInterval &li, VirtRegMap &vrm,
-                                 unsigned reg);
+    /// conflictsWithPhysReg - Returns true if the specified register is used or
+    /// defined during the duration of the specified interval. Copies to and
+    /// from li.reg are allowed. This method is only able to analyze simple
+    /// ranges that stay within a single basic block. Anything else is
+    /// considered a conflict.
+    bool conflictsWithPhysReg(const LiveInterval &li, VirtRegMap &vrm,
+                              unsigned reg);
 
-    /// conflictsWithPhysRegRef - Similar to conflictsWithPhysRegRef except
-    /// it can check use as well.
-    bool conflictsWithPhysRegRef(LiveInterval &li, unsigned Reg,
-                                 bool CheckUse,
-                                 SmallPtrSet<MachineInstr*,32> &JoinedCopies);
+    /// conflictsWithSubPhysRegRef - Similar to conflictsWithPhysRegRef except
+    /// it checks for sub-register reference and it can check use as well.
+    bool conflictsWithSubPhysRegRef(LiveInterval &li, unsigned Reg,
+                                    bool CheckUse,
+                                   SmallPtrSet<MachineInstr*,32> &JoinedCopies);
 
     // Interval creation
     LiveInterval &getOrCreateInterval(unsigned reg) {
@@ -186,6 +202,10 @@ namespace llvm {
       return indexes_->getMBBFromIndex(index);
     }
 
+    SlotIndex getMBBTerminatorGap(const MachineBasicBlock *mbb) {
+      return indexes_->getTerminatorGap(mbb);
+    }
+
     SlotIndex InsertMachineInstrInMaps(MachineInstr *MI) {
       return indexes_->insertMachineInstrInMaps(MI);
     }
@@ -207,7 +227,7 @@ namespace llvm {
       indexes_->renumberIndexes();
     }
 
-    BumpPtrAllocator& getVNInfoAllocator() { return VNInfoAllocator; }
+    VNInfo::Allocator& getVNInfoAllocator() { return VNInfoAllocator; }
 
     /// getVNInfoSourceReg - Helper function that parses the specified VNInfo
     /// copy field and returns the source register that defines it.
@@ -282,6 +302,12 @@ namespace llvm {
                            MachineBasicBlock::iterator MI,
                            SlotIndex MIIdx,
                            MachineOperand& MO, unsigned MOIdx);
+
+    /// isPartialRedef - Return true if the specified def at the specific index
+    /// is partially re-defining the specified live interval. A common case of
+    /// this is a definition of the sub-register. 
+    bool isPartialRedef(SlotIndex MIIdx, MachineOperand &MO,
+                        LiveInterval &interval);
 
     /// handleVirtualRegisterDef - update intervals for a virtual
     /// register def
@@ -401,6 +427,9 @@ namespace llvm {
         DenseMap<unsigned,std::vector<SRInfo> > &RestoreIdxes,
         DenseMap<unsigned,unsigned> &MBBVRegsMap,
         std::vector<LiveInterval*> &NewLIs);
+
+    // Normalize the spill weight of all the intervals in NewLIs.
+    void normalizeSpillWeights(std::vector<LiveInterval*> &NewLIs);
 
     static LiveInterval* createInterval(unsigned Reg);
 

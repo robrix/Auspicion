@@ -16,29 +16,28 @@
 #define LLVM_ANALYSIS_IVUSERS_H
 
 #include "llvm/Analysis/LoopPass.h"
-#include "llvm/Analysis/ScalarEvolution.h"
-#include "llvm/ADT/SmallVector.h"
-#include <map>
+#include "llvm/Analysis/ScalarEvolutionNormalization.h"
+#include "llvm/Support/ValueHandle.h"
 
 namespace llvm {
 
 class DominatorTree;
 class Instruction;
 class Value;
-struct IVUsersOfOneStride;
+class IVUsers;
+class ScalarEvolution;
+class SCEV;
+class IVUsers;
 
-/// IVStrideUse - Keep track of one use of a strided induction variable, where
-/// the stride is stored externally.  The Offset member keeps track of the
-/// offset from the IV, User is the actual user of the operand, and
-/// 'OperandValToReplace' is the operand of the User that is the use.
+/// IVStrideUse - Keep track of one use of a strided induction variable.
+/// The Expr member keeps track of the expression, User is the actual user
+/// instruction of the operand, and 'OperandValToReplace' is the operand of
+/// the User that is the use.
 class IVStrideUse : public CallbackVH, public ilist_node<IVStrideUse> {
+  friend class IVUsers;
 public:
-  IVStrideUse(IVUsersOfOneStride *parent,
-              const SCEV *offset,
-              Instruction* U, Value *O)
-    : CallbackVH(U), Parent(parent), Offset(offset),
-      OperandValToReplace(O),
-      IsUseOfPostIncrementedValue(false) {
+  IVStrideUse(IVUsers *P, Instruction* U, Value *O)
+    : CallbackVH(U), Parent(P), OperandValToReplace(O) {
   }
 
   /// getUser - Return the user instruction for this use.
@@ -49,20 +48,6 @@ public:
   /// setUser - Assign a new user instruction for this use.
   void setUser(Instruction *NewUser) {
     setValPtr(NewUser);
-  }
-
-  /// getParent - Return a pointer to the IVUsersOfOneStride that owns
-  /// this IVStrideUse.
-  IVUsersOfOneStride *getParent() const { return Parent; }
-
-  /// getOffset - Return the offset to add to a theoeretical induction
-  /// variable that starts at zero and counts up by the stride to compute
-  /// the value for the use. This always has the same type as the stride.
-  const SCEV *getOffset() const { return Offset; }
-
-  /// setOffset - Assign a new offset to this use.
-  void setOffset(const SCEV *Val) {
-    Offset = Val;
   }
 
   /// getOperandValToReplace - Return the Value of the operand in the user
@@ -77,37 +62,30 @@ public:
     OperandValToReplace = Op;
   }
 
-  /// isUseOfPostIncrementedValue - True if this should use the
-  /// post-incremented version of this IV, not the preincremented version.
-  /// This can only be set in special cases, such as the terminating setcc
-  /// instruction for a loop or uses dominated by the loop.
-  bool isUseOfPostIncrementedValue() const {
-    return IsUseOfPostIncrementedValue;
+  /// getPostIncLoops - Return the set of loops for which the expression has
+  /// been adjusted to use post-inc mode.
+  const PostIncLoopSet &getPostIncLoops() const {
+    return PostIncLoops;
   }
 
-  /// setIsUseOfPostIncrmentedValue - set the flag that indicates whether
-  /// this is a post-increment use.
-  void setIsUseOfPostIncrementedValue(bool Val) {
-    IsUseOfPostIncrementedValue = Val;
-  }
+  /// transformToPostInc - Transform the expression to post-inc form for the
+  /// given loop.
+  void transformToPostInc(const Loop *L);
 
 private:
-  /// Parent - a pointer to the IVUsersOfOneStride that owns this IVStrideUse.
-  IVUsersOfOneStride *Parent;
-
-  /// Offset - The offset to add to the base induction expression.
-  const SCEV *Offset;
+  /// Parent - a pointer to the IVUsers that owns this IVStrideUse.
+  IVUsers *Parent;
 
   /// OperandValToReplace - The Value of the operand in the user instruction
   /// that this IVStrideUse is representing.
   WeakVH OperandValToReplace;
 
-  /// IsUseOfPostIncrementedValue - True if this should use the
-  /// post-incremented version of this IV, not the preincremented version.
-  bool IsUseOfPostIncrementedValue;
+  /// PostIncLoops - The set of loops for which Expr has been adjusted to
+  /// use post-inc mode. This corresponds with SCEVExpander's post-inc concept.
+  PostIncLoopSet PostIncLoops;
 
   /// Deleted - Implementation of CallbackVH virtual function to
-  /// recieve notification when the User is deleted.
+  /// receive notification when the User is deleted.
   virtual void deleted();
 };
 
@@ -138,58 +116,18 @@ private:
   mutable ilist_node<IVStrideUse> Sentinel;
 };
 
-/// IVUsersOfOneStride - This structure keeps track of all instructions that
-/// have an operand that is based on the trip count multiplied by some stride.
-struct IVUsersOfOneStride : public ilist_node<IVUsersOfOneStride> {
-private:
-  IVUsersOfOneStride(const IVUsersOfOneStride &I); // do not implement
-  void operator=(const IVUsersOfOneStride &I);     // do not implement
-
-public:
-  IVUsersOfOneStride() : Stride(0) {}
-
-  explicit IVUsersOfOneStride(const SCEV *stride) : Stride(stride) {}
-
-  /// Stride - The stride for all the contained IVStrideUses. This is
-  /// a constant for affine strides.
-  const SCEV *Stride;
-
-  /// Users - Keep track of all of the users of this stride as well as the
-  /// initial value and the operand that uses the IV.
-  ilist<IVStrideUse> Users;
-
-  void addUser(const SCEV *Offset, Instruction *User, Value *Operand) {
-    Users.push_back(new IVStrideUse(this, Offset, User, Operand));
-  }
-
-  void removeUser(IVStrideUse *User) {
-    Users.erase(User);
-  }
-};
-
 class IVUsers : public LoopPass {
-  friend class IVStrideUserVH;
+  friend class IVStrideUse;
   Loop *L;
   LoopInfo *LI;
   DominatorTree *DT;
   ScalarEvolution *SE;
   SmallPtrSet<Instruction*,16> Processed;
 
-public:
   /// IVUses - A list of all tracked IV uses of induction variable expressions
   /// we are interested in.
-  ilist<IVUsersOfOneStride> IVUses;
+  ilist<IVStrideUse> IVUses;
 
-  /// IVUsesByStride - A mapping from the strides in StrideOrder to the
-  /// uses in IVUses.
-  std::map<const SCEV *, IVUsersOfOneStride*> IVUsesByStride;
-
-  /// StrideOrder - An ordering of the keys in IVUsesByStride that is stable:
-  /// We use this to iterate over the IVUsesByStride collection without being
-  /// dependent on random ordering of pointers in the process.
-  SmallVector<const SCEV *, 16> StrideOrder;
-
-private:
   virtual void getAnalysisUsage(AnalysisUsage &AU) const;
 
   virtual bool runOnLoop(Loop *L, LPPassManager &LPM);
@@ -205,12 +143,24 @@ public:
   /// return true.  Otherwise, return false.
   bool AddUsersIfInteresting(Instruction *I);
 
-  void AddUser(const SCEV *Stride, const SCEV *Offset,
-               Instruction *User, Value *Operand);
+  IVStrideUse &AddUser(Instruction *User, Value *Operand);
 
   /// getReplacementExpr - Return a SCEV expression which computes the
   /// value of the OperandValToReplace of the given IVStrideUse.
-  const SCEV *getReplacementExpr(const IVStrideUse &U) const;
+  const SCEV *getReplacementExpr(const IVStrideUse &IU) const;
+
+  /// getExpr - Return the expression for the use.
+  const SCEV *getExpr(const IVStrideUse &IU) const;
+
+  const SCEV *getStride(const IVStrideUse &IU, const Loop *L) const;
+
+  typedef ilist<IVStrideUse>::iterator iterator;
+  typedef ilist<IVStrideUse>::const_iterator const_iterator;
+  iterator begin() { return IVUses.begin(); }
+  iterator end()   { return IVUses.end(); }
+  const_iterator begin() const { return IVUses.begin(); }
+  const_iterator end() const   { return IVUses.end(); }
+  bool empty() const { return IVUses.empty(); }
 
   void print(raw_ostream &OS, const Module* = 0) const;
 

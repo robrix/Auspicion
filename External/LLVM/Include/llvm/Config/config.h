@@ -1,14 +1,6 @@
 /* include/llvm/Config/config.h.  Generated from config.h.in by configure.  */
 /* include/llvm/Config/config.h.in.  Generated from autoconf/configure.ac by autoheader.  */
 
-/* Define if dlopen(0) will open the symbols of the program */
-#define CAN_DLOPEN_SELF 1
-
-/* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
-   systems. This function is required for `alloca.c' support on those systems.
-   */
-/* #undef CRAY_STACKSEG_END */
-
 /* 32 bit multilib directory. */
 #define CXX_INCLUDE_32BIT_DIR ""
 
@@ -20,9 +12,6 @@
 
 /* Directory with the libstdc++ headers. */
 #define CXX_INCLUDE_ROOT ""
-
-/* Define to 1 if using `alloca.c'. */
-/* #undef C_ALLOCA */
 
 /* Directories clang will search for headers */
 #define C_INCLUDE_DIRS ""
@@ -36,12 +25,8 @@
 /* Define if threads enabled */
 #define ENABLE_THREADS 1
 
-/* Define to 1 if you have `alloca', as a function or macro. */
-#define HAVE_ALLOCA 1
-
-/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
-   */
-#define HAVE_ALLOCA_H 1
+/* Define if timestamp information (e.g., __DATE___) is allowed */
+#define ENABLE_TIMESTAMPS 1
 
 /* Define to 1 if you have the `argz_append' function. */
 /* #undef HAVE_ARGZ_APPEND */
@@ -69,9 +54,6 @@
 
 /* Define to 1 if you have the `bcopy' function. */
 /* #undef HAVE_BCOPY */
-
-/* Does not have bi-directional iterator */
-#define HAVE_BI_ITERATOR 0
 
 /* Define to 1 if you have the `ceilf' function. */
 #define HAVE_CEILF 1
@@ -132,10 +114,10 @@
 /* #undef HAVE_FDP */
 
 /* Define if libffi is available on this platform. */
-#define HAVE_FFI_CALL 1
+/* #undef HAVE_FFI_CALL */
 
 /* Define to 1 if you have the <ffi/ffi.h> header file. */
-#define HAVE_FFI_FFI_H 1
+/* #undef HAVE_FFI_FFI_H */
 
 /* Define to 1 if you have the <ffi.h> header file. */
 /* #undef HAVE_FFI_H */
@@ -148,9 +130,6 @@
 
 /* Define to 1 if you have the `fmodf' function. */
 #define HAVE_FMODF 1
-
-/* Does not have forward iterator */
-#define HAVE_FWD_ITERATOR 0
 
 /* Define to 1 if you have the `getcwd' function. */
 #define HAVE_GETCWD 1
@@ -277,9 +256,6 @@
 /* Define if mmap() can map files into memory */
 #define HAVE_MMAP_FILE 
 
-/* define if the compiler implements namespaces */
-#define HAVE_NAMESPACES 
-
 /* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
 /* #undef HAVE_NDIR_H */
 
@@ -291,6 +267,9 @@
 
 /* Define to 1 if you have the `opendir' function. */
 #define HAVE_OPENDIR 1
+
+/* Define to 1 if you have the `posix_spawn' function. */
+#define HAVE_POSIX_SPAWN 1
 
 /* Define to 1 if you have the `powf' function. */
 #define HAVE_POWF 1
@@ -375,9 +354,6 @@
 
 /* Set to 1 if the std::isnan function is found in <cmath> */
 #define HAVE_STD_ISNAN_IN_CMATH 1
-
-/* Does not have std namespace iterator */
-#define HAVE_STD_ITERATOR 1
 
 /* Define to 1 if you have the `strchr' function. */
 #define HAVE_STRCHR 1
@@ -471,6 +447,9 @@
 /* Define to 1 if the system has the type `u_int64_t'. */
 /* #undef HAVE_U_INT64_T */
 
+/* Define to 1 if you have the <valgrind/valgrind.h> header file. */
+/* #undef HAVE_VALGRIND_VALGRIND_H */
+
 /* Define to 1 if you have the <windows.h> header file. */
 /* #undef HAVE_WINDOWS_H */
 
@@ -478,34 +457,34 @@
 #define HAVE___DSO_HANDLE 1
 
 /* Installation directory for binary executables */
-#define LLVM_BINDIR "/Users/rob/bin"
+#define LLVM_BINDIR "/usr/local/bin"
 
 /* Time at which LLVM was configured */
-#define LLVM_CONFIGTIME "Sun Nov 29 14:53:38 EST 2009"
+#define LLVM_CONFIGTIME "Tue May 18 07:59:02 EDT 2010"
 
 /* Installation directory for data files */
-#define LLVM_DATADIR "/Users/rob/share/llvm"
+#define LLVM_DATADIR "/usr/local/share/llvm"
 
 /* Installation directory for documentation */
-#define LLVM_DOCSDIR "/Users/rob/docs/llvm"
+#define LLVM_DOCSDIR "/usr/local/share/doc/llvm"
 
 /* Installation directory for config files */
-#define LLVM_ETCDIR "/Users/rob/etc/llvm"
+#define LLVM_ETCDIR "/usr/local/etc/llvm"
 
 /* Host triple we were built on */
-#define LLVM_HOSTTRIPLE "x86_64-apple-darwin10.2.0"
+#define LLVM_HOSTTRIPLE "i386-apple-darwin10.3.0"
 
 /* Installation directory for include files */
-#define LLVM_INCLUDEDIR "/Users/rob/include"
+#define LLVM_INCLUDEDIR "/usr/local/include"
 
 /* Installation directory for .info files */
-#define LLVM_INFODIR "/Users/rob/info"
+#define LLVM_INFODIR "/usr/local/info"
 
 /* Installation directory for libraries */
-#define LLVM_LIBDIR "/Users/rob/lib"
+#define LLVM_LIBDIR "/usr/local/lib"
 
 /* Installation directory for man pages */
-#define LLVM_MANDIR "/Users/rob/man"
+#define LLVM_MANDIR "/usr/local/man"
 
 /* Build multithreading support into LLVM */
 #define LLVM_MULTITHREADED 1
@@ -544,7 +523,7 @@
 /* #undef LLVM_PATH_TWOPI */
 
 /* Installation prefix directory */
-#define LLVM_PREFIX "/Users/rob"
+#define LLVM_PREFIX "/usr/local"
 
 /* Define if the OS needs help to load dependent libraries for dlopen(). */
 /* #undef LTDL_DLOPEN_DEPLIBS */
@@ -577,24 +556,16 @@
 #define PACKAGE_NAME "llvm"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "llvm 2.7svn"
+#define PACKAGE_STRING "llvm 2.8svn"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "-llvm-"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "2.7svn"
+#define PACKAGE_VERSION "2.8svn"
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #define RETSIGTYPE void
-
-/* If using the C implementation of alloca, define if you know the
-   direction of stack growth for your system; otherwise it will be
-   automatically deduced at runtime.
-	STACK_DIRECTION > 0 => grows toward higher addresses
-	STACK_DIRECTION < 0 => grows toward lower addresses
-	STACK_DIRECTION = 0 => direction of growth unknown */
-/* #undef STACK_DIRECTION */
 
 /* Define to 1 if the `S_IS*' macros in <sys/stat.h> do not work properly. */
 /* #undef STAT_MACROS_BROKEN */

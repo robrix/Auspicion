@@ -273,6 +273,8 @@ public:
   }
 
   virtual ~PMDataManager();
+  
+  virtual Pass *getAsPass() = 0;
 
   /// Augment AvailableAnalysis by adding analysis made available by pass P.
   void recordAvailableAnalysis(Pass *P);
@@ -392,8 +394,8 @@ private:
                          const AnalysisUsage::VectorType &Set) const;
 
   // Set of available Analysis. This information is used while scheduling 
-  // pass. If a pass requires an analysis which is not not available then 
-  // equired analysis pass is scheduled to run before the pass itself is 
+  // pass. If a pass requires an analysis which is not available then 
+  // the required analysis pass is scheduled to run before the pass itself is
   // scheduled to run.
   std::map<AnalysisID, Pass*> AvailableAnalysis;
 
@@ -411,9 +413,7 @@ private:
 /// It batches all function passes and basic block pass managers together and 
 /// sequence them to process one function at a time before processing next 
 /// function.
-
 class FPPassManager : public ModulePass, public PMDataManager {
- 
 public:
   static char ID;
   explicit FPPassManager(int Depth) 
@@ -434,6 +434,9 @@ public:
   /// doFinalization - Run all of the finalizers for the function passes.
   ///
   bool doFinalization(Module &M);
+
+  virtual PMDataManager *getAsPMDataManager() { return this; }
+  virtual Pass *getAsPass() { return this; }
 
   /// Pass Manager itself does not invalidate any analysis info.
   void getAnalysisUsage(AnalysisUsage &Info) const {
@@ -458,8 +461,7 @@ public:
   }
 };
 
-extern Timer *StartPassTimer(Pass *);
-extern void StopPassTimer(Pass *, Timer *);
+Timer *getPassTimer(Pass *);
 
 }
 

@@ -27,7 +27,7 @@ namespace llvm {
     // folders simpler.
     scConstant, scTruncate, scZeroExtend, scSignExtend, scAddExpr, scMulExpr,
     scUDivExpr, scAddRecExpr, scUMaxExpr, scSMaxExpr,
-    scFieldOffset, scAllocSize, scUnknown, scCouldNotCompute
+    scUnknown, scCouldNotCompute
   };
 
   //===--------------------------------------------------------------------===//
@@ -37,7 +37,7 @@ namespace llvm {
     friend class ScalarEvolution;
 
     ConstantInt *V;
-    SCEVConstant(const FoldingSetNodeID &ID, ConstantInt *v) :
+    SCEVConstant(const FoldingSetNodeIDRef ID, ConstantInt *v) :
       SCEV(ID, scConstant), V(v) {}
   public:
     ConstantInt *getValue() const { return V; }
@@ -81,7 +81,7 @@ namespace llvm {
     const SCEV *Op;
     const Type *Ty;
 
-    SCEVCastExpr(const FoldingSetNodeID &ID,
+    SCEVCastExpr(const FoldingSetNodeIDRef ID,
                  unsigned SCEVTy, const SCEV *op, const Type *ty);
 
   public:
@@ -120,7 +120,7 @@ namespace llvm {
   class SCEVTruncateExpr : public SCEVCastExpr {
     friend class ScalarEvolution;
 
-    SCEVTruncateExpr(const FoldingSetNodeID &ID,
+    SCEVTruncateExpr(const FoldingSetNodeIDRef ID,
                      const SCEV *op, const Type *ty);
 
   public:
@@ -140,7 +140,7 @@ namespace llvm {
   class SCEVZeroExtendExpr : public SCEVCastExpr {
     friend class ScalarEvolution;
 
-    SCEVZeroExtendExpr(const FoldingSetNodeID &ID,
+    SCEVZeroExtendExpr(const FoldingSetNodeIDRef ID,
                        const SCEV *op, const Type *ty);
 
   public:
@@ -160,7 +160,7 @@ namespace llvm {
   class SCEVSignExtendExpr : public SCEVCastExpr {
     friend class ScalarEvolution;
 
-    SCEVSignExtendExpr(const FoldingSetNodeID &ID,
+    SCEVSignExtendExpr(const FoldingSetNodeIDRef ID,
                        const SCEV *op, const Type *ty);
 
   public:
@@ -180,25 +180,27 @@ namespace llvm {
   ///
   class SCEVNAryExpr : public SCEV {
   protected:
-    SmallVector<const SCEV *, 8> Operands;
+    // Since SCEVs are immutable, ScalarEvolution allocates operand
+    // arrays with its SCEVAllocator, so this class just needs a simple
+    // pointer rather than a more elaborate vector-like data structure.
+    // This also avoids the need for a non-trivial destructor.
+    const SCEV *const *Operands;
+    size_t NumOperands;
 
-    SCEVNAryExpr(const FoldingSetNodeID &ID,
-                 enum SCEVTypes T, const SmallVectorImpl<const SCEV *> &ops)
-      : SCEV(ID, T), Operands(ops.begin(), ops.end()) {}
+    SCEVNAryExpr(const FoldingSetNodeIDRef ID,
+                 enum SCEVTypes T, const SCEV *const *O, size_t N)
+      : SCEV(ID, T), Operands(O), NumOperands(N) {}
 
   public:
-    unsigned getNumOperands() const { return (unsigned)Operands.size(); }
+    size_t getNumOperands() const { return NumOperands; }
     const SCEV *getOperand(unsigned i) const {
-      assert(i < Operands.size() && "Operand index out of range!");
+      assert(i < NumOperands && "Operand index out of range!");
       return Operands[i];
     }
 
-    const SmallVectorImpl<const SCEV *> &getOperands() const {
-      return Operands;
-    }
-    typedef SmallVectorImpl<const SCEV *>::const_iterator op_iterator;
-    op_iterator op_begin() const { return Operands.begin(); }
-    op_iterator op_end() const { return Operands.end(); }
+    typedef const SCEV *const *op_iterator;
+    op_iterator op_begin() const { return Operands; }
+    op_iterator op_end() const { return Operands + NumOperands; }
 
     virtual bool isLoopInvariant(const Loop *L) const {
       for (unsigned i = 0, e = getNumOperands(); i != e; ++i)
@@ -260,10 +262,9 @@ namespace llvm {
   ///
   class SCEVCommutativeExpr : public SCEVNAryExpr {
   protected:
-    SCEVCommutativeExpr(const FoldingSetNodeID &ID,
-                        enum SCEVTypes T,
-                        const SmallVectorImpl<const SCEV *> &ops)
-      : SCEVNAryExpr(ID, T, ops) {}
+    SCEVCommutativeExpr(const FoldingSetNodeIDRef ID,
+                        enum SCEVTypes T, const SCEV *const *O, size_t N)
+      : SCEVNAryExpr(ID, T, O, N) {}
 
   public:
     virtual const char *getOperationStr() const = 0;
@@ -287,13 +288,20 @@ namespace llvm {
   class SCEVAddExpr : public SCEVCommutativeExpr {
     friend class ScalarEvolution;
 
-    SCEVAddExpr(const FoldingSetNodeID &ID,
-                const SmallVectorImpl<const SCEV *> &ops)
-      : SCEVCommutativeExpr(ID, scAddExpr, ops) {
+    SCEVAddExpr(const FoldingSetNodeIDRef ID,
+                const SCEV *const *O, size_t N)
+      : SCEVCommutativeExpr(ID, scAddExpr, O, N) {
     }
 
   public:
     virtual const char *getOperationStr() const { return " + "; }
+
+    virtual const Type *getType() const {
+      // Use the type of the last operand, which is likely to be a pointer
+      // type, if there is one. This doesn't usually matter, but it can help
+      // reduce casts when the expressions are expanded.
+      return getOperand(getNumOperands() - 1)->getType();
+    }
 
     /// Methods for support type inquiry through isa, cast, and dyn_cast:
     static inline bool classof(const SCEVAddExpr *S) { return true; }
@@ -308,9 +316,9 @@ namespace llvm {
   class SCEVMulExpr : public SCEVCommutativeExpr {
     friend class ScalarEvolution;
 
-    SCEVMulExpr(const FoldingSetNodeID &ID,
-                const SmallVectorImpl<const SCEV *> &ops)
-      : SCEVCommutativeExpr(ID, scMulExpr, ops) {
+    SCEVMulExpr(const FoldingSetNodeIDRef ID,
+                const SCEV *const *O, size_t N)
+      : SCEVCommutativeExpr(ID, scMulExpr, O, N) {
     }
 
   public:
@@ -332,7 +340,7 @@ namespace llvm {
 
     const SCEV *LHS;
     const SCEV *RHS;
-    SCEVUDivExpr(const FoldingSetNodeID &ID, const SCEV *lhs, const SCEV *rhs)
+    SCEVUDivExpr(const FoldingSetNodeIDRef ID, const SCEV *lhs, const SCEV *rhs)
       : SCEV(ID, scUDivExpr), LHS(lhs), RHS(rhs) {}
 
   public:
@@ -382,10 +390,10 @@ namespace llvm {
 
     const Loop *L;
 
-    SCEVAddRecExpr(const FoldingSetNodeID &ID,
-                   const SmallVectorImpl<const SCEV *> &ops, const Loop *l)
-      : SCEVNAryExpr(ID, scAddRecExpr, ops), L(l) {
-      for (size_t i = 0, e = Operands.size(); i != e; ++i)
+    SCEVAddRecExpr(const FoldingSetNodeIDRef ID,
+                   const SCEV *const *O, size_t N, const Loop *l)
+      : SCEVNAryExpr(ID, scAddRecExpr, O, N), L(l) {
+      for (size_t i = 0, e = NumOperands; i != e; ++i)
         assert(Operands[i]->isLoopInvariant(l) &&
                "Operands of AddRec must be loop-invariant!");
     }
@@ -405,11 +413,14 @@ namespace llvm {
     }
 
     virtual bool hasComputableLoopEvolution(const Loop *QL) const {
-      if (L == QL) return true;
-      return false;
+      return L == QL;
     }
 
     virtual bool isLoopInvariant(const Loop *QueryLoop) const;
+
+    bool dominates(BasicBlock *BB, DominatorTree *DT) const;
+
+    bool properlyDominates(BasicBlock *BB, DominatorTree *DT) const;
 
     /// isAffine - Return true if this is an affine AddRec (i.e., it represents
     /// an expressions A+B*x where A and B are loop invariant values.
@@ -461,9 +472,9 @@ namespace llvm {
   class SCEVSMaxExpr : public SCEVCommutativeExpr {
     friend class ScalarEvolution;
 
-    SCEVSMaxExpr(const FoldingSetNodeID &ID,
-                 const SmallVectorImpl<const SCEV *> &ops)
-      : SCEVCommutativeExpr(ID, scSMaxExpr, ops) {
+    SCEVSMaxExpr(const FoldingSetNodeIDRef ID,
+                 const SCEV *const *O, size_t N)
+      : SCEVCommutativeExpr(ID, scSMaxExpr, O, N) {
       // Max never overflows.
       setHasNoUnsignedWrap(true);
       setHasNoSignedWrap(true);
@@ -486,9 +497,9 @@ namespace llvm {
   class SCEVUMaxExpr : public SCEVCommutativeExpr {
     friend class ScalarEvolution;
 
-    SCEVUMaxExpr(const FoldingSetNodeID &ID,
-                 const SmallVectorImpl<const SCEV *> &ops)
-      : SCEVCommutativeExpr(ID, scUMaxExpr, ops) {
+    SCEVUMaxExpr(const FoldingSetNodeIDRef ID,
+                 const SCEV *const *O, size_t N)
+      : SCEVCommutativeExpr(ID, scUMaxExpr, O, N) {
       // Max never overflows.
       setHasNoUnsignedWrap(true);
       setHasNoSignedWrap(true);
@@ -505,95 +516,6 @@ namespace llvm {
   };
 
   //===--------------------------------------------------------------------===//
-  /// SCEVTargetDataConstant - This node is the base class for representing
-  /// target-dependent values in a target-independent way.
-  ///
-  class SCEVTargetDataConstant : public SCEV {
-  protected:
-    const Type *Ty;
-    SCEVTargetDataConstant(const FoldingSetNodeID &ID, enum SCEVTypes T,
-                           const Type *ty) :
-      SCEV(ID, T), Ty(ty) {}
-
-  public:
-    virtual bool isLoopInvariant(const Loop *) const { return true; }
-    virtual bool hasComputableLoopEvolution(const Loop *) const {
-      return false; // not computable
-    }
-
-    virtual bool hasOperand(const SCEV *) const {
-      return false;
-    }
-
-    bool dominates(BasicBlock *, DominatorTree *) const {
-      return true;
-    }
-
-    bool properlyDominates(BasicBlock *, DominatorTree *) const {
-      return true;
-    }
-
-    virtual const Type *getType() const { return Ty; }
-
-    /// Methods for support type inquiry through isa, cast, and dyn_cast:
-    static inline bool classof(const SCEVTargetDataConstant *S) { return true; }
-    static inline bool classof(const SCEV *S) {
-      return S->getSCEVType() == scFieldOffset ||
-             S->getSCEVType() == scAllocSize;
-    }
-  };
-
-  //===--------------------------------------------------------------------===//
-  /// SCEVFieldOffsetExpr - This node represents an offsetof expression.
-  ///
-  class SCEVFieldOffsetExpr : public SCEVTargetDataConstant {
-    friend class ScalarEvolution;
-
-    const StructType *STy;
-    unsigned FieldNo;
-    SCEVFieldOffsetExpr(const FoldingSetNodeID &ID, const Type *ty,
-                        const StructType *sty, unsigned fieldno) :
-      SCEVTargetDataConstant(ID, scFieldOffset, ty),
-      STy(sty), FieldNo(fieldno) {}
-
-  public:
-    const StructType *getStructType() const { return STy; }
-    unsigned getFieldNo() const { return FieldNo; }
-
-    virtual void print(raw_ostream &OS) const;
-
-    /// Methods for support type inquiry through isa, cast, and dyn_cast:
-    static inline bool classof(const SCEVFieldOffsetExpr *S) { return true; }
-    static inline bool classof(const SCEV *S) {
-      return S->getSCEVType() == scFieldOffset;
-    }
-  };
-
-  //===--------------------------------------------------------------------===//
-  /// SCEVAllocSize - This node represents a sizeof expression.
-  ///
-  class SCEVAllocSizeExpr : public SCEVTargetDataConstant {
-    friend class ScalarEvolution;
-
-    const Type *AllocTy;
-    SCEVAllocSizeExpr(const FoldingSetNodeID &ID,
-                      const Type *ty, const Type *allocty) :
-      SCEVTargetDataConstant(ID, scAllocSize, ty),
-      AllocTy(allocty) {}
-
-  public:
-    const Type *getAllocType() const { return AllocTy; }
-
-    virtual void print(raw_ostream &OS) const;
-
-    /// Methods for support type inquiry through isa, cast, and dyn_cast:
-    static inline bool classof(const SCEVAllocSizeExpr *S) { return true; }
-    static inline bool classof(const SCEV *S) {
-      return S->getSCEVType() == scAllocSize;
-    }
-  };
-
-  //===--------------------------------------------------------------------===//
   /// SCEVUnknown - This means that we are dealing with an entirely unknown SCEV
   /// value, and only represent it as its LLVM Value.  This is the "bottom"
   /// value for the analysis.
@@ -602,11 +524,21 @@ namespace llvm {
     friend class ScalarEvolution;
 
     Value *V;
-    SCEVUnknown(const FoldingSetNodeID &ID, Value *v) :
+    SCEVUnknown(const FoldingSetNodeIDRef ID, Value *v) :
       SCEV(ID, scUnknown), V(v) {}
 
   public:
     Value *getValue() const { return V; }
+
+    /// isSizeOf, isAlignOf, isOffsetOf - Test whether this is a special
+    /// constant representing a type size, alignment, or field offset in
+    /// a target-independent manner, and hasn't happened to have been
+    /// folded with other operations into something unrecognizable. This
+    /// is mainly only useful for pretty-printing and other situations
+    /// where it isn't absolutely required for these to succeed.
+    bool isSizeOf(const Type *&AllocTy) const;
+    bool isAlignOf(const Type *&AllocTy) const;
+    bool isOffsetOf(const Type *&STy, Constant *&FieldNo) const;
 
     virtual bool isLoopInvariant(const Loop *L) const;
     virtual bool hasComputableLoopEvolution(const Loop *QL) const {
@@ -658,10 +590,6 @@ namespace llvm {
         return ((SC*)this)->visitSMaxExpr((const SCEVSMaxExpr*)S);
       case scUMaxExpr:
         return ((SC*)this)->visitUMaxExpr((const SCEVUMaxExpr*)S);
-      case scFieldOffset:
-        return ((SC*)this)->visitFieldOffsetExpr((const SCEVFieldOffsetExpr*)S);
-      case scAllocSize:
-        return ((SC*)this)->visitAllocSizeExpr((const SCEVAllocSizeExpr*)S);
       case scUnknown:
         return ((SC*)this)->visitUnknown((const SCEVUnknown*)S);
       case scCouldNotCompute:

@@ -24,8 +24,17 @@ namespace llvm {
 class PointerType;
 class FunctionType;
 class Module;
+struct InlineAsmKeyType;
+template<class ValType, class TypeClass, class ConstantClass, bool HasLargeKey>
+class ConstantUniqueMap;
+template<class ConstantClass, class TypeClass, class ValType>
+struct ConstantCreator;
 
 class InlineAsm : public Value {
+  friend struct ConstantCreator<InlineAsm, PointerType, InlineAsmKeyType>;
+  friend class ConstantUniqueMap<InlineAsmKeyType, PointerType, InlineAsm,
+                                 false>;
+
   InlineAsm(const InlineAsm &);             // do not implement
   void operator=(const InlineAsm&);         // do not implement
 
@@ -33,13 +42,17 @@ class InlineAsm : public Value {
   bool HasSideEffects;
   bool IsAlignStack;
   
-  InlineAsm(const FunctionType *Ty, StringRef AsmString,
-            StringRef Constraints, bool hasSideEffects,
-            bool isAlignStack = false);
+  InlineAsm(const PointerType *Ty, const std::string &AsmString,
+            const std::string &Constraints, bool hasSideEffects,
+            bool isAlignStack);
   virtual ~InlineAsm();
+
+  /// When the ConstantUniqueMap merges two types and makes two InlineAsms
+  /// identical, it destroys one of them with this method.
+  void destroyConstant();
 public:
 
-  /// InlineAsm::get - Return the the specified uniqued inline asm string.
+  /// InlineAsm::get - Return the specified uniqued inline asm string.
   ///
   static InlineAsm *get(const FunctionType *Ty, StringRef AsmString,
                         StringRef Constraints, bool hasSideEffects,
@@ -133,6 +146,49 @@ public:
     return V->getValueID() == Value::InlineAsmVal;
   }
 
+  
+  // These are helper methods for dealing with flags in the INLINEASM SDNode
+  // in the backend.
+  
+  enum {
+    Op_InputChain = 0,
+    Op_AsmString = 1,
+    Op_MDNode = 2,
+    Op_FirstOperand = 3,
+    
+    Kind_RegUse = 1,
+    Kind_RegDef = 2,
+    Kind_Imm = 3,
+    Kind_Mem = 4,
+    Kind_RegDefEarlyClobber = 6,
+    
+    Flag_MatchingOperand = 0x80000000
+  };
+  
+  static unsigned getFlagWord(unsigned Kind, unsigned NumOps) {
+    assert(((NumOps << 3) & ~0xffff) == 0 && "Too many inline asm operands!");
+    return Kind | (NumOps << 3);
+  }
+  
+  /// getFlagWordForMatchingOp - Augment an existing flag word returned by
+  /// getFlagWord with information indicating that this input operand is tied 
+  /// to a previous output operand.
+  static unsigned getFlagWordForMatchingOp(unsigned InputFlag,
+                                           unsigned MatchedOperandNo) {
+    return InputFlag | Flag_MatchingOperand | (MatchedOperandNo << 16);
+  }
+
+  static unsigned getKind(unsigned Flags) {
+    return Flags & 7;
+  }
+
+  static bool isRegDefKind(unsigned Flag){ return getKind(Flag) == Kind_RegDef;}
+  static bool isImmKind(unsigned Flag) { return getKind(Flag) == Kind_Imm; }
+  static bool isMemKind(unsigned Flag) { return getKind(Flag) == Kind_Mem; }
+  static bool isRegDefEarlyClobberKind(unsigned Flag) {
+    return getKind(Flag) == Kind_RegDefEarlyClobber;
+  }
+  
   /// getNumOperandRegisters - Extract the number of registers field from the
   /// inline asm operand flag.
   static unsigned getNumOperandRegisters(unsigned Flag) {
@@ -142,9 +198,9 @@ public:
   /// isUseOperandTiedToDef - Return true if the flag of the inline asm
   /// operand indicates it is an use operand that's matched to a def operand.
   static bool isUseOperandTiedToDef(unsigned Flag, unsigned &Idx) {
-    if ((Flag & 0x80000000) == 0)
+    if ((Flag & Flag_MatchingOperand) == 0)
       return false;
-    Idx = (Flag & ~0x80000000) >> 16;
+    Idx = (Flag & ~Flag_MatchingOperand) >> 16;
     return true;
   }
 

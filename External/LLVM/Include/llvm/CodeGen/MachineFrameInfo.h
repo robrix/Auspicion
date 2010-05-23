@@ -14,12 +14,9 @@
 #ifndef LLVM_CODEGEN_MACHINEFRAMEINFO_H
 #define LLVM_CODEGEN_MACHINEFRAMEINFO_H
 
-#include "llvm/ADT/BitVector.h"
-#include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/System/DataTypes.h"
 #include <cassert>
-#include <limits>
 #include <vector>
 
 namespace llvm {
@@ -27,26 +24,21 @@ class raw_ostream;
 class TargetData;
 class TargetRegisterClass;
 class Type;
-class MachineModuleInfo;
 class MachineFunction;
 class MachineBasicBlock;
 class TargetFrameInfo;
+class BitVector;
 
 /// The CalleeSavedInfo class tracks the information need to locate where a
 /// callee saved register in the current frame.  
 class CalleeSavedInfo {
-
-private:
   unsigned Reg;
   const TargetRegisterClass *RegClass;
   int FrameIdx;
   
 public:
   CalleeSavedInfo(unsigned R, const TargetRegisterClass *RC, int FI = 0)
-  : Reg(R)
-  , RegClass(RC)
-  , FrameIdx(FI)
-  {}
+  : Reg(R), RegClass(RC), FrameIdx(FI) {}
   
   // Accessors.
   unsigned getReg()                        const { return Reg; }
@@ -160,8 +152,12 @@ class MachineFrameInfo {
   ///
   unsigned MaxAlignment;
 
-  /// HasCalls - Set to true if this function has any function calls.  This is
-  /// only valid during and after prolog/epilog code insertion.
+  /// AdjustsStack - Set to true if this function adjusts the stack -- e.g.,
+  /// when calling another function. This is only valid during and after
+  /// prolog/epilog code insertion.
+  bool AdjustsStack;
+
+  /// HasCalls - Set to true if this function has any function calls.
   bool HasCalls;
 
   /// StackProtectorIdx - The frame index for the stack protector.
@@ -188,13 +184,6 @@ class MachineFrameInfo {
   /// spill slots.
   SmallVector<bool, 8> SpillObjects;
 
-  /// MMI - This field is set (via setMachineModuleInfo) by a module info
-  /// consumer (ex. DwarfWriter) to indicate that frame layout information
-  /// should be acquired.  Typically, it's the responsibility of the target's
-  /// TargetRegisterInfo prologue/epilogue emitting code to inform
-  /// MachineModuleInfo of frame layouts.
-  MachineModuleInfo *MMI;
-  
   /// TargetFrameInfo - Target information about frame layout.
   ///
   const TargetFrameInfo &TFI;
@@ -204,11 +193,11 @@ public:
     StackSize = NumFixedObjects = OffsetAdjustment = MaxAlignment = 0;
     HasVarSizedObjects = false;
     FrameAddressTaken = false;
+    AdjustsStack = false;
     HasCalls = false;
     StackProtectorIdx = -1;
     MaxCallFrameSize = 0;
     CSIValid = false;
-    MMI = 0;
   }
 
   /// hasStackObjects - Return true if there are any stack objects in this
@@ -276,6 +265,7 @@ public:
     assert(unsigned(ObjectIdx+NumFixedObjects) < Objects.size() &&
            "Invalid Object Idx!");
     Objects[ObjectIdx+NumFixedObjects].Alignment = Align;
+    MaxAlignment = std::max(MaxAlignment, Align);
   }
 
   /// getObjectOffset - Return the assigned stack offset of the specified object
@@ -327,10 +317,14 @@ public:
   /// setMaxAlignment - Set the preferred alignment.
   ///
   void setMaxAlignment(unsigned Align) { MaxAlignment = Align; }
-  
-  /// hasCalls - Return true if the current function has no function calls.
-  /// This is only valid during or after prolog/epilog code emission.
-  ///
+
+  /// AdjustsStack - Return true if this function adjusts the stack -- e.g.,
+  /// when calling another function. This is only valid during and after
+  /// prolog/epilog code insertion.
+  bool adjustsStack() const { return AdjustsStack; }
+  void setAdjustsStack(bool V) { AdjustsStack = V; }
+
+  /// hasCalls - Return true if the current function has any function calls.
   bool hasCalls() const { return HasCalls; }
   void setHasCalls(bool V) { HasCalls = V; }
 
@@ -389,6 +383,7 @@ public:
     Objects.push_back(StackObject(Size, Alignment, 0, false, isSS));
     int Index = (int)Objects.size()-NumFixedObjects-1;
     assert(Index >= 0 && "Bad frame index!");
+    MaxAlignment = std::max(MaxAlignment, Alignment);
     return Index;
   }
 
@@ -399,6 +394,7 @@ public:
   int CreateSpillStackObject(uint64_t Size, unsigned Alignment) {
     CreateStackObject(Size, Alignment, true);
     int Index = (int)Objects.size()-NumFixedObjects-1;
+    MaxAlignment = std::max(MaxAlignment, Alignment);
     return Index;
   }
 
@@ -447,14 +443,6 @@ public:
   /// Before the PrologueEpilogueInserter has placed the CSR spill code, this
   /// method always returns an empty set.
   BitVector getPristineRegs(const MachineBasicBlock *MBB) const;
-
-  /// getMachineModuleInfo - Used by a prologue/epilogue
-  /// emitter (TargetRegisterInfo) to provide frame layout information. 
-  MachineModuleInfo *getMachineModuleInfo() const { return MMI; }
-
-  /// setMachineModuleInfo - Used by a meta info consumer (DwarfWriter) to
-  /// indicate that frame layout information should be gathered.
-  void setMachineModuleInfo(MachineModuleInfo *mmi) { MMI = mmi; }
 
   /// print - Used by the MachineFunction printer to print information about
   /// stack objects.  Implemented in MachineFunction.cpp

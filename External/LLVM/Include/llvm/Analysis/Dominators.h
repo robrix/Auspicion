@@ -52,7 +52,7 @@ protected:
     Roots(), IsPostDominators(isPostDom) {}
 public:
 
-  /// getRoots -  Return the root blocks of the current CFG.  This may include
+  /// getRoots - Return the root blocks of the current CFG.  This may include
   /// multiple blocks if we are computing post dominators.  For forward
   /// dominators, this will always be a single block (the entry node).
   ///
@@ -116,12 +116,12 @@ public:
       return true;
 
     SmallPtrSet<NodeT *, 4> OtherChildren;
-    for(iterator I = Other->begin(), E = Other->end(); I != E; ++I) {
+    for (iterator I = Other->begin(), E = Other->end(); I != E; ++I) {
       NodeT *Nd = (*I)->getBlock();
       OtherChildren.insert(Nd);
     }
 
-    for(iterator I = begin(), E = end(); I != E; ++I) {
+    for (iterator I = begin(), E = end(); I != E; ++I) {
       NodeT *N = (*I)->getBlock();
       if (OtherChildren.count(N) == 0)
         return true;
@@ -225,7 +225,7 @@ protected:
   DenseMap<NodeT*, InfoRec> Info;
 
   void reset() {
-    for (typename DomTreeNodeMapType::iterator I = this->DomTreeNodes.begin(), 
+    for (typename DomTreeNodeMapType::iterator I = this->DomTreeNodes.begin(),
            E = DomTreeNodes.end(); I != E; ++I)
       delete I->second;
     DomTreeNodes.clear();
@@ -240,15 +240,16 @@ protected:
   template<class N, class GraphT>
   void Split(DominatorTreeBase<typename GraphT::NodeType>& DT,
              typename GraphT::NodeType* NewBB) {
-    assert(std::distance(GraphT::child_begin(NewBB), GraphT::child_end(NewBB)) == 1
-           && "NewBB should have a single successor!");
+    assert(std::distance(GraphT::child_begin(NewBB),
+                         GraphT::child_end(NewBB)) == 1 &&
+           "NewBB should have a single successor!");
     typename GraphT::NodeType* NewBBSucc = *GraphT::child_begin(NewBB);
 
     std::vector<typename GraphT::NodeType*> PredBlocks;
     for (typename GraphTraits<Inverse<N> >::ChildIteratorType PI =
          GraphTraits<Inverse<N> >::child_begin(NewBB),
          PE = GraphTraits<Inverse<N> >::child_end(NewBB); PI != PE; ++PI)
-      PredBlocks.push_back(*PI);  
+      PredBlocks.push_back(*PI);
 
     assert(!PredBlocks.empty() && "No predblocks??");
 
@@ -310,7 +311,7 @@ public:
     if (DomTreeNodes.size() != OtherDomTreeNodes.size())
       return true;
 
-    for (typename DomTreeNodeMapType::const_iterator 
+    for (typename DomTreeNodeMapType::const_iterator
            I = this->DomTreeNodes.begin(),
            E = this->DomTreeNodes.end(); I != E; ++I) {
       NodeT *BB = I->first;
@@ -361,7 +362,7 @@ public:
     return properlyDominates(getNode(A), getNode(B));
   }
 
-  bool dominatedBySlowTreeWalk(const DomTreeNodeBase<NodeT> *A, 
+  bool dominatedBySlowTreeWalk(const DomTreeNodeBase<NodeT> *A,
                                const DomTreeNodeBase<NodeT> *B) const {
     const DomTreeNodeBase<NodeT> *IDom;
     if (A == 0 || B == 0) return false;
@@ -374,8 +375,8 @@ public:
   /// isReachableFromEntry - Return true if A is dominated by the entry
   /// block of the function containing it.
   bool isReachableFromEntry(NodeT* A) {
-    assert (!this->isPostDominator() 
-            && "This is not implemented for post dominators");
+    assert(!this->isPostDominator() &&
+           "This is not implemented for post dominators");
     return dominates(&A->getParent()->front(), A);
   }
 
@@ -384,11 +385,19 @@ public:
   ///
   inline bool dominates(const DomTreeNodeBase<NodeT> *A,
                         const DomTreeNodeBase<NodeT> *B) {
-    if (B == A) 
+    if (B == A)
       return true;  // A node trivially dominates itself.
 
     if (A == 0 || B == 0)
       return false;
+
+    // Compare the result of the tree walk and the dfs numbers, if expensive
+    // checks are enabled.
+#ifdef XDEBUG
+    assert((!DFSInfoValid ||
+            (dominatedBySlowTreeWalk(A, B) == B->DominatedBy(A))) &&
+           "Tree walk disagrees with dfs numbers!");
+#endif
 
     if (DFSInfoValid)
       return B->DominatedBy(A);
@@ -405,7 +414,7 @@ public:
   }
 
   inline bool dominates(const NodeT *A, const NodeT *B) {
-    if (A == B) 
+    if (A == B)
       return true;
 
     // Cast away the const qualifiers here. This is ok since
@@ -423,16 +432,16 @@ public:
   /// findNearestCommonDominator - Find nearest common dominator basic block
   /// for basic block A and B. If there is no such block then return NULL.
   NodeT *findNearestCommonDominator(NodeT *A, NodeT *B) {
+    assert(A->getParent() == B->getParent() &&
+           "Two blocks are not in same function");
 
-    assert (!this->isPostDominator() 
-            && "This is not implemented for post dominators");
-    assert (A->getParent() == B->getParent() 
-            && "Two blocks are not in same function");
-
-    // If either A or B is a entry block then it is nearest common dominator.
-    NodeT &Entry  = A->getParent()->front();
-    if (A == &Entry || B == &Entry)
-      return &Entry;
+    // If either A or B is a entry block then it is nearest common dominator
+    // (for forward-dominators).
+    if (!this->isPostDominator()) {
+      NodeT &Entry = A->getParent()->front();
+      if (A == &Entry || B == &Entry)
+        return &Entry;
+    }
 
     // If B dominates A then B is nearest common dominator.
     if (dominates(B, A))
@@ -456,7 +465,7 @@ public:
 
     // Walk NodeB immediate dominators chain and find common dominator node.
     DomTreeNodeBase<NodeT> *IDomB = NodeB->getIDom();
-    while(IDomB) {
+    while (IDomB) {
       if (NodeADoms.count(IDomB) != 0)
         return IDomB->getBlock();
 
@@ -471,14 +480,14 @@ public:
   // the CFG...
 
   /// addNewBlock - Add a new node to the dominator tree information.  This
-  /// creates a new node as a child of DomBB dominator node,linking it into 
+  /// creates a new node as a child of DomBB dominator node,linking it into
   /// the children list of the immediate dominator.
   DomTreeNodeBase<NodeT> *addNewBlock(NodeT *BB, NodeT *DomBB) {
     assert(getNode(BB) == 0 && "Block already in dominator tree!");
     DomTreeNodeBase<NodeT> *IDomNode = getNode(DomBB);
     assert(IDomNode && "Not immediate dominator specified for block!");
     DFSInfoValid = false;
-    return DomTreeNodes[BB] = 
+    return DomTreeNodes[BB] =
       IDomNode->addChild(new DomTreeNodeBase<NodeT>(BB, IDomNode));
   }
 
@@ -496,13 +505,13 @@ public:
     changeImmediateDominator(getNode(BB), getNode(NewBB));
   }
 
-  /// eraseNode - Removes a node from  the dominator tree. Block must not
+  /// eraseNode - Removes a node from the dominator tree. Block must not
   /// domiante any other blocks. Removes node from its immediate dominator's
   /// children list. Deletes dominator node associated with basic block BB.
   void eraseNode(NodeT *BB) {
     DomTreeNodeBase<NodeT> *Node = getNode(BB);
-    assert (Node && "Removing node that isn't in dominator tree.");
-    assert (Node->getChildren().empty() && "Node is not a leaf node.");
+    assert(Node && "Removing node that isn't in dominator tree.");
+    assert(Node->getChildren().empty() && "Node is not a leaf node.");
 
       // Remove node from immediate dominator's children list.
     DomTreeNodeBase<NodeT> *IDom = Node->getIDom();
@@ -585,29 +594,35 @@ protected:
     SmallVector<std::pair<DomTreeNodeBase<NodeT>*,
                 typename DomTreeNodeBase<NodeT>::iterator>, 32> WorkStack;
 
-    for (unsigned i = 0, e = (unsigned)this->Roots.size(); i != e; ++i) {
-      DomTreeNodeBase<NodeT> *ThisRoot = getNode(this->Roots[i]);
-      WorkStack.push_back(std::make_pair(ThisRoot, ThisRoot->begin()));
-      ThisRoot->DFSNumIn = DFSNum++;
+    DomTreeNodeBase<NodeT> *ThisRoot = getRootNode();
 
-      while (!WorkStack.empty()) {
-        DomTreeNodeBase<NodeT> *Node = WorkStack.back().first;
-        typename DomTreeNodeBase<NodeT>::iterator ChildIt =
-                                                        WorkStack.back().second;
+    if (!ThisRoot)
+      return;
 
-        // If we visited all of the children of this node, "recurse" back up the
-        // stack setting the DFOutNum.
-        if (ChildIt == Node->end()) {
-          Node->DFSNumOut = DFSNum++;
-          WorkStack.pop_back();
-        } else {
-          // Otherwise, recursively visit this child.
-          DomTreeNodeBase<NodeT> *Child = *ChildIt;
-          ++WorkStack.back().second;
+    // Even in the case of multiple exits that form the post dominator root
+    // nodes, do not iterate over all exits, but start from the virtual root
+    // node. Otherwise bbs, that are not post dominated by any exit but by the
+    // virtual root node, will never be assigned a DFS number.
+    WorkStack.push_back(std::make_pair(ThisRoot, ThisRoot->begin()));
+    ThisRoot->DFSNumIn = DFSNum++;
 
-          WorkStack.push_back(std::make_pair(Child, Child->begin()));
-          Child->DFSNumIn = DFSNum++;
-        }
+    while (!WorkStack.empty()) {
+      DomTreeNodeBase<NodeT> *Node = WorkStack.back().first;
+      typename DomTreeNodeBase<NodeT>::iterator ChildIt =
+        WorkStack.back().second;
+
+      // If we visited all of the children of this node, "recurse" back up the
+      // stack setting the DFOutNum.
+      if (ChildIt == Node->end()) {
+        Node->DFSNumOut = DFSNum++;
+        WorkStack.pop_back();
+      } else {
+        // Otherwise, recursively visit this child.
+        DomTreeNodeBase<NodeT> *Child = *ChildIt;
+        ++WorkStack.back().second;
+
+        WorkStack.push_back(std::make_pair(Child, Child->begin()));
+        Child->DFSNumIn = DFSNum++;
       }
     }
 
@@ -646,21 +661,17 @@ public:
   /// recalculate - compute a dominator tree for the given function
   template<class FT>
   void recalculate(FT& F) {
-    if (!this->IsPostDominators) {
-      reset();
+    reset();
+    this->Vertex.push_back(0);
 
-      // Initialize roots
+    if (!this->IsPostDominators) {
+      // Initialize root
       this->Roots.push_back(&F.front());
       this->IDoms[&F.front()] = 0;
       this->DomTreeNodes[&F.front()] = 0;
-      this->Vertex.push_back(0);
 
       Calculate<FT, NodeT*>(*this, F);
-
-      updateDFSNumbers();
     } else {
-      reset();     // Reset from the last time we were run...
-
       // Initialize the roots list
       for (typename FT::iterator I = F.begin(), E = F.end(); I != E; ++I) {
         if (std::distance(GraphTraits<FT*>::child_begin(I),
@@ -671,8 +682,6 @@ public:
         this->IDoms[I] = 0;
         this->DomTreeNodes[I] = 0;
       }
-
-      this->Vertex.push_back(0);
 
       Calculate<FT, Inverse<NodeT*> >(*this, F);
     }
@@ -701,7 +710,7 @@ public:
 
   DominatorTreeBase<BasicBlock>& getBase() { return *DT; }
 
-  /// getRoots -  Return the root blocks of the current CFG.  This may include
+  /// getRoots - Return the root blocks of the current CFG.  This may include
   /// multiple blocks if we are computing post dominators.  For forward
   /// dominators, this will always be a single block (the entry node).
   ///
@@ -778,7 +787,7 @@ public:
   }
 
   /// addNewBlock - Add a new node to the dominator tree information.  This
-  /// creates a new node as a child of DomBB dominator node,linking it into 
+  /// creates a new node as a child of DomBB dominator node,linking it into
   /// the children list of the immediate dominator.
   inline DomTreeNode *addNewBlock(BasicBlock *BB, BasicBlock *DomBB) {
     return DT->addNewBlock(BB, DomBB);
@@ -795,7 +804,7 @@ public:
     DT->changeImmediateDominator(N, NewIDom);
   }
 
-  /// eraseNode - Removes a node from  the dominator tree. Block must not
+  /// eraseNode - Removes a node from the dominator tree. Block must not
   /// domiante any other blocks. Removes node from its immediate dominator's
   /// children list. Deletes dominator node associated with basic block BB.
   inline void eraseNode(BasicBlock *BB) {
@@ -813,7 +822,7 @@ public:
   }
 
 
-  virtual void releaseMemory() { 
+  virtual void releaseMemory() {
     DT->releaseMemory();
   }
 
@@ -879,10 +888,10 @@ protected:
   const bool IsPostDominators;
 
 public:
-  DominanceFrontierBase(void *ID, bool isPostDom) 
+  DominanceFrontierBase(void *ID, bool isPostDom)
     : FunctionPass(ID), IsPostDominators(isPostDom) {}
 
-  /// getRoots -  Return the root blocks of the current CFG.  This may include
+  /// getRoots - Return the root blocks of the current CFG.  This may include
   /// multiple blocks if we are computing post dominators.  For forward
   /// dominators, this will always be a single block (the entry node).
   ///
@@ -933,7 +942,7 @@ public:
   bool compareDomSet(DomSetType &DS1, const DomSetType &DS2) const {
     std::set<BasicBlock *> tmpSet;
     for (DomSetType::const_iterator I = DS2.begin(),
-           E = DS2.end(); I != E; ++I) 
+           E = DS2.end(); I != E; ++I)
       tmpSet.insert(*I);
 
     for (DomSetType::const_iterator I = DS1.begin(),
@@ -945,7 +954,7 @@ public:
         return true;
     }
 
-    if(!tmpSet.empty())
+    if (!tmpSet.empty())
       // There are nodes that are in DS2 but not in DS1.
       return true;
 
@@ -958,14 +967,14 @@ public:
   bool compare(DominanceFrontierBase &Other) const {
     DomSetMapType tmpFrontiers;
     for (DomSetMapType::const_iterator I = Other.begin(),
-           E = Other.end(); I != E; ++I) 
+           E = Other.end(); I != E; ++I)
       tmpFrontiers.insert(std::make_pair(I->first, I->second));
 
     for (DomSetMapType::iterator I = tmpFrontiers.begin(),
            E = tmpFrontiers.end(); I != E; ) {
       BasicBlock *Node = I->first;
       const_iterator DFI = find(Node);
-      if (DFI == end()) 
+      if (DFI == end())
         return true;
 
       if (compareDomSet(I->second, DFI->second))
@@ -994,7 +1003,7 @@ public:
 class DominanceFrontier : public DominanceFrontierBase {
 public:
   static char ID; // Pass ID, replacement for typeid
-  DominanceFrontier() : 
+  DominanceFrontier() :
     DominanceFrontierBase(&ID, false) {}
 
   BasicBlock *getRoot() const {
@@ -1026,7 +1035,7 @@ public:
   /// to reflect this change.
   void changeImmediateDominator(BasicBlock *BB, BasicBlock *NewBB,
                                 DominatorTree *DT) {
-    // NewBB is now  dominating BB. Which means BB's dominance
+    // NewBB is now dominating BB. Which means BB's dominance
     // frontier is now part of NewBB's dominance frontier. However, BB
     // itself is not member of NewBB's dominance frontier.
     DominanceFrontier::iterator NewDFI = find(NewBB);

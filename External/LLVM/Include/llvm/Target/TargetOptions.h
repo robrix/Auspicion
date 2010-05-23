@@ -16,6 +16,8 @@
 #define LLVM_TARGET_TARGETOPTIONS_H
 
 namespace llvm {
+  class MachineFunction;
+
   // Possible float ABI settings. Used with FloatABIType in TargetOptions.h.
   namespace FloatABI {
     enum ABIType {
@@ -34,6 +36,16 @@ namespace llvm {
   /// specified on the command line.  If the target supports the frame pointer
   /// elimination optimization, this option should disable it.
   extern bool NoFramePointerElim;
+
+  /// NoFramePointerElimNonLeaf - This flag is enabled when the
+  /// -disable-non-leaf-fp-elim is specified on the command line. If the target
+  /// supports the frame pointer elimination optimization, this option should
+  /// disable it for non-leaf functions.
+  extern bool NoFramePointerElimNonLeaf;
+
+  /// DisableFramePointerElim - This returns true if frame pointer elimination
+  /// optimization should be disabled for the given machine function.
+  extern bool DisableFramePointerElim(const MachineFunction &MF);
 
   /// LessPreciseFPMAD - This flag is enabled when the
   /// -enable-fp-mad is specified on the command line.  When this flag is off
@@ -95,13 +107,9 @@ namespace llvm {
   /// crt*.o compiling).
   extern bool NoZerosInBSS;
 
-  /// DwarfExceptionHandling - This flag indicates that Dwarf exception
-  /// information should be emitted.
-  extern bool DwarfExceptionHandling;
-
-  /// SjLjExceptionHandling - This flag indicates that SJLJ exception
-  /// information should be emitted.
-  extern bool SjLjExceptionHandling;
+  /// JITExceptionHandling - This flag indicates that the JIT should emit
+  /// exception handling information.
+  extern bool JITExceptionHandling;
 
   /// JITEmitDebugInfo - This flag indicates that the JIT should try to emit
   /// debug information and notify a debugger about it.
@@ -116,10 +124,13 @@ namespace llvm {
   /// be emitted for all functions.
   extern bool UnwindTablesMandatory;
 
-  /// PerformTailCallOpt - This flag is enabled when -tailcallopt is specified
-  /// on the commandline. When the flag is on, the target will perform tail call
-  /// optimization (pop the caller's stack) providing it supports it.
-  extern bool PerformTailCallOpt;
+  /// GuaranteedTailCallOpt - This flag is enabled when -tailcallopt is
+  /// specified on the commandline. When the flag is on, participating targets
+  /// will perform tail call optimization on all calls which use the fastcc
+  /// calling convention and which satisfy certain target-independent
+  /// criteria (being at the end of a function, having the same return type
+  /// as their parent function, etc.), using an alternate ABI if necessary.
+  extern bool GuaranteedTailCallOpt;
 
   /// StackAlignment - Override default stack alignment for target.
   extern unsigned StackAlignment;

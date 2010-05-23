@@ -99,11 +99,12 @@ namespace llvm {
       /// A pointer to a StringRef instance.
       StringRefKind,
 
-      /// A pointer to an unsigned int value, to render as an unsigned decimal
-      /// integer.
+      /// An unsigned int value reinterpreted as a pointer, to render as an 
+      /// unsigned decimal integer.
       DecUIKind,
 
-      /// A pointer to an int value, to render as a signed decimal integer.
+      /// An int value reinterpreted as a pointer, to render as a signed
+      /// decimal integer.
       DecIKind,
 
       /// A pointer to an unsigned long value, to render as an unsigned decimal
@@ -259,13 +260,13 @@ namespace llvm {
     }
 
     /// Construct a twine to print \arg Val as an unsigned decimal integer.
-    explicit Twine(const unsigned int &Val) 
-      : LHS(&Val), LHSKind(DecUIKind), RHSKind(EmptyKind) {
+    explicit Twine(unsigned Val) 
+      : LHS((void*)(intptr_t)Val), LHSKind(DecUIKind), RHSKind(EmptyKind) {
     }
 
     /// Construct a twine to print \arg Val as a signed decimal integer.
-    explicit Twine(const int &Val) 
-      : LHS(&Val), LHSKind(DecIKind), RHSKind(EmptyKind) {
+    explicit Twine(int Val) 
+      : LHS((void*)(intptr_t)Val), LHSKind(DecIKind), RHSKind(EmptyKind) {
     }
 
     /// Construct a twine to print \arg Val as an unsigned decimal integer.
@@ -329,6 +330,22 @@ namespace llvm {
     bool isTriviallyEmpty() const {
       return isNullary();
     }
+    
+    /// isSingleStringRef - Return true if this twine can be dynamically
+    /// accessed as a single StringRef value with getSingleStringRef().
+    bool isSingleStringRef() const {
+      if (getRHSKind() != EmptyKind) return false;
+      
+      switch (getLHSKind()) {
+      case EmptyKind:
+      case CStringKind:
+      case StdStringKind:
+      case StringRefKind:
+        return true;
+      default:
+        return false;
+      }
+    }
 
     /// @}
     /// @name String Operations
@@ -346,6 +363,24 @@ namespace llvm {
     /// toVector - Write the concatenated string into the given SmallString or
     /// SmallVector.
     void toVector(SmallVectorImpl<char> &Out) const;
+
+    /// getSingleStringRef - This returns the twine as a single StringRef.  This
+    /// method is only valid if isSingleStringRef() is true.
+    StringRef getSingleStringRef() const {
+      assert(isSingleStringRef() &&"This cannot be had as a single stringref!");
+      switch (getLHSKind()) {
+      default: assert(0 && "Out of sync with isSingleStringRef");
+      case EmptyKind:      return StringRef();
+      case CStringKind:    return StringRef((const char*)LHS);
+      case StdStringKind:  return StringRef(*(const std::string*)LHS);
+      case StringRefKind:  return *(const StringRef*)LHS;
+      }
+    }
+
+    /// toStringRef - This returns the twine as a single StringRef if it can be
+    /// represented as such. Otherwise the twine is written into the given
+    /// SmallVector and a StringRef to the SmallVector's data is returned.
+    StringRef toStringRef(SmallVectorImpl<char> &Out) const;
 
     /// print - Write the concatenated string represented by this twine to the
     /// stream \arg OS.

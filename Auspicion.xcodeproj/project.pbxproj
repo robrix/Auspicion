@@ -96,6 +96,8 @@
 		D407958010EB284F0061CF6C /* libLLVMX86Disassembler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405886410EA168B00A9E853 /* libLLVMX86Disassembler.a */; };
 		D407958110EB284F0061CF6C /* libLLVMX86Info.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405886510EA168B00A9E853 /* libLLVMX86Info.a */; };
 		D407958A10EB28E90061CF6C /* Auspicion.h in Headers */ = {isa = PBXBuildFile; fileRef = D407958910EB28E90061CF6C /* Auspicion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D415F90C11A9A5210027AAD8 /* libLLVMInstCombine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D415F90B11A9A5210027AAD8 /* libLLVMInstCombine.a */; };
+		D415F90D11A9A5210027AAD8 /* libLLVMInstCombine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D415F90B11A9A5210027AAD8 /* libLLVMInstCombine.a */; };
 		D4D9DCD610EB31D4003EEE90 /* LLVMConcreteCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCD410EB31D4003EEE90 /* LLVMConcreteCompiler.h */; };
 		D4D9DCD710EB31D4003EEE90 /* LLVMConcreteCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCD510EB31D4003EEE90 /* LLVMConcreteCompiler.m */; };
 		D4D9DCD810EB31D4003EEE90 /* LLVMConcreteCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCD410EB31D4003EEE90 /* LLVMConcreteCompiler.h */; };
@@ -188,6 +190,7 @@
 		D407954F10EB27140061CF6C /* Auspicion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Auspicion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D407955910EB280B0061CF6C /* Auspicion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Auspicion.plist; sourceTree = "<group>"; };
 		D407958910EB28E90061CF6C /* Auspicion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Auspicion.h; sourceTree = "<group>"; };
+		D415F90B11A9A5210027AAD8 /* libLLVMInstCombine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMInstCombine.a; path = External/LLVM/Libraries/libLLVMInstCombine.a; sourceTree = "<group>"; };
 		D4D9DCD410EB31D4003EEE90 /* LLVMConcreteCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMConcreteCompiler.h; path = Classes/LLVMConcreteCompiler.h; sourceTree = "<group>"; };
 		D4D9DCD510EB31D4003EEE90 /* LLVMConcreteCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMConcreteCompiler.m; path = Classes/LLVMConcreteCompiler.m; sourceTree = "<group>"; };
 		D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMCompiler.h; path = Classes/LLVMCompiler.h; sourceTree = "<group>"; };
@@ -226,6 +229,7 @@
 				D405887510EA168C00A9E853 /* libLLVMX86CodeGen.a in Frameworks */,
 				D405887610EA168C00A9E853 /* libLLVMX86Disassembler.a in Frameworks */,
 				D405887710EA168C00A9E853 /* libLLVMX86Info.a in Frameworks */,
+				D415F90C11A9A5210027AAD8 /* libLLVMInstCombine.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +257,7 @@
 				D407957F10EB284F0061CF6C /* libLLVMX86CodeGen.a in Frameworks */,
 				D407958010EB284F0061CF6C /* libLLVMX86Disassembler.a in Frameworks */,
 				D407958110EB284F0061CF6C /* libLLVMX86Info.a in Frameworks */,
+				D415F90D11A9A5210027AAD8 /* libLLVMInstCombine.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +301,7 @@
 				D405885610EA168B00A9E853 /* libLLVMCodeGen.a */,
 				D405885710EA168B00A9E853 /* libLLVMCore.a */,
 				D405885810EA168B00A9E853 /* libLLVMExecutionEngine.a */,
+				D415F90B11A9A5210027AAD8 /* libLLVMInstCombine.a */,
 				D405885910EA168B00A9E853 /* libLLVMJIT.a */,
 				D405885A10EA168B00A9E853 /* libLLVMMC.a */,
 				D405885B10EA168B00A9E853 /* libLLVMScalarOpts.a */,

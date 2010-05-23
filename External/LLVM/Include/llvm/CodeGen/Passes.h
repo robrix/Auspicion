@@ -21,6 +21,7 @@
 namespace llvm {
 
   class FunctionPass;
+  class MachineFunctionPass;
   class PassInfo;
   class TargetLowering;
   class RegisterCoalescer;
@@ -36,8 +37,9 @@ namespace llvm {
 
   /// MachineFunctionPrinter pass - This pass prints out the machine function to
   /// the given stream, as a debugging tool.
-  FunctionPass *createMachineFunctionPrinterPass(raw_ostream &OS,
-                                                 const std::string &Banner ="");
+  MachineFunctionPass *
+  createMachineFunctionPrinterPass(raw_ostream &OS,
+                                   const std::string &Banner ="");
 
   /// MachineLoopInfo pass - This pass is a loop analysis pass.
   /// 
@@ -93,6 +95,11 @@ namespace llvm {
   ///
   FunctionPass *createLocalRegisterAllocator();
 
+  /// FastRegisterAllocation Pass - This pass register allocates as fast as
+  /// possible. It is best suited for debug code where live ranges are short.
+  ///
+  FunctionPass *createFastRegisterAllocator();
+
   /// LinearScanRegisterAllocation Pass - This pass implements the linear scan
   /// register allocation algorithm, a global register allocator.
   ///
@@ -131,7 +138,7 @@ namespace llvm {
 
   /// TailDuplicate Pass - Duplicate blocks with unconditional branches
   /// into tails of their predecessors.
-  FunctionPass *createTailDuplicatePass();
+  FunctionPass *createTailDuplicatePass(bool PreRegAlloc = false);
 
   /// IfConverter Pass - This pass performs machine code if conversion.
   FunctionPass *createIfConverterPass();
@@ -162,13 +169,25 @@ namespace llvm {
   /// 
   FunctionPass *createGCInfoPrinter(raw_ostream &OS);
   
+  /// createMachineCSEPass - This pass performs global CSE on machine
+  /// instructions.
+  FunctionPass *createMachineCSEPass();
+
   /// createMachineLICMPass - This pass performs LICM on machine instructions.
   /// 
-  FunctionPass *createMachineLICMPass();
+  FunctionPass *createMachineLICMPass(bool PreRegAlloc = true);
 
   /// createMachineSinkingPass - This pass performs sinking on machine
   /// instructions.
   FunctionPass *createMachineSinkingPass();
+
+  /// createOptimizeExtsPass - This pass performs sign / zero extension
+  /// optimization by increasing uses of extended values.
+  FunctionPass *createOptimizeExtsPass();
+
+  /// createOptimizePHIsPass - This pass optimizes machine instruction PHIs
+  /// to take advantage of opportunities created during DAG legalization.
+  FunctionPass *createOptimizePHIsPass();
 
   /// createStackSlotColoringPass - This pass performs stack slot coloring.
   FunctionPass *createStackSlotColoringPass(bool);
@@ -179,13 +198,13 @@ namespace llvm {
   /// createMachineVerifierPass - This pass verifies cenerated machine code
   /// instructions for correctness.
   ///
-  /// @param allowPhysDoubleDefs ignore double definitions of
+  /// @param allowDoubleDefs ignore double definitions of
   ///        registers. Useful before LiveVariables has run.
   FunctionPass *createMachineVerifierPass(bool allowDoubleDefs);
 
   /// createDwarfEHPass - This pass mulches exception handling code into a form
   /// adapted to code generation.  Required if using dwarf exception handling.
-  FunctionPass *createDwarfEHPass(const TargetLowering *tli, bool fast);
+  FunctionPass *createDwarfEHPass(const TargetMachine *tm, bool fast);
 
   /// createSjLjEHPass - This pass adapts exception handling code to use
   /// the GCC-style builtin setjmp/longjmp (sjlj) to handling EH control flow.

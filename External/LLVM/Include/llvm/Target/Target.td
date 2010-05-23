@@ -132,8 +132,8 @@ class RegisterClass<string namespace, list<ValueType> regTypes, int alignment,
 //===----------------------------------------------------------------------===//
 // DwarfRegNum - This class provides a mapping of the llvm register enumeration
 // to the register numbering used by gcc and gdb.  These values are used by a
-// debug information writer (ex. DwarfWriter) to describe where values may be
-// located during execution.
+// debug information writer to describe where values may be located during
+// execution.
 class DwarfRegNum<list<int> Numbers> {
   // DwarfNumbers - Numbers used internally by gcc/gdb to identify the register.
   // These values can be determined by locating the <target>.h file in the
@@ -211,16 +211,9 @@ class Instruction {
   //  hasSideEffects - The instruction has side effects that are not
   //    captured by any operands of the instruction or other flags.
   //
-  //  mayHaveSideEffects  - Some instances of the instruction can have side
-  //    effects. The virtual method "isReallySideEffectFree" is called to
-  //    determine this. Load instructions are an example of where this is
-  //    useful. In general, loads always have side effects. However, loads from
-  //    constant pools don't. Individual back ends make this determination.
-  //
   //  neverHasSideEffects - Set on an instruction with no pattern if it has no
   //    side effects.
   bit hasSideEffects = 0;
-  bit mayHaveSideEffects = 0;
   bit neverHasSideEffects = 0;
 
   // Is this instruction a "real" instruction (with a distinct machine
@@ -231,10 +224,13 @@ class Instruction {
   InstrItinClass Itinerary = NoItinerary;// Execution steps used for scheduling.
 
   string Constraints = "";  // OperandConstraint, e.g. $src = $dst.
-  
+
   /// DisableEncoding - List of operand names (e.g. "$op1,$op2") that should not
   /// be encoded into the output machineinstr.
   string DisableEncoding = "";
+
+  /// Target-specific flags. This becomes the TSFlags field in TargetInstrDesc.
+  bits<32> TSFlags = 0;
 }
 
 /// Predicates - These are extra conditionals which are turned into instruction
@@ -376,16 +372,9 @@ class OptionalDefOperand<ValueType ty, dag OpTypes, dag defaultops>
 
 
 // InstrInfo - This class should only be instantiated once to provide parameters
-// which are global to the the target machine.
+// which are global to the target machine.
 //
 class InstrInfo {
-  // If the target wants to associate some target-specific information with each
-  // instruction, it should provide these two lists to indicate how to assemble
-  // the target specific information into the 32 bits available.
-  //
-  list<string> TSFlagsFields = [];
-  list<int>    TSFlagsShifts = [];
-
   // Target can specify its instructions in either big or little-endian formats.
   // For instance, while both Sparc and PowerPC are big-endian platforms, the
   // Sparc manual specifies its instructions in the format [31..0] (big), while
@@ -396,94 +385,110 @@ class InstrInfo {
 // Standard Pseudo Instructions.
 let isCodeGenOnly = 1 in {
 def PHI : Instruction {
-  let OutOperandList = (ops);
-  let InOperandList = (ops variable_ops);
+  let OutOperandList = (outs);
+  let InOperandList = (ins variable_ops);
   let AsmString = "PHINODE";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
 }
 def INLINEASM : Instruction {
-  let OutOperandList = (ops);
-  let InOperandList = (ops variable_ops);
+  let OutOperandList = (outs);
+  let InOperandList = (ins variable_ops);
   let AsmString = "";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
 }
 def DBG_LABEL : Instruction {
-  let OutOperandList = (ops);
-  let InOperandList = (ops i32imm:$id);
+  let OutOperandList = (outs);
+  let InOperandList = (ins i32imm:$id);
   let AsmString = "";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
   let hasCtrlDep = 1;
   let isNotDuplicable = 1;
 }
 def EH_LABEL : Instruction {
-  let OutOperandList = (ops);
-  let InOperandList = (ops i32imm:$id);
+  let OutOperandList = (outs);
+  let InOperandList = (ins i32imm:$id);
   let AsmString = "";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
   let hasCtrlDep = 1;
   let isNotDuplicable = 1;
 }
 def GC_LABEL : Instruction {
-  let OutOperandList = (ops);
-  let InOperandList = (ops i32imm:$id);
+  let OutOperandList = (outs);
+  let InOperandList = (ins i32imm:$id);
   let AsmString = "";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
   let hasCtrlDep = 1;
   let isNotDuplicable = 1;
 }
 def KILL : Instruction {
-  let OutOperandList = (ops);
-  let InOperandList = (ops variable_ops);
+  let OutOperandList = (outs);
+  let InOperandList = (ins variable_ops);
   let AsmString = "";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
   let neverHasSideEffects = 1;
 }
 def EXTRACT_SUBREG : Instruction {
-  let OutOperandList = (ops unknown:$dst);
-  let InOperandList = (ops unknown:$supersrc, i32imm:$subidx);
+  let OutOperandList = (outs unknown:$dst);
+  let InOperandList = (ins unknown:$supersrc, i32imm:$subidx);
   let AsmString = "";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
   let neverHasSideEffects = 1;
 }
 def INSERT_SUBREG : Instruction {
-  let OutOperandList = (ops unknown:$dst);
-  let InOperandList = (ops unknown:$supersrc, unknown:$subsrc, i32imm:$subidx);
+  let OutOperandList = (outs unknown:$dst);
+  let InOperandList = (ins unknown:$supersrc, unknown:$subsrc, i32imm:$subidx);
   let AsmString = "";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
   let neverHasSideEffects = 1;
   let Constraints = "$supersrc = $dst";
 }
 def IMPLICIT_DEF : Instruction {
-  let OutOperandList = (ops unknown:$dst);
-  let InOperandList = (ops);
+  let OutOperandList = (outs unknown:$dst);
+  let InOperandList = (ins);
   let AsmString = "";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
   let neverHasSideEffects = 1;
   let isReMaterializable = 1;
   let isAsCheapAsAMove = 1;
 }
 def SUBREG_TO_REG : Instruction {
-  let OutOperandList = (ops unknown:$dst);
-  let InOperandList = (ops unknown:$implsrc, unknown:$subsrc, i32imm:$subidx);
+  let OutOperandList = (outs unknown:$dst);
+  let InOperandList = (ins unknown:$implsrc, unknown:$subsrc, i32imm:$subidx);
   let AsmString = "";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
   let neverHasSideEffects = 1;
 }
 def COPY_TO_REGCLASS : Instruction {
-  let OutOperandList = (ops unknown:$dst);
-  let InOperandList = (ops unknown:$src, i32imm:$regclass);
+  let OutOperandList = (outs unknown:$dst);
+  let InOperandList = (ins unknown:$src, i32imm:$regclass);
   let AsmString = "";
-  let Namespace = "TargetInstrInfo";
+  let Namespace = "TargetOpcode";
+  let neverHasSideEffects = 1;
+  let isAsCheapAsAMove = 1;
+}
+def DBG_VALUE : Instruction {
+  let OutOperandList = (outs);
+  let InOperandList = (ins variable_ops);
+  let AsmString = "DBG_VALUE";
+  let Namespace = "TargetOpcode";
+  let isAsCheapAsAMove = 1;
+}
+
+def REG_SEQUENCE : Instruction {
+  let OutOperandList = (outs unknown:$dst);
+  let InOperandList = (ins variable_ops);
+  let AsmString = "";
+  let Namespace = "TargetOpcode";
   let neverHasSideEffects = 1;
   let isAsCheapAsAMove = 1;
 }
 }
 
 //===----------------------------------------------------------------------===//
-// AsmParser - This class can be implemented by targets that wish to implement 
+// AsmParser - This class can be implemented by targets that wish to implement
 // .s file parsing.
 //
-// Subtargets can have multiple different assembly parsers (e.g. AT&T vs Intel 
+// Subtargets can have multiple different assembly parsers (e.g. AT&T vs Intel
 // syntax on X86 for example).
 //
 class AsmParser {
@@ -491,9 +496,18 @@ class AsmParser {
   // class.  Generated AsmParser classes are always prefixed with the target
   // name.
   string AsmParserClassName  = "AsmParser";
- 
+
+  // AsmParserInstCleanup - If non-empty, this is the name of a custom function on the
+  // AsmParser class to call on every matched instruction. This can be used to
+  // perform target specific instruction post-processing.
+  string AsmParserInstCleanup  = "";
+
+  // MatchInstructionName - The name of the instruction matching function to
+  // generate.
+  string MatchInstructionName  = "MatchInstruction";
+
   // Variant - AsmParsers can be of multiple different variants.  Variants are
-  // used to support targets that need to parser multiple formats for the 
+  // used to support targets that need to parser multiple formats for the
   // assembly language.
   int Variant = 0;
 

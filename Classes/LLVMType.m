@@ -39,6 +39,15 @@
 }
 
 
++(LLVMType *)floatTypeInContext:(LLVMContext *)context {
+	return [LLVMConcreteType typeWithTypeRef: LLVMFloatTypeInContext(context.contextRef)];
+}
+
++(LLVMType *)doubleTypeInContext:(LLVMContext *)context {
+	return [LLVMConcreteType typeWithTypeRef: LLVMDoubleTypeInContext(context.contextRef)];
+}
+
+
 +(LLVMType *)pointerTypeToType:(LLVMType *)type addressSpace:(NSUInteger)addressSpace {
 	return [LLVMConcreteType typeWithTypeRef: LLVMPointerType(type.typeRef, addressSpace)];
 }
@@ -79,6 +88,20 @@
 }
 
 
++(LLVMType *)arrayTypeWithCount:(NSUInteger)count type:(LLVMType *)type {
+	return [LLVMConcreteType typeWithTypeRef: LLVMArrayType(type.typeRef, count)];
+}
+
++(LLVMType *)structTypeWithTypes:(NSArray *)types {
+	LLVMTypeRef typeRefs[types.count];
+	NSUInteger i = 0;
+	for(LLVMType *type in types) {
+		typeRefs[i++] = type.typeRef;
+	}
+	NSParameterAssert(types.count > 0);
+	return [LLVMConcreteType typeWithTypeRef: LLVMStructType(typeRefs, types.count, NO)];
+}
+
 +(LLVMType *)structTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types {
 	LLVMTypeRef typeRefs[types.count];
 	NSUInteger i = 0;
@@ -88,6 +111,16 @@
 	NSParameterAssert(context != nil);
 	NSParameterAssert(types.count > 0);
 	return [LLVMConcreteType typeWithTypeRef: LLVMStructTypeInContext(context.contextRef, typeRefs, types.count, NO)];
+}
+
++(LLVMType *)unionTypeWithTypes:(NSArray *)types {
+	LLVMTypeRef typeRefs[types.count];
+	NSUInteger i = 0;
+	for(LLVMType *type in types) {
+		typeRefs[i++] = type.typeRef;
+	}
+	NSParameterAssert(types.count > 0);
+	return [LLVMConcreteType typeWithTypeRef: LLVMUnionType(typeRefs, types.count)];
 }
 
 

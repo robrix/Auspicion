@@ -7,14 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-
 #ifndef LLVM_TYPE_H
 #define LLVM_TYPE_H
 
 #include "llvm/AbstractTypeUser.h"
 #include "llvm/Support/Casting.h"
 #include "llvm/System/DataTypes.h"
-#include "llvm/System/Atomic.h"
 #include "llvm/ADT/GraphTraits.h"
 #include <string>
 #include <vector>
@@ -84,13 +82,14 @@ public:
     IntegerTyID,     ///<  8: Arbitrary bit width integers
     FunctionTyID,    ///<  9: Functions
     StructTyID,      ///< 10: Structures
-    ArrayTyID,       ///< 11: Arrays
-    PointerTyID,     ///< 12: Pointers
-    OpaqueTyID,      ///< 13: Opaque: type with unknown structure
-    VectorTyID,      ///< 14: SIMD 'packed' format, or other vector type
+    UnionTyID,       ///< 11: Unions
+    ArrayTyID,       ///< 12: Arrays
+    PointerTyID,     ///< 13: Pointers
+    OpaqueTyID,      ///< 14: Opaque: type with unknown structure
+    VectorTyID,      ///< 15: SIMD 'packed' format, or other vector type
 
     NumTypeIDs,                         // Must remain as last defined ID
-    LastPrimitiveTyID = LabelTyID,
+    LastPrimitiveTyID = MetadataTyID,
     FirstDerivedTyID = IntegerTyID
   };
 
@@ -104,7 +103,7 @@ private:
   /// has no AbstractTypeUsers, the type is deleted.  This is only sensical for
   /// derived types.
   ///
-  mutable sys::cas_flag RefCount;
+  mutable unsigned RefCount;
 
   /// Context - This refers to the LLVMContext in which this type was uniqued.
   LLVMContext &Context;
@@ -183,6 +182,9 @@ public:
   // are defined in private classes defined in Type.cpp for primitive types.
   //
 
+  /// getDescription - Return the string representation of the type.
+  std::string getDescription() const;
+
   /// getTypeID - Return the type id for the type.  This will return one
   /// of the TypeID enum elements defined above.
   ///
@@ -206,33 +208,61 @@ public:
   /// isPPC_FP128Ty - Return true if this is powerpc long double.
   bool isPPC_FP128Ty() const { return ID == PPC_FP128TyID; }
 
+  /// isFloatingPointTy - Return true if this is one of the five floating point
+  /// types
+  bool isFloatingPointTy() const { return ID == FloatTyID || ID == DoubleTyID ||
+      ID == X86_FP80TyID || ID == FP128TyID || ID == PPC_FP128TyID; }
+
+  /// isFPOrFPVectorTy - Return true if this is a FP type or a vector of FP.
+  ///
+  bool isFPOrFPVectorTy() const;
+ 
   /// isLabelTy - Return true if this is 'label'.
   bool isLabelTy() const { return ID == LabelTyID; }
 
   /// isMetadataTy - Return true if this is 'metadata'.
   bool isMetadataTy() const { return ID == MetadataTyID; }
 
-  /// getDescription - Return the string representation of the type.
-  std::string getDescription() const;
-
-  /// isInteger - True if this is an instance of IntegerType.
+  /// isIntegerTy - True if this is an instance of IntegerType.
   ///
-  bool isInteger() const { return ID == IntegerTyID; } 
+  bool isIntegerTy() const { return ID == IntegerTyID; } 
 
-  /// isIntOrIntVector - Return true if this is an integer type or a vector of
+  /// isIntegerTy - Return true if this is an IntegerType of the given width.
+  bool isIntegerTy(unsigned Bitwidth) const;
+
+  /// isIntOrIntVectorTy - Return true if this is an integer type or a vector of
   /// integer types.
   ///
-  bool isIntOrIntVector() const;
+  bool isIntOrIntVectorTy() const;
   
-  /// isFloatingPoint - Return true if this is one of the five floating point
-  /// types
-  bool isFloatingPoint() const { return ID == FloatTyID || ID == DoubleTyID ||
-      ID == X86_FP80TyID || ID == FP128TyID || ID == PPC_FP128TyID; }
-
-  /// isFPOrFPVector - Return true if this is a FP type or a vector of FP types.
+  /// isFunctionTy - True if this is an instance of FunctionType.
   ///
-  bool isFPOrFPVector() const;
-  
+  bool isFunctionTy() const { return ID == FunctionTyID; }
+
+  /// isStructTy - True if this is an instance of StructType.
+  ///
+  bool isStructTy() const { return ID == StructTyID; }
+
+  /// isUnionTy - True if this is an instance of UnionType.
+  ///
+  bool isUnionTy() const { return ID == UnionTyID; }
+
+  /// isArrayTy - True if this is an instance of ArrayType.
+  ///
+  bool isArrayTy() const { return ID == ArrayTyID; }
+
+  /// isPointerTy - True if this is an instance of PointerType.
+  ///
+  bool isPointerTy() const { return ID == PointerTyID; }
+
+  /// isOpaqueTy - True if this is an instance of OpaqueType.
+  ///
+  bool isOpaqueTy() const { return ID == OpaqueTyID; }
+
+  /// isVectorTy - True if this is an instance of VectorType.
+  ///
+  bool isVectorTy() const { return ID == VectorTyID; }
+
   /// isAbstract - True if the type is either an Opaque type, or is a derived
   /// type that includes an opaque type somewhere in it.
   ///
@@ -276,7 +306,7 @@ public:
   /// does not include vector types.
   ///
   inline bool isAggregateType() const {
-    return ID == StructTyID || ID == ArrayTyID;
+    return ID == StructTyID || ID == ArrayTyID || ID == UnionTyID;
   }
 
   /// isSized - Return true if it makes sense to take the size of this type.  To
@@ -285,11 +315,12 @@ public:
   ///
   bool isSized() const {
     // If it's a primitive, it is always sized.
-    if (ID == IntegerTyID || isFloatingPoint() || ID == PointerTyID)
+    if (ID == IntegerTyID || isFloatingPointTy() || ID == PointerTyID)
       return true;
     // If it is not something that can have a size (e.g. a function or label),
     // it doesn't have a size.
-    if (ID != StructTyID && ID != ArrayTyID && ID != VectorTyID)
+    if (ID != StructTyID && ID != ArrayTyID && ID != VectorTyID &&
+        ID != UnionTyID)
       return false;
     // If it is something that can have a size and it's concrete, it definitely
     // has a size, otherwise we have to try harder to decide.
@@ -375,6 +406,7 @@ public:
   static const Type *getX86_FP80Ty(LLVMContext &C);
   static const Type *getFP128Ty(LLVMContext &C);
   static const Type *getPPC_FP128Ty(LLVMContext &C);
+  static const IntegerType *getIntNTy(LLVMContext &C, unsigned N);
   static const IntegerType *getInt1Ty(LLVMContext &C);
   static const IntegerType *getInt8Ty(LLVMContext &C);
   static const IntegerType *getInt16Ty(LLVMContext &C);
@@ -390,6 +422,8 @@ public:
   static const PointerType *getX86_FP80PtrTy(LLVMContext &C, unsigned AS = 0);
   static const PointerType *getFP128PtrTy(LLVMContext &C, unsigned AS = 0);
   static const PointerType *getPPC_FP128PtrTy(LLVMContext &C, unsigned AS = 0);
+  static const PointerType *getIntNPtrTy(LLVMContext &C, unsigned N,
+                                         unsigned AS = 0);
   static const PointerType *getInt1PtrTy(LLVMContext &C, unsigned AS = 0);
   static const PointerType *getInt8PtrTy(LLVMContext &C, unsigned AS = 0);
   static const PointerType *getInt16PtrTy(LLVMContext &C, unsigned AS = 0);
@@ -401,7 +435,7 @@ public:
 
   void addRef() const {
     assert(isAbstract() && "Cannot add a reference to a non-abstract type!");
-    sys::AtomicIncrement(&RefCount);
+    ++RefCount;
   }
 
   void dropRef() const {
@@ -410,8 +444,7 @@ public:
 
     // If this is the last PATypeHolder using this object, and there are no
     // PATypeHandles using it, the type is dead, delete it now.
-    sys::cas_flag OldCount = sys::AtomicDecrement(&RefCount);
-    if (OldCount == 0 && AbstractTypeUsers.empty())
+    if (--RefCount == 0 && AbstractTypeUsers.empty())
       this->destroy();
   }
   
@@ -518,9 +551,11 @@ template <> struct GraphTraits<const Type*> {
   }
 };
 
-template <> inline bool isa_impl<PointerType, Type>(const Type &Ty) {
-  return Ty.getTypeID() == Type::PointerTyID;
-}
+template <> struct isa_impl<PointerType, Type> {
+  static inline bool doit(const Type &Ty) {
+    return Ty.getTypeID() == Type::PointerTyID;
+  }
+};
 
 raw_ostream &operator<<(raw_ostream &OS, const Type &T);
 

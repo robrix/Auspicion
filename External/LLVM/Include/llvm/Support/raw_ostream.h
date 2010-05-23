@@ -85,17 +85,18 @@ public:
   virtual ~raw_ostream();
 
   /// tell - Return the current offset with the file.
-  uint64_t tell() { return current_pos() + GetNumBytesInBuffer(); }
+  uint64_t tell() const { return current_pos() + GetNumBytesInBuffer(); }
 
   /// has_error - Return the value of the flag in this raw_ostream indicating
   /// whether an output error has been encountered.
+  /// This doesn't implicitly flush any pending output.
   bool has_error() const {
     return Error;
   }
 
   /// clear_error - Set the flag read by has_error() to false. If the error
   /// flag is set at the time when this raw_ostream's destructor is called,
-  /// llvm_report_error is called to report the error. Use clear_error()
+  /// report_fatal_error is called to report the error. Use clear_error()
   /// after handling the error to avoid this behavior.
   void clear_error() {
     Error = false;
@@ -116,7 +117,7 @@ public:
     SetBufferAndMode(new char[Size], Size, InternalBuffer);
   }
 
-  size_t GetBufferSize() {
+  size_t GetBufferSize() const {
     // If we're supposed to be buffered but haven't actually gotten around
     // to allocating the buffer yet, return the value that would be used.
     if (BufferMode != Unbuffered && OutBufStart == 0)
@@ -186,14 +187,12 @@ public:
     // Inline fast path, particulary for constant strings where a sufficiently
     // smart compiler will simplify strlen.
 
-    this->operator<<(StringRef(Str));
-    return *this;
+    return this->operator<<(StringRef(Str));
   }
 
   raw_ostream &operator<<(const std::string &Str) {
     // Avoid the fast path, it would only increase code size for a marginal win.
-    write(Str.data(), Str.length());
-    return *this;
+    return write(Str.data(), Str.length());
   }
 
   raw_ostream &operator<<(unsigned long N);
@@ -202,13 +201,11 @@ public:
   raw_ostream &operator<<(long long N);
   raw_ostream &operator<<(const void *P);
   raw_ostream &operator<<(unsigned int N) {
-    this->operator<<(static_cast<unsigned long>(N));
-    return *this;
+    return this->operator<<(static_cast<unsigned long>(N));
   }
 
   raw_ostream &operator<<(int N) {
-    this->operator<<(static_cast<long>(N));
-    return *this;
+    return this->operator<<(static_cast<long>(N));
   }
 
   raw_ostream &operator<<(double N);
@@ -273,7 +270,7 @@ private:
 
   /// current_pos - Return the current position within the stream, not
   /// counting the bytes currently in the buffer.
-  virtual uint64_t current_pos() = 0;
+  virtual uint64_t current_pos() const = 0;
 
 protected:
   /// SetBuffer - Use the provided buffer as the raw_ostream buffer. This is
@@ -286,7 +283,7 @@ protected:
 
   /// preferred_buffer_size - Return an efficient buffer size for the
   /// underlying output mechanism.
-  virtual size_t preferred_buffer_size();
+  virtual size_t preferred_buffer_size() const;
 
   /// error_detected - Set the flag indicating that an output error has
   /// been encountered.
@@ -329,10 +326,10 @@ class raw_fd_ostream : public raw_ostream {
 
   /// current_pos - Return the current position within the stream, not
   /// counting the bytes currently in the buffer.
-  virtual uint64_t current_pos() { return pos; }
+  virtual uint64_t current_pos() const { return pos; }
 
   /// preferred_buffer_size - Determine an efficient buffer size.
-  virtual size_t preferred_buffer_size();
+  virtual size_t preferred_buffer_size() const;
 
 public:
 
@@ -427,7 +424,7 @@ class raw_string_ostream : public raw_ostream {
 
   /// current_pos - Return the current position within the stream, not
   /// counting the bytes currently in the buffer.
-  virtual uint64_t current_pos() { return OS.size(); }
+  virtual uint64_t current_pos() const { return OS.size(); }
 public:
   explicit raw_string_ostream(std::string &O) : OS(O) {}
   ~raw_string_ostream();
@@ -451,7 +448,7 @@ class raw_svector_ostream : public raw_ostream {
 
   /// current_pos - Return the current position within the stream, not
   /// counting the bytes currently in the buffer.
-  virtual uint64_t current_pos();
+  virtual uint64_t current_pos() const;
 public:
   /// Construct a new raw_svector_ostream.
   ///
@@ -460,6 +457,11 @@ public:
   explicit raw_svector_ostream(SmallVectorImpl<char> &O);
   ~raw_svector_ostream();
 
+  /// resync - This is called when the SmallVector we're appending to is changed
+  /// outside of the raw_svector_ostream's control.  It is only safe to do this
+  /// if the raw_svector_ostream has previously been flushed.
+  void resync();
+  
   /// str - Flushes the stream contents to the target vector and return a
   /// StringRef for the vector contents.
   StringRef str();
@@ -472,7 +474,7 @@ class raw_null_ostream : public raw_ostream {
 
   /// current_pos - Return the current position within the stream, not
   /// counting the bytes currently in the buffer.
-  virtual uint64_t current_pos();
+  virtual uint64_t current_pos() const;
 
 public:
   explicit raw_null_ostream() {}

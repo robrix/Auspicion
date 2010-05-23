@@ -23,6 +23,7 @@
 #include "llvm/Analysis/PointerTracking.h"
 #include "llvm/Analysis/PostDominators.h"
 #include "llvm/Analysis/ScalarEvolution.h"
+#include "llvm/Analysis/Lint.h"
 #include "llvm/Assembly/PrintModulePass.h"
 #include "llvm/CodeGen/Passes.h"
 #include "llvm/Function.h"
@@ -46,14 +47,12 @@ namespace {
       (void) llvm::createAggressiveDCEPass();
       (void) llvm::createAliasAnalysisCounterPass();
       (void) llvm::createAliasDebugger();
-      (void) llvm::createAndersensPass();
       (void) llvm::createArgumentPromotionPass();
       (void) llvm::createStructRetPromotionPass();
       (void) llvm::createBasicAliasAnalysisPass();
       (void) llvm::createLibCallAliasAnalysisPass(0);
       (void) llvm::createScalarEvolutionAliasAnalysisPass();
       (void) llvm::createBlockPlacementPass();
-      (void) llvm::createBlockProfilerPass();
       (void) llvm::createBreakCriticalEdgesPass();
       (void) llvm::createCFGSimplificationPass();
       (void) llvm::createConstantMergePass();
@@ -71,7 +70,6 @@ namespace {
       (void) llvm::createOptimalEdgeProfilerPass();
       (void) llvm::createFunctionInliningPass();
       (void) llvm::createAlwaysInlinerPass();
-      (void) llvm::createFunctionProfilerPass();
       (void) llvm::createGlobalDCEPass();
       (void) llvm::createGlobalOptimizerPass();
       (void) llvm::createGlobalsModRefPass();
@@ -120,8 +118,6 @@ namespace {
       (void) llvm::createTailDuplicationPass();
       (void) llvm::createJumpThreadingPass();
       (void) llvm::createUnifyFunctionExitNodesPass();
-      (void) llvm::createNullProfilerRSPass();
-      (void) llvm::createRSProfilingPass();
       (void) llvm::createInstCountPass();
       (void) llvm::createCodeGenPreparePass();
       (void) llvm::createGVNPass();
@@ -136,12 +132,14 @@ namespace {
       (void) llvm::createPrintModulePass(0);
       (void) llvm::createPrintFunctionPass("", 0);
       (void) llvm::createDbgInfoPrinterPass();
+      (void) llvm::createModuleDebugInfoPrinterPass();
       (void) llvm::createPartialInliningPass();
       (void) llvm::createSSIPass();
       (void) llvm::createSSIEverythingPass();
       (void) llvm::createGEPSplitterPass();
-      (void) llvm::createSCCVNPass();
       (void) llvm::createABCDPass();
+      (void) llvm::createLintPass();
+      (void) llvm::createSinkingPass();
 
       (void)new llvm::IntervalPartition();
       (void)new llvm::FindUsedTypes();

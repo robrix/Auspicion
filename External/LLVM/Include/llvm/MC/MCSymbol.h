@@ -14,32 +14,30 @@
 #ifndef LLVM_MC_MCSYMBOL_H
 #define LLVM_MC_MCSYMBOL_H
 
-#include <string>
 #include "llvm/ADT/StringRef.h"
-#include "llvm/System/DataTypes.h"
 
 namespace llvm {
-  class MCAsmInfo;
   class MCExpr;
   class MCSection;
   class MCContext;
   class raw_ostream;
 
   /// MCSymbol - Instances of this class represent a symbol name in the MC file,
-  /// and MCSymbols are created and unique'd by the MCContext class.
+  /// and MCSymbols are created and unique'd by the MCContext class.  MCSymbols
+  /// should only be constructed with valid names for the object file.
   ///
   /// If the symbol is defined/emitted into the current translation unit, the
   /// Section member is set to indicate what section it lives in.  Otherwise, if
-  /// it is a reference to an external entity, it has a null section.  
-  /// 
+  /// it is a reference to an external entity, it has a null section.
   class MCSymbol {
     // Special sentinal value for the absolute pseudo section.
     //
     // FIXME: Use a PointerInt wrapper for this?
     static const MCSection *AbsolutePseudoSection;
 
-    /// Name - The name of the symbol.
-    std::string Name;
+    /// Name - The name of the symbol.  The referred-to string data is actually
+    /// held by the StringMap that lives in MCContext.
+    StringRef Name;
 
     /// Section - The section the symbol is defined in. This is null for
     /// undefined symbols, and the special AbsolutePseudoSection value for
@@ -54,24 +52,31 @@ namespace llvm {
     /// "Lfoo" or ".foo".
     unsigned IsTemporary : 1;
 
+    /// IsUsedInExpr - True if this symbol has been used in an expression and
+    /// cannot be redefined.
+    unsigned IsUsedInExpr : 1;
+
   private:  // MCContext creates and uniques these.
     friend class MCContext;
-    MCSymbol(StringRef _Name, bool _IsTemporary)
-      : Name(_Name), Section(0), Value(0), IsTemporary(_IsTemporary) {}
+    MCSymbol(StringRef name, bool isTemporary)
+      : Name(name), Section(0), Value(0),
+        IsTemporary(isTemporary), IsUsedInExpr(false) {}
 
     MCSymbol(const MCSymbol&);       // DO NOT IMPLEMENT
     void operator=(const MCSymbol&); // DO NOT IMPLEMENT
   public:
     /// getName - Get the symbol name.
-    const std::string &getName() const { return Name; }
+    StringRef getName() const { return Name; }
 
-    /// @name Symbol Type
+    /// @name Accessors
     /// @{
 
     /// isTemporary - Check if this is an assembler temporary symbol.
-    bool isTemporary() const {
-      return IsTemporary;
-    }
+    bool isTemporary() const { return IsTemporary; }
+
+    /// isUsedInExpr - Check if this is an assembler temporary symbol.
+    bool isUsedInExpr() const { return IsUsedInExpr; }
+    void setUsedInExpr(bool Value) { IsUsedInExpr = Value; }
 
     /// @}
     /// @name Associated Sections
@@ -84,12 +89,18 @@ namespace llvm {
       return Section != 0;
     }
 
+    /// isInSection - Check if this symbol is defined in some section (i.e., it
+    /// is defined but not absolute).
+    bool isInSection() const {
+      return isDefined() && !isAbsolute();
+    }
+
     /// isUndefined - Check if this symbol undefined (i.e., implicitly defined).
     bool isUndefined() const {
       return !isDefined();
     }
 
-    /// isAbsolute - Check if this this is an absolute symbol.
+    /// isAbsolute - Check if this is an absolute symbol.
     bool isAbsolute() const {
       return Section == AbsolutePseudoSection;
     }
@@ -97,7 +108,7 @@ namespace llvm {
     /// getSection - Get the section associated with a defined, non-absolute
     /// symbol.
     const MCSection &getSection() const {
-      assert(!isUndefined() && !isAbsolute() && "Invalid accessor!");
+      assert(isInSection() && "Invalid accessor!");
       return *Section;
     }
 
@@ -121,23 +132,27 @@ namespace llvm {
       return Value != 0;
     }
 
-    /// getValue() - Get the value for variable symbols, or null if the symbol
-    /// is not a variable.
-    const MCExpr *getValue() const { return Value; }
-
-    void setValue(const MCExpr *Value) {
-      this->Value = Value;
+    /// getValue() - Get the value for variable symbols.
+    const MCExpr *getVariableValue() const {
+      assert(isVariable() && "Invalid accessor!");
+      return Value;
     }
+
+    void setVariableValue(const MCExpr *Value);
 
     /// @}
 
     /// print - Print the value to the stream \arg OS.
-    void print(raw_ostream &OS, const MCAsmInfo *MAI) const;
+    void print(raw_ostream &OS) const;
 
     /// dump - Print the value to stderr.
     void dump() const;
   };
 
+  inline raw_ostream &operator<<(raw_ostream &OS, const MCSymbol &Sym) {
+    Sym.print(OS);
+    return OS;
+  }
 } // end namespace llvm
 
 #endif

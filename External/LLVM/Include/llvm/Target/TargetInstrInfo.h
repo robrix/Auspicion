@@ -19,13 +19,16 @@
 
 namespace llvm {
 
-class MCAsmInfo;
-class TargetRegisterClass;
-class TargetRegisterInfo;
-class LiveVariables;
 class CalleeSavedInfo;
+class LiveVariables;
+class MCAsmInfo;
+class MachineMemOperand;
+class MDNode;
+class MCInst;
 class SDNode;
 class SelectionDAG;
+class TargetRegisterClass;
+class TargetRegisterInfo;
 
 template<class T> class SmallVectorImpl;
 
@@ -44,52 +47,6 @@ public:
   TargetInstrInfo(const TargetInstrDesc *desc, unsigned NumOpcodes);
   virtual ~TargetInstrInfo();
 
-  // Invariant opcodes: All instruction sets have these as their low opcodes.
-  enum { 
-    PHI = 0,
-    INLINEASM = 1,
-    DBG_LABEL = 2,
-    EH_LABEL = 3,
-    GC_LABEL = 4,
-
-    /// KILL - This instruction is a noop that is used only to adjust the liveness
-    /// of registers. This can be useful when dealing with sub-registers.
-    KILL = 5,
-
-    /// EXTRACT_SUBREG - This instruction takes two operands: a register
-    /// that has subregisters, and a subregister index. It returns the
-    /// extracted subregister value. This is commonly used to implement
-    /// truncation operations on target architectures which support it.
-    EXTRACT_SUBREG = 6,
-
-    /// INSERT_SUBREG - This instruction takes three operands: a register
-    /// that has subregisters, a register providing an insert value, and a
-    /// subregister index. It returns the value of the first register with
-    /// the value of the second register inserted. The first register is
-    /// often defined by an IMPLICIT_DEF, as is commonly used to implement
-    /// anyext operations on target architectures which support it.
-    INSERT_SUBREG = 7,
-
-    /// IMPLICIT_DEF - This is the MachineInstr-level equivalent of undef.
-    IMPLICIT_DEF = 8,
-
-    /// SUBREG_TO_REG - This instruction is similar to INSERT_SUBREG except
-    /// that the first operand is an immediate integer constant. This constant
-    /// is often zero, as is commonly used to implement zext operations on
-    /// target architectures which support it, such as with x86-64 (with
-    /// zext from i32 to i64 via implicit zero-extension).
-    SUBREG_TO_REG = 9,
-
-    /// COPY_TO_REGCLASS - This instruction is a placeholder for a plain
-    /// register-to-register copy into a specific register class. This is only
-    /// used between instruction selection and MachineInstr creation, before
-    /// virtual registers have been created for all the instructions, and it's
-    /// only needed in cases where the register classes implied by the
-    /// instructions are insufficient. The actual MachineInstrs to perform
-    /// the copy are emitted with the TargetInstrInfo::copyRegToReg hook.
-    COPY_TO_REGCLASS = 10
-  };
-
   unsigned getNumOpcodes() const { return NumOpcodes; }
 
   /// get - Return the machine instruction descriptor that corresponds to the
@@ -105,7 +62,7 @@ public:
   /// that aren't always available.
   bool isTriviallyReMaterializable(const MachineInstr *MI,
                                    AliasAnalysis *AA = 0) const {
-    return MI->getOpcode() == IMPLICIT_DEF ||
+    return MI->getOpcode() == TargetOpcode::IMPLICIT_DEF ||
            (MI->getDesc().isRematerializable() &&
             (isReallyTriviallyReMaterializable(MI, AA) ||
              isReallyTriviallyReMaterializableGeneric(MI, AA)));
@@ -142,6 +99,18 @@ public:
     return false;
   }
 
+  /// isCoalescableExtInstr - Return true if the instruction is a "coalescable"
+  /// extension instruction. That is, it's like a copy where it's legal for the
+  /// source to overlap the destination. e.g. X86::MOVSX64rr32. If this returns
+  /// true, then it's expected the pre-extension value is available as a subreg
+  /// of the result register. This also returns the sub-register index in
+  /// SubIdx.
+  virtual bool isCoalescableExtInstr(const MachineInstr &MI,
+                                     unsigned &SrcReg, unsigned &DstReg,
+                                     unsigned &SubIdx) const {
+    return false;
+  }
+
   /// isIdentityCopy - Return true if the instruction is a copy (or
   /// extract_subreg, insert_subreg, subreg_to_reg) where the source and
   /// destination registers are the same.
@@ -151,12 +120,12 @@ public:
         SrcReg == DstReg)
       return true;
 
-    if (MI.getOpcode() == TargetInstrInfo::EXTRACT_SUBREG &&
+    if (MI.getOpcode() == TargetOpcode::EXTRACT_SUBREG &&
         MI.getOperand(0).getReg() == MI.getOperand(1).getReg())
     return true;
 
-    if ((MI.getOpcode() == TargetInstrInfo::INSERT_SUBREG ||
-         MI.getOpcode() == TargetInstrInfo::SUBREG_TO_REG) &&
+    if ((MI.getOpcode() == TargetOpcode::INSERT_SUBREG ||
+         MI.getOpcode() == TargetOpcode::SUBREG_TO_REG) &&
         MI.getOperand(0).getReg() == MI.getOperand(2).getReg())
       return true;
     return false;
@@ -182,11 +151,13 @@ public:
 
   /// hasLoadFromStackSlot - If the specified machine instruction has
   /// a load from a stack slot, return true along with the FrameIndex
-  /// of the loaded stack slot.  If not, return false.  Unlike
+  /// of the loaded stack slot and the machine mem operand containing
+  /// the reference.  If not, return false.  Unlike
   /// isLoadFromStackSlot, this returns true for any instructions that
   /// loads from the stack.  This is just a hint, as some cases may be
   /// missed.
   virtual bool hasLoadFromStackSlot(const MachineInstr *MI,
+                                    const MachineMemOperand *&MMO,
                                     int &FrameIndex) const {
     return 0;
   }
@@ -205,17 +176,18 @@ public:
   /// stack locations as well.  This uses a heuristic so it isn't
   /// reliable for correctness.
   virtual unsigned isStoreToStackSlotPostFE(const MachineInstr *MI,
-                                      int &FrameIndex) const {
+                                            int &FrameIndex) const {
     return 0;
   }
 
   /// hasStoreToStackSlot - If the specified machine instruction has a
   /// store to a stack slot, return true along with the FrameIndex of
-  /// the loaded stack slot.  If not, return false.  Unlike
-  /// isStoreToStackSlot, this returns true for any instructions that
-  /// loads from the stack.  This is just a hint, as some cases may be
-  /// missed.
+  /// the loaded stack slot and the machine mem operand containing the
+  /// reference.  If not, return false.  Unlike isStoreToStackSlot,
+  /// this returns true for any instructions that stores to the
+  /// stack.  This is just a hint, as some cases may be missed.
   virtual bool hasStoreToStackSlot(const MachineInstr *MI,
+                                   const MachineMemOperand *&MMO,
                                    int &FrameIndex) const {
     return 0;
   }
@@ -227,6 +199,14 @@ public:
                              unsigned DestReg, unsigned SubIdx,
                              const MachineInstr *Orig,
                              const TargetRegisterInfo *TRI) const = 0;
+
+  /// duplicate - Create a duplicate of the Orig instruction in MF. This is like
+  /// MachineFunction::CloneMachineInstr(), but the target may update operands
+  /// that are required to be unique.
+  ///
+  /// The instruction must be duplicable as indicated by isNotDuplicable().
+  virtual MachineInstr *duplicate(MachineInstr *Orig,
+                                  MachineFunction &MF) const = 0;
 
   /// convertToThreeAddress - This method must be implemented by targets that
   /// set the M_CONVERTIBLE_TO_3_ADDR flag.  When this flag is set, the target
@@ -265,13 +245,11 @@ public:
   virtual bool findCommutedOpIndices(MachineInstr *MI, unsigned &SrcOpIdx1,
                                      unsigned &SrcOpIdx2) const = 0;
 
-  /// isIdentical - Return true if two instructions are identical. This differs
-  /// from MachineInstr::isIdenticalTo() in that it does not require the
-  /// virtual destination registers to be the same. This is used by MachineLICM
-  /// and other MI passes to perform CSE.
-  virtual bool isIdentical(const MachineInstr *MI,
-                           const MachineInstr *Other,
-                           const MachineRegisterInfo *MRI) const = 0;
+  /// produceSameValue - Return true if two machine instructions would produce
+  /// identical values. By default, this is only true when the two instructions
+  /// are deemed identical except for defs.
+  virtual bool produceSameValue(const MachineInstr *MI0,
+                                const MachineInstr *MI1) const = 0;
 
   /// AnalyzeBranch - Analyze the branching code at the end of MBB, returning
   /// true if it cannot be understood (e.g. it's a switch dispatch or isn't
@@ -282,11 +260,10 @@ public:
   ///    just return false, leaving TBB/FBB null.
   /// 2. If this block ends with only an unconditional branch, it sets TBB to be
   ///    the destination block.
-  /// 3. If this block ends with an conditional branch and it falls through to
-  ///    a successor block, it sets TBB to be the branch destination block and
-  ///    a list of operands that evaluate the condition. These
-  ///    operands can be passed to other TargetInstrInfo methods to create new
-  ///    branches.
+  /// 3. If this block ends with a conditional branch and it falls through to a
+  ///    successor block, it sets TBB to be the branch destination block and a
+  ///    list of operands that evaluate the condition. These operands can be
+  ///    passed to other TargetInstrInfo methods to create new branches.
   /// 4. If this block ends with a conditional branch followed by an
   ///    unconditional branch, it returns the 'true' destination in TBB, the
   ///    'false' destination in FBB, and a list of operands that evaluate the
@@ -338,7 +315,8 @@ public:
                             MachineBasicBlock::iterator MI,
                             unsigned DestReg, unsigned SrcReg,
                             const TargetRegisterClass *DestRC,
-                            const TargetRegisterClass *SrcRC) const {
+                            const TargetRegisterClass *SrcRC,
+                            DebugLoc DL) const {
     assert(0 && "Target didn't implement TargetInstrInfo::copyRegToReg!");
     return false;
   }
@@ -351,7 +329,8 @@ public:
   virtual void storeRegToStackSlot(MachineBasicBlock &MBB,
                                    MachineBasicBlock::iterator MI,
                                    unsigned SrcReg, bool isKill, int FrameIndex,
-                                   const TargetRegisterClass *RC) const {
+                                   const TargetRegisterClass *RC,
+                                   const TargetRegisterInfo *TRI) const {
     assert(0 && "Target didn't implement TargetInstrInfo::storeRegToStackSlot!");
   }
 
@@ -362,7 +341,8 @@ public:
   virtual void loadRegFromStackSlot(MachineBasicBlock &MBB,
                                     MachineBasicBlock::iterator MI,
                                     unsigned DestReg, int FrameIndex,
-                                    const TargetRegisterClass *RC) const {
+                                    const TargetRegisterClass *RC,
+                                    const TargetRegisterInfo *TRI) const {
     assert(0 && "Target didn't implement TargetInstrInfo::loadRegFromStackSlot!");
   }
   
@@ -386,6 +366,22 @@ public:
     return false;
   }
   
+  /// emitFrameIndexDebugValue - Emit a target-dependent form of
+  /// DBG_VALUE encoding the address of a frame index.  Addresses would
+  /// normally be lowered the same way as other addresses on the target,
+  /// e.g. in load instructions.  For targets that do not support this
+  /// the debug info is simply lost.
+  /// If you add this for a target you should handle this DBG_VALUE in the
+  /// target-specific AsmPrinter code as well; you will probably get invalid
+  /// assembly output if you don't.
+  virtual MachineInstr *emitFrameIndexDebugValue(MachineFunction &MF,
+                                                 int FrameIx,
+                                                 uint64_t Offset,
+                                                 const MDNode *MDPtr,
+                                                 DebugLoc dl) const {
+    return 0;
+  }
+
   /// foldMemoryOperand - Attempt to fold a load or store of the specified stack
   /// slot into the specified machine instruction for the specified operand(s).
   /// If this is possible, a new instruction is returned with the specified
@@ -460,12 +456,28 @@ public:
                                       unsigned *LoadRegIndex = 0) const {
     return 0;
   }
-  
-  /// BlockHasNoFallThrough - Return true if the specified block does not
-  /// fall-through into its successor block.  This is primarily used when a
-  /// branch is unanalyzable.  It is useful for things like unconditional
-  /// indirect branches (jump tables).
-  virtual bool BlockHasNoFallThrough(const MachineBasicBlock &MBB) const {
+
+  /// areLoadsFromSameBasePtr - This is used by the pre-regalloc scheduler
+  /// to determine if two loads are loading from the same base address. It
+  /// should only return true if the base pointers are the same and the
+  /// only differences between the two addresses are the offset. It also returns
+  /// the offsets by reference.
+  virtual bool areLoadsFromSameBasePtr(SDNode *Load1, SDNode *Load2,
+                                       int64_t &Offset1, int64_t &Offset2) const {
+    return false;
+  }
+
+  /// shouldScheduleLoadsNear - This is a used by the pre-regalloc scheduler to
+  /// determine (in conjuction with areLoadsFromSameBasePtr) if two loads should
+  /// be scheduled togther. On some targets if two loads are loading from
+  /// addresses in the same cache line, it's better if they are scheduled
+  /// together. This function takes two integers that represent the load offsets
+  /// from the common base address. It returns true if it decides it's desirable
+  /// to schedule the two loads together. "NumLoads" is the number of loads that
+  /// have already been scheduled after Load1.
+  virtual bool shouldScheduleLoadsNear(SDNode *Load1, SDNode *Load2,
+                                       int64_t Offset1, int64_t Offset2,
+                                       unsigned NumLoads) const {
     return false;
   }
   
@@ -481,6 +493,13 @@ public:
   /// point.
   virtual void insertNoop(MachineBasicBlock &MBB, 
                           MachineBasicBlock::iterator MI) const;
+  
+  
+  /// getNoopForMachoTarget - Return the noop instruction to use for a noop.
+  virtual void getNoopForMachoTarget(MCInst &NopInst) const {
+    // Default to just using 'nop' string.
+  }
+  
   
   /// isPredicated - Returns true if the instruction is already predicated.
   ///
@@ -543,10 +562,6 @@ public:
   /// length.
   virtual unsigned getInlineAsmLength(const char *Str,
                                       const MCAsmInfo &MAI) const;
-
-  /// isProfitableToDuplicateIndirectBranch - Returns true if tail duplication
-  /// is especially profitable for indirect branches.
-  virtual bool isProfitableToDuplicateIndirectBranch() const { return false; }
 };
 
 /// TargetInstrInfoImpl - This is the default implementation of
@@ -569,10 +584,10 @@ public:
                              unsigned DestReg, unsigned SubReg,
                              const MachineInstr *Orig,
                              const TargetRegisterInfo *TRI) const;
-  virtual bool isIdentical(const MachineInstr *MI,
-                           const MachineInstr *Other,
-                           const MachineRegisterInfo *MRI) const;
-
+  virtual MachineInstr *duplicate(MachineInstr *Orig,
+                                  MachineFunction &MF) const;
+  virtual bool produceSameValue(const MachineInstr *MI0,
+                                const MachineInstr *MI1) const;
   virtual unsigned GetFunctionSizeInBytes(const MachineFunction &MF) const;
 };
 

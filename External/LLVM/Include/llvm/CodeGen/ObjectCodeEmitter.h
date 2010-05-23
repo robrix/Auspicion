@@ -81,7 +81,7 @@ public:
   /// written to the data stream in big-endian format.
   void emitDWordBE(uint64_t W);
 
-  /// emitAlignment - Move the CurBufferPtr pointer up the the specified
+  /// emitAlignment - Move the CurBufferPtr pointer up to the specified
   /// alignment (saturated to BufferEnd of course).
   void emitAlignment(unsigned Alignment = 0, uint8_t fill = 0);
 
@@ -136,13 +136,6 @@ public:
   /// MachineBasicBlock, only usable after the label for the MBB has been
   /// emitted.
   virtual uintptr_t getMachineBasicBlockAddress(MachineBasicBlock *MBB) const;
-
-  /// emitLabel - Emits a label
-  virtual void emitLabel(uint64_t LabelID) = 0;
-
-  /// getLabelAddress - Return the address of the specified LabelID, only usable
-  /// after the LabelID has been emitted.
-  virtual uintptr_t getLabelAddress(uint64_t LabelID) const = 0;
 
   /// emitJumpTables - Emit all the jump tables for a given jump table info
   /// record to the appropriate section.

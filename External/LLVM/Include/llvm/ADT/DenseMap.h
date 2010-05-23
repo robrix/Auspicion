@@ -46,7 +46,7 @@ public:
   typedef ValueT mapped_type;
   typedef BucketT value_type;
 
-  DenseMap(const DenseMap& other) {
+  DenseMap(const DenseMap &other) {
     NumBuckets = 0;
     CopyFrom(other);
   }
@@ -55,6 +55,12 @@ public:
     init(NumInitBuckets);
   }
 
+  template<typename InputIt>
+  DenseMap(const InputIt &I, const InputIt &E) {
+    init(64);
+    insert(I, E);
+  }
+  
   ~DenseMap() {
     const KeyT EmptyKey = getEmptyKey(), TombstoneKey = getTombstoneKey();
     for (BucketT *P = Buckets, *E = Buckets+NumBuckets; P != E; ++P) {
@@ -73,13 +79,14 @@ public:
   typedef DenseMapIterator<KeyT, ValueT,
                            KeyInfoT, ValueInfoT, true> const_iterator;
   inline iterator begin() {
-     return iterator(Buckets, Buckets+NumBuckets);
+    // When the map is empty, avoid the overhead of AdvancePastEmptyBuckets().
+    return empty() ? end() : iterator(Buckets, Buckets+NumBuckets);
   }
   inline iterator end() {
     return iterator(Buckets+NumBuckets, Buckets+NumBuckets);
   }
   inline const_iterator begin() const {
-    return const_iterator(Buckets, Buckets+NumBuckets);
+    return empty() ? end() : const_iterator(Buckets, Buckets+NumBuckets);
   }
   inline const_iterator end() const {
     return const_iterator(Buckets+NumBuckets, Buckets+NumBuckets);
@@ -186,6 +193,13 @@ public:
     return true;
   }
 
+  void swap(DenseMap& RHS) {
+    std::swap(NumBuckets, RHS.NumBuckets);
+    std::swap(Buckets, RHS.Buckets);
+    std::swap(NumEntries, RHS.NumEntries);
+    std::swap(NumTombstones, RHS.NumTombstones);
+  }
+
   value_type& FindAndConstruct(const KeyT &Key) {
     BucketT *TheBucket;
     if (LookupBucketFor(Key, TheBucket))
@@ -217,7 +231,8 @@ public:
 
 private:
   void CopyFrom(const DenseMap& other) {
-    if (NumBuckets != 0 && (!KeyInfoT::isPod() || !ValueInfoT::isPod())) {
+    if (NumBuckets != 0 &&
+        (!isPodLike<KeyInfoT>::value || !isPodLike<ValueInfoT>::value)) {
       const KeyT EmptyKey = getEmptyKey(), TombstoneKey = getTombstoneKey();
       for (BucketT *P = Buckets, *E = Buckets+NumBuckets; P != E; ++P) {
         if (!KeyInfoT::isEqual(P->first, EmptyKey) &&
@@ -239,7 +254,7 @@ private:
     Buckets = static_cast<BucketT*>(operator new(sizeof(BucketT) *
                                                  other.NumBuckets));
 
-    if (KeyInfoT::isPod() && ValueInfoT::isPod())
+    if (isPodLike<KeyInfoT>::value && isPodLike<ValueInfoT>::value)
       memcpy(Buckets, other.Buckets, other.NumBuckets * sizeof(BucketT));
     else
       for (size_t i = 0; i < other.NumBuckets; ++i) {
@@ -352,7 +367,7 @@ private:
     BucketT *OldBuckets = Buckets;
 
     // Double the number of buckets.
-    while (NumBuckets <= AtLeast)
+    while (NumBuckets < AtLeast)
       NumBuckets <<= 1;
     NumTombstones = 0;
     Buckets = static_cast<BucketT*>(operator new(sizeof(BucketT)*NumBuckets));

@@ -93,10 +93,26 @@ public:
   BlockT *getHeader() const { return Blocks.front(); }
   LoopT *getParentLoop() const { return ParentLoop; }
 
-  /// contains - Return true if the specified basic block is in this loop
+  /// contains - Return true if the specified loop is contained within in
+  /// this loop.
+  ///
+  bool contains(const LoopT *L) const {
+    if (L == this) return true;
+    if (L == 0)    return false;
+    return contains(L->getParentLoop());
+  }
+    
+  /// contains - Return true if the specified basic block is in this loop.
   ///
   bool contains(const BlockT *BB) const {
     return std::find(block_begin(), block_end(), BB) != block_end();
+  }
+
+  /// contains - Return true if the specified instruction is in this loop.
+  ///
+  template<class InstT>
+  bool contains(const InstT *Inst) const {
+    return contains(Inst->getParent());
   }
 
   /// iterator/begin/end - Return the loops contained entirely within this loop.
@@ -462,11 +478,7 @@ public:
     for (iterator I = begin(), E = end(); I != E; ++I)
       (*I)->print(OS, Depth+2);
   }
-  
-  void dump() const {
-    print(errs());
-  }
-  
+
 protected:
   friend class LoopInfoBase<BlockT, LoopT>;
   explicit LoopBase(BlockT *BB) : ParentLoop(0) {
@@ -541,6 +553,10 @@ public:
   /// normal unsigned value, if possible. Returns 0 if the trip count is unknown
   /// of not constant. Will also return 0 if the trip count is very large
   /// (>= 2^32)
+  ///
+  /// The IndVarSimplify pass transforms loops to have a form that this
+  /// function easily understands.
+  ///
   unsigned getSmallConstantTripCount() const;
 
   /// getSmallConstantTripMultiple - Returns the largest constant divisor of the
@@ -555,7 +571,7 @@ public:
   unsigned getSmallConstantTripMultiple() const;
 
   /// isLCSSAForm - Return true if the Loop is in LCSSA form
-  bool isLCSSAForm() const;
+  bool isLCSSAForm(DominatorTree &DT) const;
 
   /// isLoopSimplifyForm - Return true if the Loop is in the form that
   /// the LoopSimplify form transforms loops to, which is sometimes called
@@ -568,7 +584,7 @@ public:
 
   /// getUniqueExitBlocks - Return all unique successor blocks of this loop. 
   /// These are the blocks _outside of the current loop_ which are branched to.
-  /// This assumes that loop is in canonical form.
+  /// This assumes that loop exits are in canonical form.
   ///
   void getUniqueExitBlocks(SmallVectorImpl<BasicBlock *> &ExitBlocks) const;
 
@@ -576,6 +592,8 @@ public:
   /// block, return that block. Otherwise return null.
   BasicBlock *getUniqueExitBlock() const;
 
+  void dump() const;
+  
 private:
   friend class LoopInfoBase<BasicBlock, Loop>;
   explicit Loop(BasicBlock *BB) : LoopBase<BasicBlock, Loop>(BB) {}
@@ -817,7 +835,7 @@ public:
             } else if (BlockLoop != Child) {
               LoopT *SubLoop = BlockLoop;
               // Reparent all of the blocks which used to belong to BlockLoops
-              for (unsigned j = 0, e = SubLoop->Blocks.size(); j != e; ++j)
+              for (unsigned j = 0, f = SubLoop->Blocks.size(); j != f; ++j)
                 ContainingLoops[SubLoop->Blocks[j]] = Child;
 
               // There is already a loop which contains this block, that means
@@ -975,13 +993,6 @@ public:
   /// BasicBlocks to loops.
   void removeBlock(BasicBlock *BB) {
     LI.removeBlock(BB);
-  }
-
-  static bool isNotAlreadyContainedIn(const Loop *SubLoop,
-                                      const Loop *ParentLoop) {
-    return
-      LoopInfoBase<BasicBlock, Loop>::isNotAlreadyContainedIn(SubLoop,
-                                                              ParentLoop);
   }
 };
 

@@ -6,6 +6,12 @@
 //
 //===----------------------------------------------------------------------===//
 
+// VisualStudio defines setjmp as _setjmp
+#if defined(_MSC_VER) && defined(setjmp)
+#define setjmp_undefined_for_visual_studio
+#undef setjmp
+#endif
+
 // Enum values for Intrinsics.h
 #ifdef GET_INTRINSIC_ENUM_VALUES
     alpha_umulh,                              // llvm.alpha.umulh
@@ -146,6 +152,8 @@
     atomic_load_xor,                          // llvm.atomic.load.xor
     atomic_swap,                              // llvm.atomic.swap
     bswap,                                    // llvm.bswap
+    convert_from_fp16,                        // llvm.convert.from.fp16
+    convert_to_fp16,                          // llvm.convert.to.fp16
     convertff,                                // llvm.convertff
     convertfsi,                               // llvm.convertfsi
     convertfui,                               // llvm.convertfui
@@ -160,15 +168,13 @@
     ctpop,                                    // llvm.ctpop
     cttz,                                     // llvm.cttz
     dbg_declare,                              // llvm.dbg.declare
-    dbg_func_start,                           // llvm.dbg.func.start
-    dbg_region_end,                           // llvm.dbg.region.end
-    dbg_region_start,                         // llvm.dbg.region.start
-    dbg_stoppoint,                            // llvm.dbg.stoppoint
+    dbg_value,                                // llvm.dbg.value
     eh_dwarf_cfa,                             // llvm.eh.dwarf.cfa
     eh_exception,                             // llvm.eh.exception
     eh_return_i32,                            // llvm.eh.return.i32
     eh_return_i64,                            // llvm.eh.return.i64
     eh_selector,                              // llvm.eh.selector
+    eh_sjlj_callsite,                         // llvm.eh.sjlj.callsite
     eh_sjlj_longjmp,                          // llvm.eh.sjlj.longjmp
     eh_sjlj_lsda,                             // llvm.eh.sjlj.lsda
     eh_sjlj_setjmp,                           // llvm.eh.sjlj.setjmp
@@ -459,6 +465,12 @@
     vaend,                                    // llvm.va_end
     var_annotation,                           // llvm.var.annotation
     vastart,                                  // llvm.va_start
+    x86_aesni_aesdec,                         // llvm.x86.aesni.aesdec
+    x86_aesni_aesdeclast,                     // llvm.x86.aesni.aesdeclast
+    x86_aesni_aesenc,                         // llvm.x86.aesni.aesenc
+    x86_aesni_aesenclast,                     // llvm.x86.aesni.aesenclast
+    x86_aesni_aesimc,                         // llvm.x86.aesni.aesimc
+    x86_aesni_aeskeygenassist,                // llvm.x86.aesni.aeskeygenassist
     x86_mmx_emms,                             // llvm.x86.mmx.emms
     x86_mmx_femms,                            // llvm.x86.mmx.femms
     x86_mmx_maskmovq,                         // llvm.x86.mmx.maskmovq
@@ -658,7 +670,6 @@
     x86_sse41_pmovzxwd,                       // llvm.x86.sse41.pmovzxwd
     x86_sse41_pmovzxwq,                       // llvm.x86.sse41.pmovzxwq
     x86_sse41_pmuldq,                         // llvm.x86.sse41.pmuldq
-    x86_sse41_pmulld,                         // llvm.x86.sse41.pmulld
     x86_sse41_ptestc,                         // llvm.x86.sse41.ptestc
     x86_sse41_ptestnzc,                       // llvm.x86.sse41.ptestnzc
     x86_sse41_ptestz,                         // llvm.x86.sse41.ptestz
@@ -668,8 +679,9 @@
     x86_sse41_round_ss,                       // llvm.x86.sse41.round.ss
     x86_sse42_crc32_16,                       // llvm.x86.sse42.crc32.16
     x86_sse42_crc32_32,                       // llvm.x86.sse42.crc32.32
-    x86_sse42_crc32_64,                       // llvm.x86.sse42.crc32.64
     x86_sse42_crc32_8,                        // llvm.x86.sse42.crc32.8
+    x86_sse42_crc64_64,                       // llvm.x86.sse42.crc64.64
+    x86_sse42_crc64_8,                        // llvm.x86.sse42.crc64.8
     x86_sse42_pcmpestri128,                   // llvm.x86.sse42.pcmpestri128
     x86_sse42_pcmpestria128,                  // llvm.x86.sse42.pcmpestria128
     x86_sse42_pcmpestric128,                  // llvm.x86.sse42.pcmpestric128
@@ -738,8 +750,6 @@
     x86_ssse3_pabs_d_128,                     // llvm.x86.ssse3.pabs.d.128
     x86_ssse3_pabs_w,                         // llvm.x86.ssse3.pabs.w
     x86_ssse3_pabs_w_128,                     // llvm.x86.ssse3.pabs.w.128
-    x86_ssse3_palign_r,                       // llvm.x86.ssse3.palign.r
-    x86_ssse3_palign_r_128,                   // llvm.x86.ssse3.palign.r.128
     x86_ssse3_phadd_d,                        // llvm.x86.ssse3.phadd.d
     x86_ssse3_phadd_d_128,                    // llvm.x86.ssse3.phadd.d.128
     x86_ssse3_phadd_sw,                       // llvm.x86.ssse3.phadd.sw
@@ -909,6 +919,8 @@
   "llvm.atomic.load.xor",
   "llvm.atomic.swap",
   "llvm.bswap",
+  "llvm.convert.from.fp16",
+  "llvm.convert.to.fp16",
   "llvm.convertff",
   "llvm.convertfsi",
   "llvm.convertfui",
@@ -923,15 +935,13 @@
   "llvm.ctpop",
   "llvm.cttz",
   "llvm.dbg.declare",
-  "llvm.dbg.func.start",
-  "llvm.dbg.region.end",
-  "llvm.dbg.region.start",
-  "llvm.dbg.stoppoint",
+  "llvm.dbg.value",
   "llvm.eh.dwarf.cfa",
   "llvm.eh.exception",
   "llvm.eh.return.i32",
   "llvm.eh.return.i64",
   "llvm.eh.selector",
+  "llvm.eh.sjlj.callsite",
   "llvm.eh.sjlj.longjmp",
   "llvm.eh.sjlj.lsda",
   "llvm.eh.sjlj.setjmp",
@@ -1222,6 +1232,12 @@
   "llvm.va_end",
   "llvm.var.annotation",
   "llvm.va_start",
+  "llvm.x86.aesni.aesdec",
+  "llvm.x86.aesni.aesdeclast",
+  "llvm.x86.aesni.aesenc",
+  "llvm.x86.aesni.aesenclast",
+  "llvm.x86.aesni.aesimc",
+  "llvm.x86.aesni.aeskeygenassist",
   "llvm.x86.mmx.emms",
   "llvm.x86.mmx.femms",
   "llvm.x86.mmx.maskmovq",
@@ -1421,7 +1437,6 @@
   "llvm.x86.sse41.pmovzxwd",
   "llvm.x86.sse41.pmovzxwq",
   "llvm.x86.sse41.pmuldq",
-  "llvm.x86.sse41.pmulld",
   "llvm.x86.sse41.ptestc",
   "llvm.x86.sse41.ptestnzc",
   "llvm.x86.sse41.ptestz",
@@ -1431,8 +1446,9 @@
   "llvm.x86.sse41.round.ss",
   "llvm.x86.sse42.crc32.16",
   "llvm.x86.sse42.crc32.32",
-  "llvm.x86.sse42.crc32.64",
   "llvm.x86.sse42.crc32.8",
+  "llvm.x86.sse42.crc64.64",
+  "llvm.x86.sse42.crc64.8",
   "llvm.x86.sse42.pcmpestri128",
   "llvm.x86.sse42.pcmpestria128",
   "llvm.x86.sse42.pcmpestric128",
@@ -1501,8 +1517,6 @@
   "llvm.x86.ssse3.pabs.d.128",
   "llvm.x86.ssse3.pabs.w",
   "llvm.x86.ssse3.pabs.w.128",
-  "llvm.x86.ssse3.palign.r",
-  "llvm.x86.ssse3.palign.r.128",
   "llvm.x86.ssse3.phadd.d",
   "llvm.x86.ssse3.phadd.d.128",
   "llvm.x86.ssse3.phadd.sw",
@@ -1672,6 +1686,11 @@
   true,
   true,
   true,
+  false,
+  false,
+  true,
+  true,
+  true,
   true,
   true,
   true,
@@ -1682,192 +1701,6 @@
   true,
   true,
   true,
-  true,
-  true,
-  true,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  true,
-  true,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  true,
-  true,
-  true,
-  false,
-  true,
-  true,
-  false,
-  true,
-  true,
-  false,
-  true,
-  true,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
   false,
   false,
   false,
@@ -1882,11 +1715,26 @@
   false,
   false,
   true,
-  false,
-  false,
   true,
   false,
   false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  true,
+  true,
+  true,
+  false,
+  true,
+  true,
+  false,
+  true,
+  true,
   false,
   true,
   true,
@@ -1972,6 +1820,172 @@
   false,
   false,
   false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  true,
+  false,
+  false,
+  true,
+  false,
+  false,
+  false,
+  true,
+  true,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
   true,
   true,
   false,
@@ -1981,6 +1995,10 @@
   true,
   true,
   true,
+  false,
+  false,
+  false,
+  false,
   false,
   false,
   false,
@@ -2442,6 +2460,8 @@
     if (Len > 10 && !memcmp(Name, "llvm.bswap.", 11)) return Intrinsic::bswap;
     break;
   case 'c':
+    if (Len == 22 && !memcmp(Name, "llvm.convert.from.fp16", 22)) return Intrinsic::convert_from_fp16;
+    if (Len == 20 && !memcmp(Name, "llvm.convert.to.fp16", 20)) return Intrinsic::convert_to_fp16;
     if (Len > 14 && !memcmp(Name, "llvm.convertff.", 15)) return Intrinsic::convertff;
     if (Len > 15 && !memcmp(Name, "llvm.convertfsi.", 16)) return Intrinsic::convertfsi;
     if (Len > 15 && !memcmp(Name, "llvm.convertfui.", 16)) return Intrinsic::convertfui;
@@ -2458,10 +2478,7 @@
     break;
   case 'd':
     if (Len == 16 && !memcmp(Name, "llvm.dbg.declare", 16)) return Intrinsic::dbg_declare;
-    if (Len == 19 && !memcmp(Name, "llvm.dbg.func.start", 19)) return Intrinsic::dbg_func_start;
-    if (Len == 19 && !memcmp(Name, "llvm.dbg.region.end", 19)) return Intrinsic::dbg_region_end;
-    if (Len == 21 && !memcmp(Name, "llvm.dbg.region.start", 21)) return Intrinsic::dbg_region_start;
-    if (Len == 18 && !memcmp(Name, "llvm.dbg.stoppoint", 18)) return Intrinsic::dbg_stoppoint;
+    if (Len == 14 && !memcmp(Name, "llvm.dbg.value", 14)) return Intrinsic::dbg_value;
     break;
   case 'e':
     if (Len == 17 && !memcmp(Name, "llvm.eh.dwarf.cfa", 17)) return Intrinsic::eh_dwarf_cfa;
@@ -2469,6 +2486,7 @@
     if (Len == 18 && !memcmp(Name, "llvm.eh.return.i32", 18)) return Intrinsic::eh_return_i32;
     if (Len == 18 && !memcmp(Name, "llvm.eh.return.i64", 18)) return Intrinsic::eh_return_i64;
     if (Len == 16 && !memcmp(Name, "llvm.eh.selector", 16)) return Intrinsic::eh_selector;
+    if (Len == 21 && !memcmp(Name, "llvm.eh.sjlj.callsite", 21)) return Intrinsic::eh_sjlj_callsite;
     if (Len == 20 && !memcmp(Name, "llvm.eh.sjlj.longjmp", 20)) return Intrinsic::eh_sjlj_longjmp;
     if (Len == 17 && !memcmp(Name, "llvm.eh.sjlj.lsda", 17)) return Intrinsic::eh_sjlj_lsda;
     if (Len == 19 && !memcmp(Name, "llvm.eh.sjlj.setjmp", 19)) return Intrinsic::eh_sjlj_setjmp;
@@ -2785,6 +2803,12 @@
     if (Len == 19 && !memcmp(Name, "llvm.var.annotation", 19)) return Intrinsic::var_annotation;
     break;
   case 'x':
+    if (Len == 21 && !memcmp(Name, "llvm.x86.aesni.aesdec", 21)) return Intrinsic::x86_aesni_aesdec;
+    if (Len == 25 && !memcmp(Name, "llvm.x86.aesni.aesdeclast", 25)) return Intrinsic::x86_aesni_aesdeclast;
+    if (Len == 21 && !memcmp(Name, "llvm.x86.aesni.aesenc", 21)) return Intrinsic::x86_aesni_aesenc;
+    if (Len == 25 && !memcmp(Name, "llvm.x86.aesni.aesenclast", 25)) return Intrinsic::x86_aesni_aesenclast;
+    if (Len == 21 && !memcmp(Name, "llvm.x86.aesni.aesimc", 21)) return Intrinsic::x86_aesni_aesimc;
+    if (Len == 30 && !memcmp(Name, "llvm.x86.aesni.aeskeygenassist", 30)) return Intrinsic::x86_aesni_aeskeygenassist;
     if (Len == 17 && !memcmp(Name, "llvm.x86.mmx.emms", 17)) return Intrinsic::x86_mmx_emms;
     if (Len == 18 && !memcmp(Name, "llvm.x86.mmx.femms", 18)) return Intrinsic::x86_mmx_femms;
     if (Len == 21 && !memcmp(Name, "llvm.x86.mmx.maskmovq", 21)) return Intrinsic::x86_mmx_maskmovq;
@@ -3031,7 +3055,6 @@
     if (Len == 23 && !memcmp(Name, "llvm.x86.sse41.pmovzxwd", 23)) return Intrinsic::x86_sse41_pmovzxwd;
     if (Len == 23 && !memcmp(Name, "llvm.x86.sse41.pmovzxwq", 23)) return Intrinsic::x86_sse41_pmovzxwq;
     if (Len == 21 && !memcmp(Name, "llvm.x86.sse41.pmuldq", 21)) return Intrinsic::x86_sse41_pmuldq;
-    if (Len == 21 && !memcmp(Name, "llvm.x86.sse41.pmulld", 21)) return Intrinsic::x86_sse41_pmulld;
     if (Len == 21 && !memcmp(Name, "llvm.x86.sse41.ptestc", 21)) return Intrinsic::x86_sse41_ptestc;
     if (Len == 23 && !memcmp(Name, "llvm.x86.sse41.ptestnzc", 23)) return Intrinsic::x86_sse41_ptestnzc;
     if (Len == 21 && !memcmp(Name, "llvm.x86.sse41.ptestz", 21)) return Intrinsic::x86_sse41_ptestz;
@@ -3041,8 +3064,9 @@
     if (Len == 23 && !memcmp(Name, "llvm.x86.sse41.round.ss", 23)) return Intrinsic::x86_sse41_round_ss;
     if (Len == 23 && !memcmp(Name, "llvm.x86.sse42.crc32.16", 23)) return Intrinsic::x86_sse42_crc32_16;
     if (Len == 23 && !memcmp(Name, "llvm.x86.sse42.crc32.32", 23)) return Intrinsic::x86_sse42_crc32_32;
-    if (Len == 23 && !memcmp(Name, "llvm.x86.sse42.crc32.64", 23)) return Intrinsic::x86_sse42_crc32_64;
     if (Len == 22 && !memcmp(Name, "llvm.x86.sse42.crc32.8", 22)) return Intrinsic::x86_sse42_crc32_8;
+    if (Len == 23 && !memcmp(Name, "llvm.x86.sse42.crc64.64", 23)) return Intrinsic::x86_sse42_crc64_64;
+    if (Len == 22 && !memcmp(Name, "llvm.x86.sse42.crc64.8", 22)) return Intrinsic::x86_sse42_crc64_8;
     if (Len == 27 && !memcmp(Name, "llvm.x86.sse42.pcmpestri128", 27)) return Intrinsic::x86_sse42_pcmpestri128;
     if (Len == 28 && !memcmp(Name, "llvm.x86.sse42.pcmpestria128", 28)) return Intrinsic::x86_sse42_pcmpestria128;
     if (Len == 28 && !memcmp(Name, "llvm.x86.sse42.pcmpestric128", 28)) return Intrinsic::x86_sse42_pcmpestric128;
@@ -3064,8 +3088,6 @@
     if (Len == 25 && !memcmp(Name, "llvm.x86.ssse3.pabs.d.128", 25)) return Intrinsic::x86_ssse3_pabs_d_128;
     if (Len == 21 && !memcmp(Name, "llvm.x86.ssse3.pabs.w", 21)) return Intrinsic::x86_ssse3_pabs_w;
     if (Len == 25 && !memcmp(Name, "llvm.x86.ssse3.pabs.w.128", 25)) return Intrinsic::x86_ssse3_pabs_w_128;
-    if (Len == 23 && !memcmp(Name, "llvm.x86.ssse3.palign.r", 23)) return Intrinsic::x86_ssse3_palign_r;
-    if (Len == 27 && !memcmp(Name, "llvm.x86.ssse3.palign.r.128", 27)) return Intrinsic::x86_ssse3_palign_r_128;
     if (Len == 22 && !memcmp(Name, "llvm.x86.ssse3.phadd.d", 22)) return Intrinsic::x86_ssse3_phadd_d;
     if (Len == 26 && !memcmp(Name, "llvm.x86.ssse3.phadd.d.128", 26)) return Intrinsic::x86_ssse3_phadd_d_128;
     if (Len == 23 && !memcmp(Name, "llvm.x86.ssse3.phadd.sw", 23)) return Intrinsic::x86_ssse3_phadd_sw;
@@ -3099,6 +3121,158 @@
 #ifdef GET_INTRINSIC_VERIFIER
   switch (ID) {
   default: assert(0 && "Invalid intrinsic!");
+  case Intrinsic::eh_unwind_init:		// llvm.eh.unwind.init
+  case Intrinsic::ppc_altivec_dssall:		// llvm.ppc.altivec.dssall
+  case Intrinsic::ppc_sync:		// llvm.ppc.sync
+  case Intrinsic::trap:		// llvm.trap
+  case Intrinsic::x86_mmx_emms:		// llvm.x86.mmx.emms
+  case Intrinsic::x86_mmx_femms:		// llvm.x86.mmx.femms
+  case Intrinsic::x86_sse2_lfence:		// llvm.x86.sse2.lfence
+  case Intrinsic::x86_sse2_mfence:		// llvm.x86.sse2.mfence
+  case Intrinsic::x86_sse_sfence:		// llvm.x86.sse.sfence
+    VerifyIntrinsicPrototype(ID, IF, 0, 0);
+    break;
+  case Intrinsic::memcpy:		// llvm.memcpy
+  case Intrinsic::memmove:		// llvm.memmove
+    VerifyIntrinsicPrototype(ID, IF, 0, 5, MVT::iPTRAny, MVT::iPTRAny, MVT::iAny, MVT::i32, MVT::i1);
+    break;
+  case Intrinsic::memset:		// llvm.memset
+    VerifyIntrinsicPrototype(ID, IF, 0, 5, MVT::iPTRAny, MVT::i8, MVT::iAny, MVT::i32, MVT::i1);
+    break;
+  case Intrinsic::invariant_end:		// llvm.invariant.end
+    VerifyIntrinsicPrototype(ID, IF, 0, 3, MVT::iPTR, MVT::i64, MVT::iPTR);
+    break;
+  case Intrinsic::memory_barrier:		// llvm.memory.barrier
+    VerifyIntrinsicPrototype(ID, IF, 0, 5, MVT::i1, MVT::i1, MVT::i1, MVT::i1, MVT::i1);
+    break;
+  case Intrinsic::eh_sjlj_callsite:		// llvm.eh.sjlj.callsite
+  case Intrinsic::pcmarker:		// llvm.pcmarker
+  case Intrinsic::ppc_altivec_dss:		// llvm.ppc.altivec.dss
+    VerifyIntrinsicPrototype(ID, IF, 0, 1, MVT::i32);
+    break;
+  case Intrinsic::x86_sse3_mwait:		// llvm.x86.sse3.mwait
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::i32, MVT::i32);
+    break;
+  case Intrinsic::eh_return_i32:		// llvm.eh.return.i32
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::i32, MVT::iPTR);
+    break;
+  case Intrinsic::eh_return_i64:		// llvm.eh.return.i64
+  case Intrinsic::lifetime_end:		// llvm.lifetime.end
+  case Intrinsic::lifetime_start:		// llvm.lifetime.start
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::i64, MVT::iPTR);
+    break;
+  case Intrinsic::dbg_value:		// llvm.dbg.value
+    VerifyIntrinsicPrototype(ID, IF, 0, 3, MVT::Metadata, MVT::i64, MVT::Metadata);
+    break;
+  case Intrinsic::dbg_declare:		// llvm.dbg.declare
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::Metadata, MVT::Metadata);
+    break;
+  case Intrinsic::eh_sjlj_longjmp:		// llvm.eh.sjlj.longjmp
+  case Intrinsic::ppc_dcba:		// llvm.ppc.dcba
+  case Intrinsic::ppc_dcbf:		// llvm.ppc.dcbf
+  case Intrinsic::ppc_dcbi:		// llvm.ppc.dcbi
+  case Intrinsic::ppc_dcbst:		// llvm.ppc.dcbst
+  case Intrinsic::ppc_dcbt:		// llvm.ppc.dcbt
+  case Intrinsic::ppc_dcbtst:		// llvm.ppc.dcbtst
+  case Intrinsic::ppc_dcbz:		// llvm.ppc.dcbz
+  case Intrinsic::ppc_dcbzl:		// llvm.ppc.dcbzl
+  case Intrinsic::stackrestore:		// llvm.stackrestore
+  case Intrinsic::vaend:		// llvm.va_end
+  case Intrinsic::vastart:		// llvm.va_start
+  case Intrinsic::x86_sse2_clflush:		// llvm.x86.sse2.clflush
+  case Intrinsic::x86_sse_ldmxcsr:		// llvm.x86.sse.ldmxcsr
+  case Intrinsic::x86_sse_stmxcsr:		// llvm.x86.sse.stmxcsr
+    VerifyIntrinsicPrototype(ID, IF, 0, 1, MVT::iPTR);
+    break;
+  case Intrinsic::arm_neon_vst1:		// llvm.arm.neon.vst1
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::vAny);
+    break;
+  case Intrinsic::arm_neon_vst2:		// llvm.arm.neon.vst2
+    VerifyIntrinsicPrototype(ID, IF, 0, 3, MVT::iPTR, MVT::vAny, ~1);
+    break;
+  case Intrinsic::arm_neon_vst3:		// llvm.arm.neon.vst3
+    VerifyIntrinsicPrototype(ID, IF, 0, 4, MVT::iPTR, MVT::vAny, ~1, ~1);
+    break;
+  case Intrinsic::arm_neon_vst4:		// llvm.arm.neon.vst4
+    VerifyIntrinsicPrototype(ID, IF, 0, 5, MVT::iPTR, MVT::vAny, ~1, ~1, ~1);
+    break;
+  case Intrinsic::arm_neon_vst2lane:		// llvm.arm.neon.vst2lane
+    VerifyIntrinsicPrototype(ID, IF, 0, 4, MVT::iPTR, MVT::vAny, ~1, MVT::i32);
+    break;
+  case Intrinsic::arm_neon_vst3lane:		// llvm.arm.neon.vst3lane
+    VerifyIntrinsicPrototype(ID, IF, 0, 5, MVT::iPTR, MVT::vAny, ~1, ~1, MVT::i32);
+    break;
+  case Intrinsic::arm_neon_vst4lane:		// llvm.arm.neon.vst4lane
+    VerifyIntrinsicPrototype(ID, IF, 0, 6, MVT::iPTR, MVT::vAny, ~1, ~1, ~1, MVT::i32);
+    break;
+  case Intrinsic::longjmp:		// llvm.longjmp
+  case Intrinsic::siglongjmp:		// llvm.siglongjmp
+  case Intrinsic::x86_sse2_movnt_i:		// llvm.x86.sse2.movnt.i
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::i32);
+    break;
+  case Intrinsic::ppc_altivec_dst:		// llvm.ppc.altivec.dst
+  case Intrinsic::ppc_altivec_dstst:		// llvm.ppc.altivec.dstst
+  case Intrinsic::ppc_altivec_dststt:		// llvm.ppc.altivec.dststt
+  case Intrinsic::ppc_altivec_dstt:		// llvm.ppc.altivec.dstt
+  case Intrinsic::prefetch:		// llvm.prefetch
+  case Intrinsic::x86_sse3_monitor:		// llvm.x86.sse3.monitor
+    VerifyIntrinsicPrototype(ID, IF, 0, 3, MVT::iPTR, MVT::i32, MVT::i32);
+    break;
+  case Intrinsic::vacopy:		// llvm.va_copy
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::iPTR);
+    break;
+  case Intrinsic::var_annotation:		// llvm.var.annotation
+    VerifyIntrinsicPrototype(ID, IF, 0, 4, MVT::iPTR, MVT::iPTR, MVT::iPTR, MVT::i32);
+    break;
+  case Intrinsic::gcwrite:		// llvm.gcwrite
+    VerifyIntrinsicPrototype(ID, IF, 0, 3, MVT::iPTR, MVT::iPTR, MVT::iPTR);
+    break;
+  case Intrinsic::stackprotector:		// llvm.stackprotector
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::iPTR);
+    break;
+  case Intrinsic::x86_sse2_storeu_dq:		// llvm.x86.sse2.storeu.dq
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::v16i8);
+    break;
+  case Intrinsic::x86_mmx_movnt_dq:		// llvm.x86.mmx.movnt.dq
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::v1i64);
+    break;
+  case Intrinsic::x86_sse2_movnt_pd:		// llvm.x86.sse2.movnt.pd
+  case Intrinsic::x86_sse2_storeu_pd:		// llvm.x86.sse2.storeu.pd
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::v2f64);
+    break;
+  case Intrinsic::x86_sse2_movnt_dq:		// llvm.x86.sse2.movnt.dq
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::v2i64);
+    break;
+  case Intrinsic::x86_sse_movnt_ps:		// llvm.x86.sse.movnt.ps
+  case Intrinsic::x86_sse_storeu_ps:		// llvm.x86.sse.storeu.ps
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::v4f32);
+    break;
+  case Intrinsic::x86_sse2_storel_dq:		// llvm.x86.sse2.storel.dq
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::v4i32);
+    break;
+  case Intrinsic::gcroot:		// llvm.gcroot
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::iPTR, MVT::iPTR);
+    break;
+  case Intrinsic::ppc_altivec_stvebx:		// llvm.ppc.altivec.stvebx
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::v16i8, MVT::iPTR);
+    break;
+  case Intrinsic::x86_sse2_maskmov_dqu:		// llvm.x86.sse2.maskmov.dqu
+    VerifyIntrinsicPrototype(ID, IF, 0, 3, MVT::v16i8, MVT::v16i8, MVT::iPTR);
+    break;
+  case Intrinsic::ppc_altivec_mtvscr:		// llvm.ppc.altivec.mtvscr
+    VerifyIntrinsicPrototype(ID, IF, 0, 1, MVT::v4i32);
+    break;
+  case Intrinsic::ppc_altivec_stvewx:		// llvm.ppc.altivec.stvewx
+  case Intrinsic::ppc_altivec_stvx:		// llvm.ppc.altivec.stvx
+  case Intrinsic::ppc_altivec_stvxl:		// llvm.ppc.altivec.stvxl
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::v4i32, MVT::iPTR);
+    break;
+  case Intrinsic::ppc_altivec_stvehx:		// llvm.ppc.altivec.stvehx
+    VerifyIntrinsicPrototype(ID, IF, 0, 2, MVT::v8i16, MVT::iPTR);
+    break;
+  case Intrinsic::x86_mmx_maskmovq:		// llvm.x86.mmx.maskmovq
+    VerifyIntrinsicPrototype(ID, IF, 0, 3, MVT::v8i8, MVT::v8i8, MVT::iPTR);
+    break;
   case Intrinsic::ptr_annotation:		// llvm.ptr.annotation
     VerifyIntrinsicPrototype(ID, IF, 1, 4, MVT::iPTRAny, ~0, MVT::iPTR, MVT::iPTR, MVT::i32);
     break;
@@ -3209,7 +3383,7 @@
     VerifyIntrinsicPrototype(ID, IF, 1, 3, MVT::iAny, MVT::iAny, MVT::i32, MVT::i32);
     break;
   case Intrinsic::objectsize:		// llvm.objectsize
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::iAny, MVT::iPTR, MVT::i32);
+    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::iAny, MVT::iPTR, MVT::i1);
     break;
   case Intrinsic::sadd_with_overflow:		// llvm.sadd.with.overflow
     VerifyIntrinsicPrototype(ID, IF, 2, 2, MVT::iAny, MVT::i1, ~0, ~0);
@@ -3369,6 +3543,12 @@
   case Intrinsic::invariant_start:		// llvm.invariant.start
     VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::iPTR, MVT::i64, MVT::iPTR);
     break;
+  case Intrinsic::convert_from_fp16:		// llvm.convert.from.fp16
+    VerifyIntrinsicPrototype(ID, IF, 1, 1, MVT::f32, MVT::i16);
+    break;
+  case Intrinsic::convert_to_fp16:		// llvm.convert.to.fp16
+    VerifyIntrinsicPrototype(ID, IF, 1, 1, MVT::i16, MVT::f32);
+    break;
   case Intrinsic::flt_rounds:		// llvm.flt.rounds
   case Intrinsic::xcore_getid:		// llvm.xcore.getid
     VerifyIntrinsicPrototype(ID, IF, 1, 0, MVT::i32);
@@ -3493,8 +3673,11 @@
     VerifyIntrinsicPrototype(ID, IF, 1, 0, MVT::i64);
     break;
   case Intrinsic::alpha_umulh:		// llvm.alpha.umulh
-  case Intrinsic::x86_sse42_crc32_64:		// llvm.x86.sse42.crc32.64
+  case Intrinsic::x86_sse42_crc64_64:		// llvm.x86.sse42.crc64.64
     VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::i64, MVT::i64, MVT::i64);
+    break;
+  case Intrinsic::x86_sse42_crc64_8:		// llvm.x86.sse42.crc64.8
+    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::i64, MVT::i64, MVT::i8);
     break;
   case Intrinsic::x86_sse2_cvtsd2si64:		// llvm.x86.sse2.cvtsd2si64
   case Intrinsic::x86_sse2_cvttsd2si64:		// llvm.x86.sse2.cvttsd2si64
@@ -3611,9 +3794,6 @@
   case Intrinsic::x86_mmx_psrl_q:		// llvm.x86.mmx.psrl.q
     VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::v1i64, MVT::v1i64, MVT::v1i64);
     break;
-  case Intrinsic::x86_ssse3_palign_r:		// llvm.x86.ssse3.palign.r
-    VerifyIntrinsicPrototype(ID, IF, 1, 3, MVT::v1i64, MVT::v1i64, MVT::v1i64, MVT::i8);
-    break;
   case Intrinsic::x86_sse2_loadu_pd:		// llvm.x86.sse2.loadu.pd
     VerifyIntrinsicPrototype(ID, IF, 1, 1, MVT::v2f64, MVT::iPTR);
     break;
@@ -3718,6 +3898,10 @@
   case Intrinsic::x86_sse2_psad_bw:		// llvm.x86.sse2.psad.bw
     VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::v2i64, MVT::v16i8, MVT::v16i8);
     break;
+  case Intrinsic::x86_aesni_aesimc:		// llvm.x86.aesni.aesimc
+    VerifyIntrinsicPrototype(ID, IF, 1, 1, MVT::v2i64, MVT::v2i64);
+    break;
+  case Intrinsic::x86_aesni_aeskeygenassist:		// llvm.x86.aesni.aeskeygenassist
   case Intrinsic::x86_sse2_psll_dq:		// llvm.x86.sse2.psll.dq
   case Intrinsic::x86_sse2_psll_dq_bs:		// llvm.x86.sse2.psll.dq.bs
   case Intrinsic::x86_sse2_pslli_q:		// llvm.x86.sse2.pslli.q
@@ -3726,14 +3910,15 @@
   case Intrinsic::x86_sse2_psrli_q:		// llvm.x86.sse2.psrli.q
     VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::v2i64, MVT::v2i64, MVT::i32);
     break;
+  case Intrinsic::x86_aesni_aesdec:		// llvm.x86.aesni.aesdec
+  case Intrinsic::x86_aesni_aesdeclast:		// llvm.x86.aesni.aesdeclast
+  case Intrinsic::x86_aesni_aesenc:		// llvm.x86.aesni.aesenc
+  case Intrinsic::x86_aesni_aesenclast:		// llvm.x86.aesni.aesenclast
   case Intrinsic::x86_sse2_psll_q:		// llvm.x86.sse2.psll.q
   case Intrinsic::x86_sse2_psrl_q:		// llvm.x86.sse2.psrl.q
   case Intrinsic::x86_sse41_pcmpeqq:		// llvm.x86.sse41.pcmpeqq
   case Intrinsic::x86_sse42_pcmpgtq:		// llvm.x86.sse42.pcmpgtq
     VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::v2i64, MVT::v2i64, MVT::v2i64);
-    break;
-  case Intrinsic::x86_ssse3_palign_r_128:		// llvm.x86.ssse3.palign.r.128
-    VerifyIntrinsicPrototype(ID, IF, 1, 3, MVT::v2i64, MVT::v2i64, MVT::v2i64, MVT::i8);
     break;
   case Intrinsic::x86_sse41_pmovsxdq:		// llvm.x86.sse41.pmovsxdq
   case Intrinsic::x86_sse41_pmovzxdq:		// llvm.x86.sse41.pmovzxdq
@@ -3978,7 +4163,6 @@
   case Intrinsic::x86_sse41_pmaxud:		// llvm.x86.sse41.pmaxud
   case Intrinsic::x86_sse41_pminsd:		// llvm.x86.sse41.pminsd
   case Intrinsic::x86_sse41_pminud:		// llvm.x86.sse41.pminud
-  case Intrinsic::x86_sse41_pmulld:		// llvm.x86.sse41.pmulld
   case Intrinsic::x86_ssse3_phadd_d_128:		// llvm.x86.ssse3.phadd.d.128
   case Intrinsic::x86_ssse3_phadd_sw_128:		// llvm.x86.ssse3.phadd.sw.128
   case Intrinsic::x86_ssse3_phsub_d_128:		// llvm.x86.ssse3.phsub.d.128
@@ -4169,6 +4353,13 @@
   case Intrinsic::arm_neon_vtbx4:		// llvm.arm.neon.vtbx4
     VerifyIntrinsicPrototype(ID, IF, 1, 6, MVT::v8i8, MVT::v8i8, MVT::v8i8, MVT::v8i8, MVT::v8i8, MVT::v8i8, MVT::v8i8);
     break;
+  }
+#endif
+
+// Code for generating Intrinsic function declarations.
+#ifdef GET_INTRINSIC_GENERATOR
+  switch (id) {
+  default: assert(0 && "Invalid intrinsic!");
   case Intrinsic::eh_unwind_init:		// llvm.eh.unwind.init
   case Intrinsic::ppc_altivec_dssall:		// llvm.ppc.altivec.dssall
   case Intrinsic::ppc_sync:		// llvm.ppc.sync
@@ -4178,39 +4369,72 @@
   case Intrinsic::x86_sse2_lfence:		// llvm.x86.sse2.lfence
   case Intrinsic::x86_sse2_mfence:		// llvm.x86.sse2.mfence
   case Intrinsic::x86_sse_sfence:		// llvm.x86.sse.sfence
-    VerifyIntrinsicPrototype(ID, IF, 1, 0, MVT::isVoid);
+    ResultTy = Type::getVoidTy(Context);
+    break;
+  case Intrinsic::memcpy:		// llvm.memcpy
+  case Intrinsic::memmove:		// llvm.memmove
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back((0 < numTys) ? Tys[0] : PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back((1 < numTys) ? Tys[1] : PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(Tys[2]);
+    ArgTys.push_back(IntegerType::get(Context, 32));
+    ArgTys.push_back(IntegerType::get(Context, 1));
+    break;
+  case Intrinsic::memset:		// llvm.memset
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back((0 < numTys) ? Tys[0] : PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(IntegerType::get(Context, 8));
+    ArgTys.push_back(Tys[1]);
+    ArgTys.push_back(IntegerType::get(Context, 32));
+    ArgTys.push_back(IntegerType::get(Context, 1));
     break;
   case Intrinsic::invariant_end:		// llvm.invariant.end
-    VerifyIntrinsicPrototype(ID, IF, 1, 3, MVT::isVoid, MVT::iPTR, MVT::i64, MVT::iPTR);
-    break;
-  case Intrinsic::dbg_declare:		// llvm.dbg.declare
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::Metadata);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(StructType::get(Context)));
+    ArgTys.push_back(IntegerType::get(Context, 64));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
   case Intrinsic::memory_barrier:		// llvm.memory.barrier
-    VerifyIntrinsicPrototype(ID, IF, 1, 5, MVT::isVoid, MVT::i1, MVT::i1, MVT::i1, MVT::i1, MVT::i1);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(IntegerType::get(Context, 1));
+    ArgTys.push_back(IntegerType::get(Context, 1));
+    ArgTys.push_back(IntegerType::get(Context, 1));
+    ArgTys.push_back(IntegerType::get(Context, 1));
+    ArgTys.push_back(IntegerType::get(Context, 1));
     break;
+  case Intrinsic::eh_sjlj_callsite:		// llvm.eh.sjlj.callsite
   case Intrinsic::pcmarker:		// llvm.pcmarker
   case Intrinsic::ppc_altivec_dss:		// llvm.ppc.altivec.dss
-    VerifyIntrinsicPrototype(ID, IF, 1, 1, MVT::isVoid, MVT::i32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(IntegerType::get(Context, 32));
     break;
   case Intrinsic::x86_sse3_mwait:		// llvm.x86.sse3.mwait
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::i32, MVT::i32);
-    break;
-  case Intrinsic::dbg_stoppoint:		// llvm.dbg.stoppoint
-    VerifyIntrinsicPrototype(ID, IF, 1, 3, MVT::isVoid, MVT::i32, MVT::i32, MVT::Metadata);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(IntegerType::get(Context, 32));
+    ArgTys.push_back(IntegerType::get(Context, 32));
     break;
   case Intrinsic::eh_return_i32:		// llvm.eh.return.i32
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::i32, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(IntegerType::get(Context, 32));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
   case Intrinsic::eh_return_i64:		// llvm.eh.return.i64
   case Intrinsic::lifetime_end:		// llvm.lifetime.end
   case Intrinsic::lifetime_start:		// llvm.lifetime.start
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::i64, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(IntegerType::get(Context, 64));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
-  case Intrinsic::dbg_func_start:		// llvm.dbg.func.start
-  case Intrinsic::dbg_region_end:		// llvm.dbg.region.end
-  case Intrinsic::dbg_region_start:		// llvm.dbg.region.start
-    VerifyIntrinsicPrototype(ID, IF, 1, 1, MVT::isVoid, MVT::Metadata);
+  case Intrinsic::dbg_value:		// llvm.dbg.value
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(Type::getMetadataTy(Context));
+    ArgTys.push_back(IntegerType::get(Context, 64));
+    ArgTys.push_back(Type::getMetadataTy(Context));
+    break;
+  case Intrinsic::dbg_declare:		// llvm.dbg.declare
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(Type::getMetadataTy(Context));
+    ArgTys.push_back(Type::getMetadataTy(Context));
     break;
   case Intrinsic::eh_sjlj_longjmp:		// llvm.eh.sjlj.longjmp
   case Intrinsic::ppc_dcba:		// llvm.ppc.dcba
@@ -4227,33 +4451,65 @@
   case Intrinsic::x86_sse2_clflush:		// llvm.x86.sse2.clflush
   case Intrinsic::x86_sse_ldmxcsr:		// llvm.x86.sse.ldmxcsr
   case Intrinsic::x86_sse_stmxcsr:		// llvm.x86.sse.stmxcsr
-    VerifyIntrinsicPrototype(ID, IF, 1, 1, MVT::isVoid, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
   case Intrinsic::arm_neon_vst1:		// llvm.arm.neon.vst1
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::vAny);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(Tys[0]);
     break;
   case Intrinsic::arm_neon_vst2:		// llvm.arm.neon.vst2
-    VerifyIntrinsicPrototype(ID, IF, 1, 3, MVT::isVoid, MVT::iPTR, MVT::vAny, ~2);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
     break;
   case Intrinsic::arm_neon_vst3:		// llvm.arm.neon.vst3
-    VerifyIntrinsicPrototype(ID, IF, 1, 4, MVT::isVoid, MVT::iPTR, MVT::vAny, ~2, ~2);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
     break;
   case Intrinsic::arm_neon_vst4:		// llvm.arm.neon.vst4
-    VerifyIntrinsicPrototype(ID, IF, 1, 5, MVT::isVoid, MVT::iPTR, MVT::vAny, ~2, ~2, ~2);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
     break;
   case Intrinsic::arm_neon_vst2lane:		// llvm.arm.neon.vst2lane
-    VerifyIntrinsicPrototype(ID, IF, 1, 4, MVT::isVoid, MVT::iPTR, MVT::vAny, ~2, MVT::i32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(IntegerType::get(Context, 32));
     break;
   case Intrinsic::arm_neon_vst3lane:		// llvm.arm.neon.vst3lane
-    VerifyIntrinsicPrototype(ID, IF, 1, 5, MVT::isVoid, MVT::iPTR, MVT::vAny, ~2, ~2, MVT::i32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(IntegerType::get(Context, 32));
     break;
   case Intrinsic::arm_neon_vst4lane:		// llvm.arm.neon.vst4lane
-    VerifyIntrinsicPrototype(ID, IF, 1, 6, MVT::isVoid, MVT::iPTR, MVT::vAny, ~2, ~2, ~2, MVT::i32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(Tys[0]);
+    ArgTys.push_back(IntegerType::get(Context, 32));
     break;
   case Intrinsic::longjmp:		// llvm.longjmp
   case Intrinsic::siglongjmp:		// llvm.siglongjmp
   case Intrinsic::x86_sse2_movnt_i:		// llvm.x86.sse2.movnt.i
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::i32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(IntegerType::get(Context, 32));
     break;
   case Intrinsic::ppc_altivec_dst:		// llvm.ppc.altivec.dst
   case Intrinsic::ppc_altivec_dstst:		// llvm.ppc.altivec.dstst
@@ -4261,77 +4517,104 @@
   case Intrinsic::ppc_altivec_dstt:		// llvm.ppc.altivec.dstt
   case Intrinsic::prefetch:		// llvm.prefetch
   case Intrinsic::x86_sse3_monitor:		// llvm.x86.sse3.monitor
-    VerifyIntrinsicPrototype(ID, IF, 1, 3, MVT::isVoid, MVT::iPTR, MVT::i32, MVT::i32);
-    break;
-  case Intrinsic::memset:		// llvm.memset
-    VerifyIntrinsicPrototype(ID, IF, 1, 4, MVT::isVoid, MVT::iPTR, MVT::i8, MVT::iAny, MVT::i32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(IntegerType::get(Context, 32));
+    ArgTys.push_back(IntegerType::get(Context, 32));
     break;
   case Intrinsic::vacopy:		// llvm.va_copy
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::iPTR);
-    break;
-  case Intrinsic::memcpy:		// llvm.memcpy
-  case Intrinsic::memmove:		// llvm.memmove
-    VerifyIntrinsicPrototype(ID, IF, 1, 4, MVT::isVoid, MVT::iPTR, MVT::iPTR, MVT::iAny, MVT::i32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
   case Intrinsic::var_annotation:		// llvm.var.annotation
-    VerifyIntrinsicPrototype(ID, IF, 1, 4, MVT::isVoid, MVT::iPTR, MVT::iPTR, MVT::iPTR, MVT::i32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(IntegerType::get(Context, 32));
     break;
   case Intrinsic::gcwrite:		// llvm.gcwrite
-    VerifyIntrinsicPrototype(ID, IF, 1, 3, MVT::isVoid, MVT::iPTR, MVT::iPTR, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(PointerType::getUnqual(PointerType::getUnqual(IntegerType::get(Context, 8))));
     break;
   case Intrinsic::stackprotector:		// llvm.stackprotector
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(PointerType::getUnqual(PointerType::getUnqual(IntegerType::get(Context, 8))));
     break;
   case Intrinsic::x86_sse2_storeu_dq:		// llvm.x86.sse2.storeu.dq
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::v16i8);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 16));
     break;
   case Intrinsic::x86_mmx_movnt_dq:		// llvm.x86.mmx.movnt.dq
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::v1i64);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 1));
     break;
   case Intrinsic::x86_sse2_movnt_pd:		// llvm.x86.sse2.movnt.pd
   case Intrinsic::x86_sse2_storeu_pd:		// llvm.x86.sse2.storeu.pd
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::v2f64);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(VectorType::get(Type::getDoubleTy(Context), 2));
     break;
   case Intrinsic::x86_sse2_movnt_dq:		// llvm.x86.sse2.movnt.dq
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::v2i64);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 2));
     break;
   case Intrinsic::x86_sse_movnt_ps:		// llvm.x86.sse.movnt.ps
   case Intrinsic::x86_sse_storeu_ps:		// llvm.x86.sse.storeu.ps
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::v4f32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(VectorType::get(Type::getFloatTy(Context), 4));
     break;
   case Intrinsic::x86_sse2_storel_dq:		// llvm.x86.sse2.storel.dq
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::v4i32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 32), 4));
     break;
   case Intrinsic::gcroot:		// llvm.gcroot
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::iPTR, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(PointerType::getUnqual(PointerType::getUnqual(IntegerType::get(Context, 8))));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
   case Intrinsic::ppc_altivec_stvebx:		// llvm.ppc.altivec.stvebx
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::v16i8, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 16));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
   case Intrinsic::x86_sse2_maskmov_dqu:		// llvm.x86.sse2.maskmov.dqu
-    VerifyIntrinsicPrototype(ID, IF, 1, 3, MVT::isVoid, MVT::v16i8, MVT::v16i8, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 16));
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 16));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
   case Intrinsic::ppc_altivec_mtvscr:		// llvm.ppc.altivec.mtvscr
-    VerifyIntrinsicPrototype(ID, IF, 1, 1, MVT::isVoid, MVT::v4i32);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 32), 4));
     break;
   case Intrinsic::ppc_altivec_stvewx:		// llvm.ppc.altivec.stvewx
   case Intrinsic::ppc_altivec_stvx:		// llvm.ppc.altivec.stvx
   case Intrinsic::ppc_altivec_stvxl:		// llvm.ppc.altivec.stvxl
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::v4i32, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 32), 4));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
   case Intrinsic::ppc_altivec_stvehx:		// llvm.ppc.altivec.stvehx
-    VerifyIntrinsicPrototype(ID, IF, 1, 2, MVT::isVoid, MVT::v8i16, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 16), 8));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
   case Intrinsic::x86_mmx_maskmovq:		// llvm.x86.mmx.maskmovq
-    VerifyIntrinsicPrototype(ID, IF, 1, 3, MVT::isVoid, MVT::v8i8, MVT::v8i8, MVT::iPTR);
+    ResultTy = Type::getVoidTy(Context);
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 8));
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 8));
+    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
-  }
-#endif
-
-// Code for generating Intrinsic function declarations.
-#ifdef GET_INTRINSIC_GENERATOR
-  switch (id) {
-  default: assert(0 && "Invalid intrinsic!");
   case Intrinsic::ptr_annotation:		// llvm.ptr.annotation
     ResultTy = (0 < numTys) ? Tys[0] : PointerType::getUnqual(Tys[0]);
     ArgTys.push_back(Tys[0]);
@@ -4509,7 +4792,7 @@
   case Intrinsic::objectsize:		// llvm.objectsize
     ResultTy = Tys[0];
     ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(IntegerType::get(Context, 32));
+    ArgTys.push_back(IntegerType::get(Context, 1));
     break;
   case Intrinsic::sadd_with_overflow:		// llvm.sadd.with.overflow
     ResultTy = StructType::get(Context, Tys[0], IntegerType::get(Context, 1),  NULL);
@@ -4724,6 +5007,14 @@
     ArgTys.push_back(IntegerType::get(Context, 64));
     ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
     break;
+  case Intrinsic::convert_from_fp16:		// llvm.convert.from.fp16
+    ResultTy = Type::getFloatTy(Context);
+    ArgTys.push_back(IntegerType::get(Context, 16));
+    break;
+  case Intrinsic::convert_to_fp16:		// llvm.convert.to.fp16
+    ResultTy = IntegerType::get(Context, 16);
+    ArgTys.push_back(Type::getFloatTy(Context));
+    break;
   case Intrinsic::flt_rounds:		// llvm.flt.rounds
   case Intrinsic::xcore_getid:		// llvm.xcore.getid
     ResultTy = IntegerType::get(Context, 32);
@@ -4895,10 +5186,15 @@
     ResultTy = IntegerType::get(Context, 64);
     break;
   case Intrinsic::alpha_umulh:		// llvm.alpha.umulh
-  case Intrinsic::x86_sse42_crc32_64:		// llvm.x86.sse42.crc32.64
+  case Intrinsic::x86_sse42_crc64_64:		// llvm.x86.sse42.crc64.64
     ResultTy = IntegerType::get(Context, 64);
     ArgTys.push_back(IntegerType::get(Context, 64));
     ArgTys.push_back(IntegerType::get(Context, 64));
+    break;
+  case Intrinsic::x86_sse42_crc64_8:		// llvm.x86.sse42.crc64.8
+    ResultTy = IntegerType::get(Context, 64);
+    ArgTys.push_back(IntegerType::get(Context, 64));
+    ArgTys.push_back(IntegerType::get(Context, 8));
     break;
   case Intrinsic::x86_sse2_cvtsd2si64:		// llvm.x86.sse2.cvtsd2si64
   case Intrinsic::x86_sse2_cvttsd2si64:		// llvm.x86.sse2.cvttsd2si64
@@ -5055,12 +5351,6 @@
     ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 1));
     ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 1));
     break;
-  case Intrinsic::x86_ssse3_palign_r:		// llvm.x86.ssse3.palign.r
-    ResultTy = VectorType::get(IntegerType::get(Context, 64), 1);
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 1));
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 1));
-    ArgTys.push_back(IntegerType::get(Context, 8));
-    break;
   case Intrinsic::x86_sse2_loadu_pd:		// llvm.x86.sse2.loadu.pd
     ResultTy = VectorType::get(Type::getDoubleTy(Context), 2);
     ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
@@ -5204,6 +5494,11 @@
     ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 16));
     ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 16));
     break;
+  case Intrinsic::x86_aesni_aesimc:		// llvm.x86.aesni.aesimc
+    ResultTy = VectorType::get(IntegerType::get(Context, 64), 2);
+    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 2));
+    break;
+  case Intrinsic::x86_aesni_aeskeygenassist:		// llvm.x86.aesni.aeskeygenassist
   case Intrinsic::x86_sse2_psll_dq:		// llvm.x86.sse2.psll.dq
   case Intrinsic::x86_sse2_psll_dq_bs:		// llvm.x86.sse2.psll.dq.bs
   case Intrinsic::x86_sse2_pslli_q:		// llvm.x86.sse2.pslli.q
@@ -5214,6 +5509,10 @@
     ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 2));
     ArgTys.push_back(IntegerType::get(Context, 32));
     break;
+  case Intrinsic::x86_aesni_aesdec:		// llvm.x86.aesni.aesdec
+  case Intrinsic::x86_aesni_aesdeclast:		// llvm.x86.aesni.aesdeclast
+  case Intrinsic::x86_aesni_aesenc:		// llvm.x86.aesni.aesenc
+  case Intrinsic::x86_aesni_aesenclast:		// llvm.x86.aesni.aesenclast
   case Intrinsic::x86_sse2_psll_q:		// llvm.x86.sse2.psll.q
   case Intrinsic::x86_sse2_psrl_q:		// llvm.x86.sse2.psrl.q
   case Intrinsic::x86_sse41_pcmpeqq:		// llvm.x86.sse41.pcmpeqq
@@ -5221,12 +5520,6 @@
     ResultTy = VectorType::get(IntegerType::get(Context, 64), 2);
     ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 2));
     ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 2));
-    break;
-  case Intrinsic::x86_ssse3_palign_r_128:		// llvm.x86.ssse3.palign.r.128
-    ResultTy = VectorType::get(IntegerType::get(Context, 64), 2);
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 2));
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 2));
-    ArgTys.push_back(IntegerType::get(Context, 8));
     break;
   case Intrinsic::x86_sse41_pmovsxdq:		// llvm.x86.sse41.pmovsxdq
   case Intrinsic::x86_sse41_pmovzxdq:		// llvm.x86.sse41.pmovzxdq
@@ -5531,7 +5824,6 @@
   case Intrinsic::x86_sse41_pmaxud:		// llvm.x86.sse41.pmaxud
   case Intrinsic::x86_sse41_pminsd:		// llvm.x86.sse41.pminsd
   case Intrinsic::x86_sse41_pminud:		// llvm.x86.sse41.pminud
-  case Intrinsic::x86_sse41_pmulld:		// llvm.x86.sse41.pmulld
   case Intrinsic::x86_ssse3_phadd_d_128:		// llvm.x86.ssse3.phadd.d.128
   case Intrinsic::x86_ssse3_phadd_sw_128:		// llvm.x86.ssse3.phadd.sw.128
   case Intrinsic::x86_ssse3_phsub_d_128:		// llvm.x86.ssse3.phsub.d.128
@@ -5787,264 +6079,6 @@
     ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 8));
     ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 8));
     break;
-  case Intrinsic::eh_unwind_init:		// llvm.eh.unwind.init
-  case Intrinsic::ppc_altivec_dssall:		// llvm.ppc.altivec.dssall
-  case Intrinsic::ppc_sync:		// llvm.ppc.sync
-  case Intrinsic::trap:		// llvm.trap
-  case Intrinsic::x86_mmx_emms:		// llvm.x86.mmx.emms
-  case Intrinsic::x86_mmx_femms:		// llvm.x86.mmx.femms
-  case Intrinsic::x86_sse2_lfence:		// llvm.x86.sse2.lfence
-  case Intrinsic::x86_sse2_mfence:		// llvm.x86.sse2.mfence
-  case Intrinsic::x86_sse_sfence:		// llvm.x86.sse.sfence
-    ResultTy = Type::getVoidTy(Context);
-    break;
-  case Intrinsic::invariant_end:		// llvm.invariant.end
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(StructType::get(Context)));
-    ArgTys.push_back(IntegerType::get(Context, 64));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
-  case Intrinsic::dbg_declare:		// llvm.dbg.declare
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(StructType::get(Context)));
-    ArgTys.push_back(Type::getMetadataTy(Context));
-    break;
-  case Intrinsic::memory_barrier:		// llvm.memory.barrier
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(IntegerType::get(Context, 1));
-    ArgTys.push_back(IntegerType::get(Context, 1));
-    ArgTys.push_back(IntegerType::get(Context, 1));
-    ArgTys.push_back(IntegerType::get(Context, 1));
-    ArgTys.push_back(IntegerType::get(Context, 1));
-    break;
-  case Intrinsic::pcmarker:		// llvm.pcmarker
-  case Intrinsic::ppc_altivec_dss:		// llvm.ppc.altivec.dss
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    break;
-  case Intrinsic::x86_sse3_mwait:		// llvm.x86.sse3.mwait
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    break;
-  case Intrinsic::dbg_stoppoint:		// llvm.dbg.stoppoint
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    ArgTys.push_back(Type::getMetadataTy(Context));
-    break;
-  case Intrinsic::eh_return_i32:		// llvm.eh.return.i32
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
-  case Intrinsic::eh_return_i64:		// llvm.eh.return.i64
-  case Intrinsic::lifetime_end:		// llvm.lifetime.end
-  case Intrinsic::lifetime_start:		// llvm.lifetime.start
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(IntegerType::get(Context, 64));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
-  case Intrinsic::dbg_func_start:		// llvm.dbg.func.start
-  case Intrinsic::dbg_region_end:		// llvm.dbg.region.end
-  case Intrinsic::dbg_region_start:		// llvm.dbg.region.start
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(Type::getMetadataTy(Context));
-    break;
-  case Intrinsic::eh_sjlj_longjmp:		// llvm.eh.sjlj.longjmp
-  case Intrinsic::ppc_dcba:		// llvm.ppc.dcba
-  case Intrinsic::ppc_dcbf:		// llvm.ppc.dcbf
-  case Intrinsic::ppc_dcbi:		// llvm.ppc.dcbi
-  case Intrinsic::ppc_dcbst:		// llvm.ppc.dcbst
-  case Intrinsic::ppc_dcbt:		// llvm.ppc.dcbt
-  case Intrinsic::ppc_dcbtst:		// llvm.ppc.dcbtst
-  case Intrinsic::ppc_dcbz:		// llvm.ppc.dcbz
-  case Intrinsic::ppc_dcbzl:		// llvm.ppc.dcbzl
-  case Intrinsic::stackrestore:		// llvm.stackrestore
-  case Intrinsic::vaend:		// llvm.va_end
-  case Intrinsic::vastart:		// llvm.va_start
-  case Intrinsic::x86_sse2_clflush:		// llvm.x86.sse2.clflush
-  case Intrinsic::x86_sse_ldmxcsr:		// llvm.x86.sse.ldmxcsr
-  case Intrinsic::x86_sse_stmxcsr:		// llvm.x86.sse.stmxcsr
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
-  case Intrinsic::arm_neon_vst1:		// llvm.arm.neon.vst1
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(Tys[0]);
-    break;
-  case Intrinsic::arm_neon_vst2:		// llvm.arm.neon.vst2
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    break;
-  case Intrinsic::arm_neon_vst3:		// llvm.arm.neon.vst3
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    break;
-  case Intrinsic::arm_neon_vst4:		// llvm.arm.neon.vst4
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    break;
-  case Intrinsic::arm_neon_vst2lane:		// llvm.arm.neon.vst2lane
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    break;
-  case Intrinsic::arm_neon_vst3lane:		// llvm.arm.neon.vst3lane
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    break;
-  case Intrinsic::arm_neon_vst4lane:		// llvm.arm.neon.vst4lane
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    break;
-  case Intrinsic::longjmp:		// llvm.longjmp
-  case Intrinsic::siglongjmp:		// llvm.siglongjmp
-  case Intrinsic::x86_sse2_movnt_i:		// llvm.x86.sse2.movnt.i
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    break;
-  case Intrinsic::ppc_altivec_dst:		// llvm.ppc.altivec.dst
-  case Intrinsic::ppc_altivec_dstst:		// llvm.ppc.altivec.dstst
-  case Intrinsic::ppc_altivec_dststt:		// llvm.ppc.altivec.dststt
-  case Intrinsic::ppc_altivec_dstt:		// llvm.ppc.altivec.dstt
-  case Intrinsic::prefetch:		// llvm.prefetch
-  case Intrinsic::x86_sse3_monitor:		// llvm.x86.sse3.monitor
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    break;
-  case Intrinsic::memset:		// llvm.memset
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(IntegerType::get(Context, 8));
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    break;
-  case Intrinsic::vacopy:		// llvm.va_copy
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
-  case Intrinsic::memcpy:		// llvm.memcpy
-  case Intrinsic::memmove:		// llvm.memmove
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(Tys[0]);
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    break;
-  case Intrinsic::var_annotation:		// llvm.var.annotation
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(IntegerType::get(Context, 32));
-    break;
-  case Intrinsic::gcwrite:		// llvm.gcwrite
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(PointerType::getUnqual(PointerType::getUnqual(IntegerType::get(Context, 8))));
-    break;
-  case Intrinsic::stackprotector:		// llvm.stackprotector
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(PointerType::getUnqual(PointerType::getUnqual(IntegerType::get(Context, 8))));
-    break;
-  case Intrinsic::x86_sse2_storeu_dq:		// llvm.x86.sse2.storeu.dq
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 16));
-    break;
-  case Intrinsic::x86_mmx_movnt_dq:		// llvm.x86.mmx.movnt.dq
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 1));
-    break;
-  case Intrinsic::x86_sse2_movnt_pd:		// llvm.x86.sse2.movnt.pd
-  case Intrinsic::x86_sse2_storeu_pd:		// llvm.x86.sse2.storeu.pd
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(VectorType::get(Type::getDoubleTy(Context), 2));
-    break;
-  case Intrinsic::x86_sse2_movnt_dq:		// llvm.x86.sse2.movnt.dq
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 64), 2));
-    break;
-  case Intrinsic::x86_sse_movnt_ps:		// llvm.x86.sse.movnt.ps
-  case Intrinsic::x86_sse_storeu_ps:		// llvm.x86.sse.storeu.ps
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(VectorType::get(Type::getFloatTy(Context), 4));
-    break;
-  case Intrinsic::x86_sse2_storel_dq:		// llvm.x86.sse2.storel.dq
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 32), 4));
-    break;
-  case Intrinsic::gcroot:		// llvm.gcroot
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(PointerType::getUnqual(PointerType::getUnqual(IntegerType::get(Context, 8))));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
-  case Intrinsic::ppc_altivec_stvebx:		// llvm.ppc.altivec.stvebx
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 16));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
-  case Intrinsic::x86_sse2_maskmov_dqu:		// llvm.x86.sse2.maskmov.dqu
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 16));
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 16));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
-  case Intrinsic::ppc_altivec_mtvscr:		// llvm.ppc.altivec.mtvscr
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 32), 4));
-    break;
-  case Intrinsic::ppc_altivec_stvewx:		// llvm.ppc.altivec.stvewx
-  case Intrinsic::ppc_altivec_stvx:		// llvm.ppc.altivec.stvx
-  case Intrinsic::ppc_altivec_stvxl:		// llvm.ppc.altivec.stvxl
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 32), 4));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
-  case Intrinsic::ppc_altivec_stvehx:		// llvm.ppc.altivec.stvehx
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 16), 8));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
-  case Intrinsic::x86_mmx_maskmovq:		// llvm.x86.mmx.maskmovq
-    ResultTy = Type::getVoidTy(Context);
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 8));
-    ArgTys.push_back(VectorType::get(IntegerType::get(Context, 8), 8));
-    ArgTys.push_back(PointerType::getUnqual(IntegerType::get(Context, 8)));
-    break;
   }
 #endif
 
@@ -6165,14 +6199,14 @@ AttrListPtr Intrinsic::getAttributes(ID id) {  // No intrinsic can throw excepti
   case Intrinsic::arm_neon_vtbx4:
   case Intrinsic::arm_thread_pointer:
   case Intrinsic::bswap:
+  case Intrinsic::convert_from_fp16:
+  case Intrinsic::convert_to_fp16:
   case Intrinsic::ctlz:
   case Intrinsic::ctpop:
   case Intrinsic::cttz:
   case Intrinsic::dbg_declare:
-  case Intrinsic::dbg_func_start:
-  case Intrinsic::dbg_region_end:
-  case Intrinsic::dbg_region_start:
-  case Intrinsic::dbg_stoppoint:
+  case Intrinsic::dbg_value:
+  case Intrinsic::eh_sjlj_callsite:
   case Intrinsic::eh_sjlj_longjmp:
   case Intrinsic::eh_sjlj_lsda:
   case Intrinsic::eh_sjlj_setjmp:
@@ -6395,6 +6429,12 @@ AttrListPtr Intrinsic::getAttributes(ID id) {  // No intrinsic can throw excepti
   case Intrinsic::uadd_with_overflow:
   case Intrinsic::umul_with_overflow:
   case Intrinsic::usub_with_overflow:
+  case Intrinsic::x86_aesni_aesdec:
+  case Intrinsic::x86_aesni_aesdeclast:
+  case Intrinsic::x86_aesni_aesenc:
+  case Intrinsic::x86_aesni_aesenclast:
+  case Intrinsic::x86_aesni_aesimc:
+  case Intrinsic::x86_aesni_aeskeygenassist:
   case Intrinsic::x86_mmx_packssdw:
   case Intrinsic::x86_mmx_packsswb:
   case Intrinsic::x86_mmx_packuswb:
@@ -6574,7 +6614,6 @@ AttrListPtr Intrinsic::getAttributes(ID id) {  // No intrinsic can throw excepti
   case Intrinsic::x86_sse41_pmovzxwd:
   case Intrinsic::x86_sse41_pmovzxwq:
   case Intrinsic::x86_sse41_pmuldq:
-  case Intrinsic::x86_sse41_pmulld:
   case Intrinsic::x86_sse41_ptestc:
   case Intrinsic::x86_sse41_ptestnzc:
   case Intrinsic::x86_sse41_ptestz:
@@ -6584,8 +6623,9 @@ AttrListPtr Intrinsic::getAttributes(ID id) {  // No intrinsic can throw excepti
   case Intrinsic::x86_sse41_round_ss:
   case Intrinsic::x86_sse42_crc32_16:
   case Intrinsic::x86_sse42_crc32_32:
-  case Intrinsic::x86_sse42_crc32_64:
   case Intrinsic::x86_sse42_crc32_8:
+  case Intrinsic::x86_sse42_crc64_64:
+  case Intrinsic::x86_sse42_crc64_8:
   case Intrinsic::x86_sse42_pcmpestri128:
   case Intrinsic::x86_sse42_pcmpestria128:
   case Intrinsic::x86_sse42_pcmpestric128:
@@ -6648,8 +6688,6 @@ AttrListPtr Intrinsic::getAttributes(ID id) {  // No intrinsic can throw excepti
   case Intrinsic::x86_ssse3_pabs_d_128:
   case Intrinsic::x86_ssse3_pabs_w:
   case Intrinsic::x86_ssse3_pabs_w_128:
-  case Intrinsic::x86_ssse3_palign_r:
-  case Intrinsic::x86_ssse3_palign_r_128:
   case Intrinsic::x86_ssse3_phadd_d:
   case Intrinsic::x86_ssse3_phadd_d_128:
   case Intrinsic::x86_ssse3_phadd_sw:
@@ -6812,7 +6850,7 @@ AttrListPtr Intrinsic::getAttributes(ID id) {  // No intrinsic can throw excepti
 
 // Determine intrinsic alias analysis mod/ref behavior.
 #ifdef GET_INTRINSIC_MODREF_BEHAVIOR
-switch (id) {
+switch (iid) {
 default:
     return UnknownModRefBehavior;
 case Intrinsic::alpha_umulh:
@@ -7089,6 +7127,10 @@ case Intrinsic::atomic_swap:
   return AccessesArguments;
 case Intrinsic::bswap:
   return DoesNotAccessMemory;
+case Intrinsic::convert_from_fp16:
+  return DoesNotAccessMemory;
+case Intrinsic::convert_to_fp16:
+  return DoesNotAccessMemory;
 case Intrinsic::cos:
   return OnlyReadsMemory;
 case Intrinsic::ctlz:
@@ -7099,16 +7141,12 @@ case Intrinsic::cttz:
   return DoesNotAccessMemory;
 case Intrinsic::dbg_declare:
   return DoesNotAccessMemory;
-case Intrinsic::dbg_func_start:
-  return DoesNotAccessMemory;
-case Intrinsic::dbg_region_end:
-  return DoesNotAccessMemory;
-case Intrinsic::dbg_region_start:
-  return DoesNotAccessMemory;
-case Intrinsic::dbg_stoppoint:
+case Intrinsic::dbg_value:
   return DoesNotAccessMemory;
 case Intrinsic::eh_exception:
   return OnlyReadsMemory;
+case Intrinsic::eh_sjlj_callsite:
+  return DoesNotAccessMemory;
 case Intrinsic::eh_sjlj_longjmp:
   return DoesNotAccessMemory;
 case Intrinsic::eh_sjlj_lsda:
@@ -7607,6 +7645,18 @@ case Intrinsic::umul_with_overflow:
   return DoesNotAccessMemory;
 case Intrinsic::usub_with_overflow:
   return DoesNotAccessMemory;
+case Intrinsic::x86_aesni_aesdec:
+  return DoesNotAccessMemory;
+case Intrinsic::x86_aesni_aesdeclast:
+  return DoesNotAccessMemory;
+case Intrinsic::x86_aesni_aesenc:
+  return DoesNotAccessMemory;
+case Intrinsic::x86_aesni_aesenclast:
+  return DoesNotAccessMemory;
+case Intrinsic::x86_aesni_aesimc:
+  return DoesNotAccessMemory;
+case Intrinsic::x86_aesni_aeskeygenassist:
+  return DoesNotAccessMemory;
 case Intrinsic::x86_mmx_packssdw:
   return DoesNotAccessMemory;
 case Intrinsic::x86_mmx_packsswb:
@@ -7973,8 +8023,6 @@ case Intrinsic::x86_sse41_pmovzxwq:
   return DoesNotAccessMemory;
 case Intrinsic::x86_sse41_pmuldq:
   return DoesNotAccessMemory;
-case Intrinsic::x86_sse41_pmulld:
-  return DoesNotAccessMemory;
 case Intrinsic::x86_sse41_ptestc:
   return DoesNotAccessMemory;
 case Intrinsic::x86_sse41_ptestnzc:
@@ -7993,9 +8041,11 @@ case Intrinsic::x86_sse42_crc32_16:
   return DoesNotAccessMemory;
 case Intrinsic::x86_sse42_crc32_32:
   return DoesNotAccessMemory;
-case Intrinsic::x86_sse42_crc32_64:
-  return DoesNotAccessMemory;
 case Intrinsic::x86_sse42_crc32_8:
+  return DoesNotAccessMemory;
+case Intrinsic::x86_sse42_crc64_64:
+  return DoesNotAccessMemory;
+case Intrinsic::x86_sse42_crc64_8:
   return DoesNotAccessMemory;
 case Intrinsic::x86_sse42_pcmpestri128:
   return DoesNotAccessMemory;
@@ -8123,10 +8173,6 @@ case Intrinsic::x86_ssse3_pabs_w:
   return DoesNotAccessMemory;
 case Intrinsic::x86_ssse3_pabs_w_128:
   return DoesNotAccessMemory;
-case Intrinsic::x86_ssse3_palign_r:
-  return DoesNotAccessMemory;
-case Intrinsic::x86_ssse3_palign_r_128:
-  return DoesNotAccessMemory;
 case Intrinsic::x86_ssse3_phadd_d:
   return DoesNotAccessMemory;
 case Intrinsic::x86_ssse3_phadd_d_128:
@@ -8200,6 +8246,8 @@ case Intrinsic::xcore_getid:
   case Intrinsic::atomic_load_umin: BuiltinName = "__sync_fetch_and_umin"; break;
   case Intrinsic::atomic_load_xor: BuiltinName = "__sync_fetch_and_xor"; break;
   case Intrinsic::atomic_swap: BuiltinName = "__sync_lock_test_and_set"; break;
+  case Intrinsic::convert_from_fp16: BuiltinName = "__gnu_h2f_ieee"; break;
+  case Intrinsic::convert_to_fp16: BuiltinName = "__gnu_f2h_ieee"; break;
   case Intrinsic::eh_unwind_init: BuiltinName = "__builtin_unwind_init"; break;
   case Intrinsic::flt_rounds: BuiltinName = "__builtin_flt_rounds"; break;
   case Intrinsic::init_trampoline: BuiltinName = "__builtin_init_trampoline"; break;
@@ -8425,6 +8473,12 @@ case Intrinsic::xcore_getid:
   case Intrinsic::stackrestore: BuiltinName = "__builtin_stack_restore"; break;
   case Intrinsic::stacksave: BuiltinName = "__builtin_stack_save"; break;
   case Intrinsic::trap: BuiltinName = "__builtin_trap"; break;
+  case Intrinsic::x86_aesni_aesdec: BuiltinName = "__builtin_ia32_aesdec128"; break;
+  case Intrinsic::x86_aesni_aesdeclast: BuiltinName = "__builtin_ia32_aesdeclast128"; break;
+  case Intrinsic::x86_aesni_aesenc: BuiltinName = "__builtin_ia32_aesenc128"; break;
+  case Intrinsic::x86_aesni_aesenclast: BuiltinName = "__builtin_ia32_aesenclast128"; break;
+  case Intrinsic::x86_aesni_aesimc: BuiltinName = "__builtin_ia32_aesimc128"; break;
+  case Intrinsic::x86_aesni_aeskeygenassist: BuiltinName = "__builtin_ia32_aeskeygenassist128"; break;
   case Intrinsic::x86_mmx_emms: BuiltinName = "__builtin_ia32_emms"; break;
   case Intrinsic::x86_mmx_femms: BuiltinName = "__builtin_ia32_femms"; break;
   case Intrinsic::x86_mmx_maskmovq: BuiltinName = "__builtin_ia32_maskmovq"; break;
@@ -8619,7 +8673,6 @@ case Intrinsic::xcore_getid:
   case Intrinsic::x86_sse41_pmovzxwd: BuiltinName = "__builtin_ia32_pmovzxwd128"; break;
   case Intrinsic::x86_sse41_pmovzxwq: BuiltinName = "__builtin_ia32_pmovzxwq128"; break;
   case Intrinsic::x86_sse41_pmuldq: BuiltinName = "__builtin_ia32_pmuldq128"; break;
-  case Intrinsic::x86_sse41_pmulld: BuiltinName = "__builtin_ia32_pmulld128"; break;
   case Intrinsic::x86_sse41_ptestc: BuiltinName = "__builtin_ia32_ptestc128"; break;
   case Intrinsic::x86_sse41_ptestnzc: BuiltinName = "__builtin_ia32_ptestnzc128"; break;
   case Intrinsic::x86_sse41_ptestz: BuiltinName = "__builtin_ia32_ptestz128"; break;
@@ -8629,8 +8682,8 @@ case Intrinsic::xcore_getid:
   case Intrinsic::x86_sse41_round_ss: BuiltinName = "__builtin_ia32_roundss"; break;
   case Intrinsic::x86_sse42_crc32_16: BuiltinName = "__builtin_ia32_crc32hi"; break;
   case Intrinsic::x86_sse42_crc32_32: BuiltinName = "__builtin_ia32_crc32si"; break;
-  case Intrinsic::x86_sse42_crc32_64: BuiltinName = "__builtin_ia32_crc32di"; break;
   case Intrinsic::x86_sse42_crc32_8: BuiltinName = "__builtin_ia32_crc32qi"; break;
+  case Intrinsic::x86_sse42_crc64_64: BuiltinName = "__builtin_ia32_crc32di"; break;
   case Intrinsic::x86_sse42_pcmpestri128: BuiltinName = "__builtin_ia32_pcmpestri128"; break;
   case Intrinsic::x86_sse42_pcmpestria128: BuiltinName = "__builtin_ia32_pcmpestria128"; break;
   case Intrinsic::x86_sse42_pcmpestric128: BuiltinName = "__builtin_ia32_pcmpestric128"; break;
@@ -8695,8 +8748,6 @@ case Intrinsic::xcore_getid:
   case Intrinsic::x86_ssse3_pabs_d_128: BuiltinName = "__builtin_ia32_pabsd128"; break;
   case Intrinsic::x86_ssse3_pabs_w: BuiltinName = "__builtin_ia32_pabsw"; break;
   case Intrinsic::x86_ssse3_pabs_w_128: BuiltinName = "__builtin_ia32_pabsw128"; break;
-  case Intrinsic::x86_ssse3_palign_r: BuiltinName = "__builtin_ia32_palignr"; break;
-  case Intrinsic::x86_ssse3_palign_r_128: BuiltinName = "__builtin_ia32_palignr128"; break;
   case Intrinsic::x86_ssse3_phadd_d: BuiltinName = "__builtin_ia32_phaddd"; break;
   case Intrinsic::x86_ssse3_phadd_d_128: BuiltinName = "__builtin_ia32_phaddd128"; break;
   case Intrinsic::x86_ssse3_phadd_sw: BuiltinName = "__builtin_ia32_phaddsw"; break;
@@ -8735,8 +8786,28 @@ Intrinsic::ID Intrinsic::getIntrinsicForGCCBuiltin(const char *TargetPrefix, con
     switch (strlen(BuiltinName)) {
     default: break;
     case 14:
-      if (!memcmp(BuiltinName, "__builtin_trap", 14))
-        IntrinsicID = Intrinsic::trap;
+      if (!memcmp(BuiltinName, "__", 2)) {
+        switch (BuiltinName[2]) {  // "__"
+        case 'b':
+          if (!memcmp(BuiltinName+3, "uiltin_trap", 11))
+            IntrinsicID = Intrinsic::trap;
+          break;
+        case 'g':
+          if (!memcmp(BuiltinName+3, "nu_", 3)) {
+            switch (BuiltinName[6]) {  // "__gnu_"
+            case 'f':
+              if (!memcmp(BuiltinName+7, "2h_ieee", 7))
+                IntrinsicID = Intrinsic::convert_to_fp16;
+              break;
+            case 'h':
+              if (!memcmp(BuiltinName+7, "2f_ieee", 7))
+                IntrinsicID = Intrinsic::convert_from_fp16;
+              break;
+            }
+          }
+          break;
+        }
+      }
       break;
     case 19:
       if (!memcmp(BuiltinName, "__sync_fetch_and_or", 19))
@@ -10825,7 +10896,7 @@ Intrinsic::ID Intrinsic::getIntrinsicForGCCBuiltin(const char *TargetPrefix, con
               switch (BuiltinName[20]) {  // "__builtin_ia32_crc32"
               case 'd':
                 if (!memcmp(BuiltinName+21, "i", 1))
-                  IntrinsicID = Intrinsic::x86_sse42_crc32_64;
+                  IntrinsicID = Intrinsic::x86_sse42_crc64_64;
                 break;
               case 'h':
                 if (!memcmp(BuiltinName+21, "i", 1))
@@ -10899,23 +10970,15 @@ Intrinsic::ID Intrinsic::getIntrinsicForGCCBuiltin(const char *TargetPrefix, con
         case 'p':
           switch (BuiltinName[16]) {  // "__builtin_ia32_p"
           case 'a':
-            switch (BuiltinName[17]) {  // "__builtin_ia32_pa"
-            case 'd':
-              if (!memcmp(BuiltinName+18, "dus", 3)) {
-                switch (BuiltinName[21]) {  // "__builtin_ia32_paddus"
-                case 'b':
-                  IntrinsicID = Intrinsic::x86_mmx_paddus_b;
-                  break;
-                case 'w':
-                  IntrinsicID = Intrinsic::x86_mmx_paddus_w;
-                  break;
-                }
+            if (!memcmp(BuiltinName+17, "ddus", 4)) {
+              switch (BuiltinName[21]) {  // "__builtin_ia32_paddus"
+              case 'b':
+                IntrinsicID = Intrinsic::x86_mmx_paddus_b;
+                break;
+              case 'w':
+                IntrinsicID = Intrinsic::x86_mmx_paddus_w;
+                break;
               }
-              break;
-            case 'l':
-              if (!memcmp(BuiltinName+18, "ignr", 4))
-                IntrinsicID = Intrinsic::x86_ssse3_palign_r;
-              break;
             }
             break;
           case 'c':
@@ -11452,6 +11515,24 @@ Intrinsic::ID Intrinsic::getIntrinsicForGCCBuiltin(const char *TargetPrefix, con
     case 24:
       if (!memcmp(BuiltinName, "__builtin_ia32_", 15)) {
         switch (BuiltinName[15]) {  // "__builtin_ia32_"
+        case 'a':
+          if (!memcmp(BuiltinName+16, "es", 2)) {
+            switch (BuiltinName[18]) {  // "__builtin_ia32_aes"
+            case 'd':
+              if (!memcmp(BuiltinName+19, "ec128", 5))
+                IntrinsicID = Intrinsic::x86_aesni_aesdec;
+              break;
+            case 'e':
+              if (!memcmp(BuiltinName+19, "nc128", 5))
+                IntrinsicID = Intrinsic::x86_aesni_aesenc;
+              break;
+            case 'i':
+              if (!memcmp(BuiltinName+19, "mc128", 5))
+                IntrinsicID = Intrinsic::x86_aesni_aesimc;
+              break;
+            }
+          }
+          break;
         case 'c':
           switch (BuiltinName[16]) {  // "__builtin_ia32_c"
           case 'o':
@@ -11653,10 +11734,6 @@ Intrinsic::ID Intrinsic::getIntrinsicForGCCBuiltin(const char *TargetPrefix, con
                   if (!memcmp(BuiltinName+20, "w128", 4))
                     IntrinsicID = Intrinsic::x86_sse2_pmulh_w;
                   break;
-                case 'l':
-                  if (!memcmp(BuiltinName+20, "d128", 4))
-                    IntrinsicID = Intrinsic::x86_sse41_pmulld;
-                  break;
                 }
               }
               break;
@@ -11849,25 +11926,17 @@ Intrinsic::ID Intrinsic::getIntrinsicForGCCBuiltin(const char *TargetPrefix, con
         case 'p':
           switch (BuiltinName[16]) {  // "__builtin_ia32_p"
           case 'a':
-            switch (BuiltinName[17]) {  // "__builtin_ia32_pa"
-            case 'd':
-              if (!memcmp(BuiltinName+18, "dus", 3)) {
-                switch (BuiltinName[21]) {  // "__builtin_ia32_paddus"
-                case 'b':
-                  if (!memcmp(BuiltinName+22, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse2_paddus_b;
-                  break;
-                case 'w':
-                  if (!memcmp(BuiltinName+22, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse2_paddus_w;
-                  break;
-                }
+            if (!memcmp(BuiltinName+17, "ddus", 4)) {
+              switch (BuiltinName[21]) {  // "__builtin_ia32_paddus"
+              case 'b':
+                if (!memcmp(BuiltinName+22, "128", 3))
+                  IntrinsicID = Intrinsic::x86_sse2_paddus_b;
+                break;
+              case 'w':
+                if (!memcmp(BuiltinName+22, "128", 3))
+                  IntrinsicID = Intrinsic::x86_sse2_paddus_w;
+                break;
               }
-              break;
-            case 'l':
-              if (!memcmp(BuiltinName+18, "ignr128", 7))
-                IntrinsicID = Intrinsic::x86_ssse3_palign_r_128;
-              break;
             }
             break;
           case 'b':
@@ -12206,72 +12275,94 @@ Intrinsic::ID Intrinsic::getIntrinsicForGCCBuiltin(const char *TargetPrefix, con
       }
       break;
     case 28:
-      if (!memcmp(BuiltinName, "__builtin_ia32_p", 16)) {
-        switch (BuiltinName[16]) {  // "__builtin_ia32_p"
-        case 'c':
-          if (!memcmp(BuiltinName+17, "mp", 2)) {
-            switch (BuiltinName[19]) {  // "__builtin_ia32_pcmp"
-            case 'e':
-              if (!memcmp(BuiltinName+20, "stri", 4)) {
-                switch (BuiltinName[24]) {  // "__builtin_ia32_pcmpestri"
-                case 'a':
-                  if (!memcmp(BuiltinName+25, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse42_pcmpestria128;
-                  break;
-                case 'c':
-                  if (!memcmp(BuiltinName+25, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse42_pcmpestric128;
-                  break;
-                case 'o':
-                  if (!memcmp(BuiltinName+25, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse42_pcmpestrio128;
-                  break;
-                case 's':
-                  if (!memcmp(BuiltinName+25, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse42_pcmpestris128;
-                  break;
-                case 'z':
-                  if (!memcmp(BuiltinName+25, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse42_pcmpestriz128;
-                  break;
-                }
-              }
+      if (!memcmp(BuiltinName, "__builtin_ia32_", 15)) {
+        switch (BuiltinName[15]) {  // "__builtin_ia32_"
+        case 'a':
+          if (!memcmp(BuiltinName+16, "es", 2)) {
+            switch (BuiltinName[18]) {  // "__builtin_ia32_aes"
+            case 'd':
+              if (!memcmp(BuiltinName+19, "eclast128", 9))
+                IntrinsicID = Intrinsic::x86_aesni_aesdeclast;
               break;
-            case 'i':
-              if (!memcmp(BuiltinName+20, "stri", 4)) {
-                switch (BuiltinName[24]) {  // "__builtin_ia32_pcmpistri"
-                case 'a':
-                  if (!memcmp(BuiltinName+25, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse42_pcmpistria128;
-                  break;
-                case 'c':
-                  if (!memcmp(BuiltinName+25, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse42_pcmpistric128;
-                  break;
-                case 'o':
-                  if (!memcmp(BuiltinName+25, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse42_pcmpistrio128;
-                  break;
-                case 's':
-                  if (!memcmp(BuiltinName+25, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse42_pcmpistris128;
-                  break;
-                case 'z':
-                  if (!memcmp(BuiltinName+25, "128", 3))
-                    IntrinsicID = Intrinsic::x86_sse42_pcmpistriz128;
-                  break;
-                }
-              }
+            case 'e':
+              if (!memcmp(BuiltinName+19, "nclast128", 9))
+                IntrinsicID = Intrinsic::x86_aesni_aesenclast;
               break;
             }
           }
           break;
-        case 'h':
-          if (!memcmp(BuiltinName+17, "minposuw128", 11))
-            IntrinsicID = Intrinsic::x86_sse41_phminposuw;
+        case 'p':
+          switch (BuiltinName[16]) {  // "__builtin_ia32_p"
+          case 'c':
+            if (!memcmp(BuiltinName+17, "mp", 2)) {
+              switch (BuiltinName[19]) {  // "__builtin_ia32_pcmp"
+              case 'e':
+                if (!memcmp(BuiltinName+20, "stri", 4)) {
+                  switch (BuiltinName[24]) {  // "__builtin_ia32_pcmpestri"
+                  case 'a':
+                    if (!memcmp(BuiltinName+25, "128", 3))
+                      IntrinsicID = Intrinsic::x86_sse42_pcmpestria128;
+                    break;
+                  case 'c':
+                    if (!memcmp(BuiltinName+25, "128", 3))
+                      IntrinsicID = Intrinsic::x86_sse42_pcmpestric128;
+                    break;
+                  case 'o':
+                    if (!memcmp(BuiltinName+25, "128", 3))
+                      IntrinsicID = Intrinsic::x86_sse42_pcmpestrio128;
+                    break;
+                  case 's':
+                    if (!memcmp(BuiltinName+25, "128", 3))
+                      IntrinsicID = Intrinsic::x86_sse42_pcmpestris128;
+                    break;
+                  case 'z':
+                    if (!memcmp(BuiltinName+25, "128", 3))
+                      IntrinsicID = Intrinsic::x86_sse42_pcmpestriz128;
+                    break;
+                  }
+                }
+                break;
+              case 'i':
+                if (!memcmp(BuiltinName+20, "stri", 4)) {
+                  switch (BuiltinName[24]) {  // "__builtin_ia32_pcmpistri"
+                  case 'a':
+                    if (!memcmp(BuiltinName+25, "128", 3))
+                      IntrinsicID = Intrinsic::x86_sse42_pcmpistria128;
+                    break;
+                  case 'c':
+                    if (!memcmp(BuiltinName+25, "128", 3))
+                      IntrinsicID = Intrinsic::x86_sse42_pcmpistric128;
+                    break;
+                  case 'o':
+                    if (!memcmp(BuiltinName+25, "128", 3))
+                      IntrinsicID = Intrinsic::x86_sse42_pcmpistrio128;
+                    break;
+                  case 's':
+                    if (!memcmp(BuiltinName+25, "128", 3))
+                      IntrinsicID = Intrinsic::x86_sse42_pcmpistris128;
+                    break;
+                  case 'z':
+                    if (!memcmp(BuiltinName+25, "128", 3))
+                      IntrinsicID = Intrinsic::x86_sse42_pcmpistriz128;
+                    break;
+                  }
+                }
+                break;
+              }
+            }
+            break;
+          case 'h':
+            if (!memcmp(BuiltinName+17, "minposuw128", 11))
+              IntrinsicID = Intrinsic::x86_sse41_phminposuw;
+            break;
+          }
           break;
         }
       }
+      break;
+    case 33:
+      if (!memcmp(BuiltinName, "__builtin_ia32_aeskeygenassist128", 33))
+        IntrinsicID = Intrinsic::x86_aesni_aeskeygenassist;
       break;
     case 35:
       if (!memcmp(BuiltinName, "__builtin_ia32_ps", 17)) {
@@ -12291,5 +12382,10 @@ Intrinsic::ID Intrinsic::getIntrinsicForGCCBuiltin(const char *TargetPrefix, con
   }
   return IntrinsicID;
 }
+#endif
+
+#if defined(_MSC_VER) && defined(setjmp_undefined_for_visual_studio)
+// let's return it to _setjmp state
+#define setjmp _setjmp
 #endif
 

@@ -21,6 +21,7 @@
 #include "llvm/System/DataTypes.h"
 #include "llvm/Support/MathExtras.h"
 #include "llvm/CodeGen/MachineCodeEmitter.h"
+#include "llvm/ADT/DenseMap.h"
 
 using namespace std;
 
@@ -35,7 +36,7 @@ class MachineRelocation;
 class Value;
 class GlobalValue;
 class Function;
-
+  
 /// JITCodeEmitter - This class defines two sorts of methods: those for
 /// emitting the actual bytes of machine code, and those for emitting auxillary
 /// structures, such as jump tables, relocations, etc.
@@ -68,29 +69,11 @@ public:
   ///
   virtual bool finishFunction(MachineFunction &F) = 0;
   
-  /// startGVStub - This callback is invoked when the JIT needs the address of a
-  /// GV (e.g. function) that has not been code generated yet.  The StubSize
-  /// specifies the total size required by the stub.  The BufferState must be
-  /// passed to finishGVStub, and start/finish pairs with the same BufferState
-  /// must be properly nested.
-  ///
-  virtual void startGVStub(BufferState &BS, const GlobalValue* GV,
-                           unsigned StubSize, unsigned Alignment = 1) = 0;
-
-  /// startGVStub - This callback is invoked when the JIT needs the address of a
-  /// GV (e.g. function) that has not been code generated yet.  Buffer points to
-  /// memory already allocated for this stub.  The BufferState must be passed to
-  /// finishGVStub, and start/finish pairs with the same BufferState must be
-  /// properly nested.
-  ///
-  virtual void startGVStub(BufferState &BS, void *Buffer,
-                           unsigned StubSize) = 0;
-
-  /// finishGVStub - This callback is invoked to terminate a GV stub and returns
-  /// the start address of the stub.  The BufferState must first have been
-  /// passed to startGVStub.
-  ///
-  virtual void *finishGVStub(BufferState &BS) = 0;
+  /// allocIndirectGV - Allocates and fills storage for an indirect
+  /// GlobalValue, and returns the address.
+  virtual void *allocIndirectGV(const GlobalValue *GV,
+                                const uint8_t *Buffer, size_t Size,
+                                unsigned Alignment) = 0;
 
   /// emitByte - This callback is invoked when a byte needs to be written to the
   /// output stream.
@@ -164,7 +147,7 @@ public:
     }
   }
 
-  /// emitAlignment - Move the CurBufferPtr pointer up the the specified
+  /// emitAlignment - Move the CurBufferPtr pointer up to the specified
   /// alignment (saturated to BufferEnd of course).
   void emitAlignment(unsigned Alignment) {
     if (Alignment == 0) Alignment = 1;
@@ -191,13 +174,20 @@ public:
 
   /// emitULEB128Bytes - This callback is invoked when a ULEB128 needs to be
   /// written to the output stream.
-  void emitULEB128Bytes(uint64_t Value) {
+  void emitULEB128Bytes(uint64_t Value, unsigned PadTo = 0) {
     do {
       uint8_t Byte = Value & 0x7f;
       Value >>= 7;
-      if (Value) Byte |= 0x80;
+      if (Value || PadTo != 0) Byte |= 0x80;
       emitByte(Byte);
     } while (Value);
+
+    if (PadTo) {
+      do {
+        uint8_t Byte = (PadTo > 1) ? 0x80 : 0x0;
+        emitByte(Byte);
+      } while (--PadTo);
+    }
   }
   
   /// emitSLEB128Bytes - This callback is invoked when a SLEB128 needs to be
@@ -260,7 +250,7 @@ public:
   
   
   /// emitLabel - Emits a label
-  virtual void emitLabel(uint64_t LabelID) = 0;
+  virtual void emitLabel(MCSymbol *Label) = 0;
 
   /// allocateSpace - Allocate a block of space in the current output buffer,
   /// returning null (and setting conditions to indicate buffer overflow) on
@@ -334,14 +324,18 @@ public:
   ///
   virtual uintptr_t getMachineBasicBlockAddress(MachineBasicBlock *MBB) const= 0;
 
-  /// getLabelAddress - Return the address of the specified LabelID, only usable
-  /// after the LabelID has been emitted.
+  /// getLabelAddress - Return the address of the specified Label, only usable
+  /// after the Label has been emitted.
   ///
-  virtual uintptr_t getLabelAddress(uint64_t LabelID) const = 0;
+  virtual uintptr_t getLabelAddress(MCSymbol *Label) const = 0;
   
   /// Specifies the MachineModuleInfo object. This is used for exception handling
   /// purposes.
   virtual void setModuleInfo(MachineModuleInfo* Info) = 0;
+
+  /// getLabelLocations - Return the label locations map of the label IDs to
+  /// their address.
+  virtual DenseMap<MCSymbol*, uintptr_t> *getLabelLocations() { return 0; }
 };
 
 } // End llvm namespace

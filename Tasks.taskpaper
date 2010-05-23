@@ -1,12 +1,13 @@
 Builder:
-- in call:, determine the number of arguments from the arity of the function.
-	- require nil termination for varargs functions.
-- in the presence of block support, implement -if:then:else: with blocks taking builders operating on basic blocks.
+	- in call:, determine the number of arguments from the arity of the function.
+		- require nil termination for varargs functions.
+	- in the presence of block support, implement -if:then:else: with blocks taking builders operating on basic blocks.
 
 Compiler:
-- implement static compilation.
-	- include cross-compilation.
+	- implement static compilation.
+		- implement cross-compilation.
 
 Module:
-- in the presence of block support, implement -functionWithName:type:implementationBlock: which takes as its last parameter a block which takes a function and a builder.
-	This will get the function if it exists, and if not will create it with the block.
+	- in the presence of block support, implement -functionWithName:type:implementationBlock: which takes as its last parameter a block which takes a function and a builder.
+		This will get the function if it exists, and if not will create it with the block.
+	- build types from “@encode” directives.

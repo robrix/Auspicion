@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 //
 // The ScalarEvolution class is an LLVM pass which can be used to analyze and
-// catagorize scalar expressions in loops.  It specializes in recognizing
+// categorize scalar expressions in loops.  It specializes in recognizing
 // general induction variables, representing them with the abstract and opaque
 // SCEV class.  Given this analysis, trip counts of loops and other important
 // properties can be obtained.
@@ -49,13 +49,17 @@ namespace llvm {
   /// are opaque objects that the client is not allowed to do much with
   /// directly.
   ///
-  class SCEV : public FastFoldingSetNode {
+  class SCEV : public FoldingSetNode {
+    /// FastID - A reference to an Interned FoldingSetNodeID for this node.
+    /// The ScalarEvolution's BumpPtrAllocator holds the data.
+    FoldingSetNodeIDRef FastID;
+
     // The SCEV baseclass this node corresponds to
     const unsigned short SCEVType;
 
   protected:
     /// SubclassData - This field is initialized to zero and may be used in
-    /// subclasses to store miscelaneous information.
+    /// subclasses to store miscellaneous information.
     unsigned short SubclassData;
 
   private:
@@ -64,10 +68,13 @@ namespace llvm {
   protected:
     virtual ~SCEV();
   public:
-    explicit SCEV(const FoldingSetNodeID &ID, unsigned SCEVTy) :
-      FastFoldingSetNode(ID), SCEVType(SCEVTy), SubclassData(0) {}
+    explicit SCEV(const FoldingSetNodeIDRef ID, unsigned SCEVTy) :
+      FastID(ID), SCEVType(SCEVTy), SubclassData(0) {}
 
     unsigned getSCEVType() const { return SCEVType; }
+
+    /// Profile - FoldingSet support.
+    void Profile(FoldingSetNodeID& ID) { ID = FastID; }
 
     /// isLoopInvariant - Return true if the value of this SCEV is unchanging in
     /// the specified loop.
@@ -167,7 +174,7 @@ namespace llvm {
     };
 
     friend class SCEVCallbackVH;
-    friend struct SCEVExpander;
+    friend class SCEVExpander;
 
     /// F - The function we are analyzing.
     ///
@@ -177,9 +184,13 @@ namespace llvm {
     ///
     LoopInfo *LI;
 
-    /// TD - The target data information for the target we are targetting.
+    /// TD - The target data information for the target we are targeting.
     ///
     TargetData *TD;
+
+    /// DT - The dominator tree.
+    ///
+    DominatorTree *DT;
 
     /// CouldNotCompute - This SCEV is used to represent unknown trip
     /// counts and things.
@@ -190,7 +201,7 @@ namespace llvm {
     std::map<SCEVCallbackVH, const SCEV *> Scalars;
 
     /// BackedgeTakenInfo - Information about the backedge-taken count
-    /// of a loop. This currently inclues an exact count and a maximum count.
+    /// of a loop. This currently includes an exact count and a maximum count.
     ///
     struct BackedgeTakenInfo {
       /// Exact - An expression indicating the exact backedge-taken count of
@@ -243,7 +254,7 @@ namespace llvm {
 
     /// createNodeForGEP - Provide the special handling we need to analyze GEP
     /// SCEVs.
-    const SCEV *createNodeForGEP(Operator *GEP);
+    const SCEV *createNodeForGEP(GEPOperator *GEP);
 
     /// computeSCEVAtScope - Implementation code for getSCEVAtScope; called
     /// at most once for each SCEV+Loop pair.
@@ -301,7 +312,7 @@ namespace llvm {
     /// ComputeLoadConstantCompareBackedgeTakenCount - Given an exit condition
     /// of 'icmp op load X, cst', try to see if we can compute the
     /// backedge-taken count.
-    const SCEV *
+    BackedgeTakenInfo
       ComputeLoadConstantCompareBackedgeTakenCount(LoadInst *LI,
                                                    Constant *RHS,
                                                    const Loop *L,
@@ -319,12 +330,12 @@ namespace llvm {
     /// HowFarToZero - Return the number of times a backedge comparing the
     /// specified value to zero will execute.  If not computable, return
     /// CouldNotCompute.
-    const SCEV *HowFarToZero(const SCEV *V, const Loop *L);
+    BackedgeTakenInfo HowFarToZero(const SCEV *V, const Loop *L);
 
     /// HowFarToNonZero - Return the number of times a backedge checking the
     /// specified value for nonzero will execute.  If not computable, return
     /// CouldNotCompute.
-    const SCEV *HowFarToNonZero(const SCEV *V, const Loop *L);
+    BackedgeTakenInfo HowFarToNonZero(const SCEV *V, const Loop *L);
 
     /// HowManyLessThans - Return the number of times a backedge containing the
     /// specified less-than comparison will execute.  If not computable, return
@@ -340,7 +351,8 @@ namespace llvm {
     /// (which may not be an immediate predecessor) which has exactly one
     /// successor from which BB is reachable, or null if no such block is
     /// found.
-    BasicBlock* getPredecessorWithUniqueSuccessorForBB(BasicBlock *BB);
+    std::pair<BasicBlock *, BasicBlock *>
+    getPredecessorWithUniqueSuccessorForBB(BasicBlock *BB);
 
     /// isImpliedCond - Test whether the condition described by Pred, LHS,
     /// and RHS is true whenever the given Cond value evaluates to true.
@@ -349,14 +361,14 @@ namespace llvm {
                        bool Inverse);
 
     /// isImpliedCondOperands - Test whether the condition described by Pred,
-    /// LHS, and RHS is true whenever the condition desribed by Pred, FoundLHS,
+    /// LHS, and RHS is true whenever the condition described by Pred, FoundLHS,
     /// and FoundRHS is true.
     bool isImpliedCondOperands(ICmpInst::Predicate Pred,
                                const SCEV *LHS, const SCEV *RHS,
                                const SCEV *FoundLHS, const SCEV *FoundRHS);
 
     /// isImpliedCondOperandsHelper - Test whether the condition described by
-    /// Pred, LHS, and RHS is true whenever the condition desribed by Pred,
+    /// Pred, LHS, and RHS is true whenever the condition described by Pred,
     /// FoundLHS, and FoundRHS is true.
     bool isImpliedCondOperandsHelper(ICmpInst::Predicate Pred,
                                      const SCEV *LHS, const SCEV *RHS,
@@ -368,6 +380,13 @@ namespace llvm {
     /// involving constants, fold it.
     Constant *getConstantEvolutionLoopExitValue(PHINode *PN, const APInt& BEs,
                                                 const Loop *L);
+
+    /// isKnownPredicateWithRanges - Test if the given expression is known to
+    /// satisfy the condition described by Pred and the known constant ranges
+    /// of LHS and RHS.
+    ///
+    bool isKnownPredicateWithRanges(ICmpInst::Predicate Pred,
+                                    const SCEV *LHS, const SCEV *RHS);
 
   public:
     static char ID; // Pass identification, replacement for typeid
@@ -448,10 +467,24 @@ namespace llvm {
     const SCEV *getUMaxExpr(SmallVectorImpl<const SCEV *> &Operands);
     const SCEV *getSMinExpr(const SCEV *LHS, const SCEV *RHS);
     const SCEV *getUMinExpr(const SCEV *LHS, const SCEV *RHS);
-    const SCEV *getFieldOffsetExpr(const StructType *STy, unsigned FieldNo);
-    const SCEV *getAllocSizeExpr(const Type *AllocTy);
     const SCEV *getUnknown(Value *V);
     const SCEV *getCouldNotCompute();
+
+    /// getSizeOfExpr - Return an expression for sizeof on the given type.
+    ///
+    const SCEV *getSizeOfExpr(const Type *AllocTy);
+
+    /// getAlignOfExpr - Return an expression for alignof on the given type.
+    ///
+    const SCEV *getAlignOfExpr(const Type *AllocTy);
+
+    /// getOffsetOfExpr - Return an expression for offsetof on the given field.
+    ///
+    const SCEV *getOffsetOfExpr(const StructType *STy, unsigned FieldNo);
+
+    /// getOffsetOfExpr - Return an expression for offsetof on the given field.
+    ///
+    const SCEV *getOffsetOfExpr(const Type *CTy, Constant *FieldNo);
 
     /// getNegativeSCEV - Return the SCEV object corresponding to -V.
     ///
@@ -499,7 +532,7 @@ namespace llvm {
 
     /// getIntegerSCEV - Given a SCEVable type, create a constant for the
     /// specified signed integer value and return a SCEV for the constant.
-    const SCEV *getIntegerSCEV(int Val, const Type *Ty);
+    const SCEV *getIntegerSCEV(int64_t Val, const Type *Ty);
 
     /// getUMaxFromMismatchedTypes - Promote the operands to the wider of
     /// the types using zero-extension, and then perform a umax operation
@@ -529,11 +562,11 @@ namespace llvm {
     /// getSCEVAtScope(getSCEV(V), L).
     const SCEV *getSCEVAtScope(Value *V, const Loop *L);
 
-    /// isLoopGuardedByCond - Test whether entry to the loop is protected by
-    /// a conditional between LHS and RHS.  This is used to help avoid max
+    /// isLoopEntryGuardedByCond - Test whether entry to the loop is protected
+    /// by a conditional between LHS and RHS.  This is used to help avoid max
     /// expressions in loop trip counts, and to eliminate casts.
-    bool isLoopGuardedByCond(const Loop *L, ICmpInst::Predicate Pred,
-                             const SCEV *LHS, const SCEV *RHS);
+    bool isLoopEntryGuardedByCond(const Loop *L, ICmpInst::Predicate Pred,
+                                  const SCEV *LHS, const SCEV *RHS);
 
     /// isLoopBackedgeGuardedByCond - Test whether the backedge of the loop is
     /// protected by a conditional between LHS and RHS.  This is used to
@@ -567,6 +600,11 @@ namespace llvm {
     /// changed a loop in a way that may effect ScalarEvolution's ability to
     /// compute a trip count, or if the loop is deleted.
     void forgetLoop(const Loop *L);
+
+    /// forgetValue - This method should be called by the client when it has
+    /// changed a value in a way that may effect its value, or which may
+    /// disconnect it from a def-use chain linking it to a loop.
+    void forgetValue(Value *V);
 
     /// GetMinTrailingZeros - Determine the minimum number of zero bits that S
     /// is guaranteed to end in (at every loop iteration).  It is, at the same
@@ -606,11 +644,20 @@ namespace llvm {
     ///
     bool isKnownNonZero(const SCEV *S);
 
-    /// isKnownNonZero - Test if the given expression is known to satisfy
+    /// isKnownPredicate - Test if the given expression is known to satisfy
     /// the condition described by Pred, LHS, and RHS.
     ///
     bool isKnownPredicate(ICmpInst::Predicate Pred,
                           const SCEV *LHS, const SCEV *RHS);
+
+    /// SimplifyICmpOperands - Simplify LHS and RHS in a comparison with
+    /// predicate Pred. Return true iff any changes were made. If the
+    /// operands are provably equal or inequal, LHS and RHS are set to
+    /// the same value and Pred is set to either ICMP_EQ or ICMP_NE.
+    ///
+    bool SimplifyICmpOperands(ICmpInst::Predicate &Pred,
+                              const SCEV *&LHS,
+                              const SCEV *&RHS);
 
     virtual bool runOnFunction(Function &F);
     virtual void releaseMemory();

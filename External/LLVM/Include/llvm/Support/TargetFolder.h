@@ -52,6 +52,9 @@ public:
   Constant *CreateNSWAdd(Constant *LHS, Constant *RHS) const {
     return Fold(ConstantExpr::getNSWAdd(LHS, RHS));
   }
+  Constant *CreateNUWAdd(Constant *LHS, Constant *RHS) const {
+    return Fold(ConstantExpr::getNUWAdd(LHS, RHS));
+  }
   Constant *CreateFAdd(Constant *LHS, Constant *RHS) const {
     return Fold(ConstantExpr::getFAdd(LHS, RHS));
   }
@@ -61,11 +64,20 @@ public:
   Constant *CreateNSWSub(Constant *LHS, Constant *RHS) const {
     return Fold(ConstantExpr::getNSWSub(LHS, RHS));
   }
+  Constant *CreateNUWSub(Constant *LHS, Constant *RHS) const {
+    return Fold(ConstantExpr::getNUWSub(LHS, RHS));
+  }
   Constant *CreateFSub(Constant *LHS, Constant *RHS) const {
     return Fold(ConstantExpr::getFSub(LHS, RHS));
   }
   Constant *CreateMul(Constant *LHS, Constant *RHS) const {
     return Fold(ConstantExpr::getMul(LHS, RHS));
+  }
+  Constant *CreateNSWMul(Constant *LHS, Constant *RHS) const {
+    return Fold(ConstantExpr::getNSWMul(LHS, RHS));
+  }
+  Constant *CreateNUWMul(Constant *LHS, Constant *RHS) const {
+    return Fold(ConstantExpr::getNUWMul(LHS, RHS));
   }
   Constant *CreateFMul(Constant *LHS, Constant *RHS) const {
     return Fold(ConstantExpr::getFMul(LHS, RHS));
@@ -122,6 +134,12 @@ public:
   Constant *CreateNeg(Constant *C) const {
     return Fold(ConstantExpr::getNeg(C));
   }
+  Constant *CreateNSWNeg(Constant *C) const {
+    return Fold(ConstantExpr::getNSWNeg(C));
+  }
+  Constant *CreateNUWNeg(Constant *C) const {
+    return Fold(ConstantExpr::getNUWNeg(C));
+  }
   Constant *CreateFNeg(Constant *C) const {
     return Fold(ConstantExpr::getFNeg(C));
   }
@@ -167,7 +185,9 @@ public:
       return C; // avoid calling Fold
     return Fold(ConstantExpr::getIntegerCast(C, DestTy, isSigned));
   }
-
+  Constant *CreatePointerCast(Constant *C, const Type *DestTy) const {
+    return ConstantExpr::getPointerCast(C, DestTy);
+  }
   Constant *CreateBitCast(Constant *C, const Type *DestTy) const {
     return CreateCast(Instruction::BitCast, C, DestTy);
   }
