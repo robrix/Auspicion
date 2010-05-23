@@ -17,6 +17,9 @@
 +(LLVMType *)int32TypeInContext:(LLVMContext *)context;
 +(LLVMType *)int64TypeInContext:(LLVMContext *)context;
 
++(LLVMType *)floatTypeInContext:(LLVMContext *)context;
++(LLVMType *)doubleTypeInContext:(LLVMContext *)context;
+
 +(LLVMType *)pointerTypeToType:(LLVMType *)type addressSpace:(NSUInteger)addressSpace;
 +(LLVMType *)pointerTypeToType:(LLVMType *)type; // implied address space of 0
 +(LLVMType *)untypedPointerTypeInContext:(LLVMContext *)context; // implied address space of 0, destination type of int8
@@ -26,7 +29,10 @@
 +(LLVMType *)functionTypeWithReturnType:(LLVMType *)_returnType argumentTypes:(NSArray *)argumentTypes variadic:(BOOL)variadic;
 +(LLVMType *)functionType:(LLVMType *)_returnType, ... NS_REQUIRES_NIL_TERMINATION; // implied non-variadic
 
++(LLVMType *)arrayTypeWithCount:(NSUInteger)count type:(LLVMType *)type;
++(LLVMType *)structTypeWithTypes:(NSArray *)types;
 +(LLVMType *)structTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types;
++(LLVMType *)unionTypeWithTypes:(NSArray *)types;
 
 @property (nonatomic, readonly) LLVMContext *context;
 
