@@ -56,7 +56,7 @@
 }
 
 -(LLVMFunction *)functionWithName:(NSString *)name typeName:(NSString *)typeName {
-	return [self functionWithName: name type: [self typeForName: typeName]];
+	return [self functionWithName: name type: [self typeNamed: typeName]];
 }
 
 
@@ -80,7 +80,7 @@
 }
 
 
--(LLVMType *)typeForName:(NSString *)name {
+-(LLVMType *)typeNamed:(NSString *)name {
 	return [typesByName objectForKey: name];
 }
 

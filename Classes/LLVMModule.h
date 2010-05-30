@@ -22,7 +22,7 @@
 
 @property (nonatomic, readonly) LLVMContext *context;
 
--(LLVMType *)typeForName:(NSString *)name;
+-(LLVMType *)typeNamed:(NSString *)name;
 -(void)setType:(LLVMType *)type forName:(NSString *)name;
 
 @end

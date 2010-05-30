@@ -1,9 +1,15 @@
 Builder:
 	- in call:, determine the number of arguments from the arity of the function.
 		- require nil termination for varargs functions.
-	- in the presence of block support, implement -if:then:else: with blocks taking builders operating on basic blocks.
-
+	- store builders in values so they don’t have to be referenced explicitly.
+Value:
+	- LLVMBooleanValue, returned by comparison methods.
+	- LLVMStructValue.
+	- LLVMReferenceValue.
+Type:
+	- give function types names for the argument types.
 Compiler:
+	- implement interpretation.
 	- implement static compilation.
 		- implement cross-compilation.
 
