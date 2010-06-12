@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class ARXBuilder, ARXContext, ARXFunction, ARXFunctionBuilder, ARXType;
+@class ARXBuilder, ARXContext, ARXFunction, ARXFunctionBuilder, ARXType, ARXValue;
 
 typedef void (^ARXModuleFunctionDefinitionBlock)(ARXFunctionBuilder *);
 
@@ -21,7 +21,6 @@ typedef void (^ARXModuleFunctionDefinitionBlock)(ARXFunctionBuilder *);
 -(ARXFunction *)functionNamed:(NSString *)name; // returns the named function if it exists
 -(ARXFunction *)functionWithName:(NSString *)name type:(ARXType *)type; // creates a new function with the given name and type
 -(ARXFunction *)functionWithName:(NSString *)name type:(ARXType *)type definition:(ARXModuleFunctionDefinitionBlock)definition;
--(ARXFunction *)functionWithName:(NSString *)name typeName:(NSString *)typeName; // creates a new function with the given name and type
 
 -(BOOL)verifyWithError:(NSError **)error;
 
@@ -30,5 +29,8 @@ typedef void (^ARXModuleFunctionDefinitionBlock)(ARXFunctionBuilder *);
 
 -(ARXType *)typeNamed:(NSString *)name;
 -(void)setType:(ARXType *)type forName:(NSString *)name;
+
+-(ARXValue *)globalNamed:(NSString *)name;
+-(void)setGlobal:(ARXValue *)global forName:(NSString *)name;
 
 @end

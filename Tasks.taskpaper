@@ -1,26 +1,17 @@
 Builder:
-	- in call:, determine the number of arguments from the arity of the function. @done(2010-06-10)
-		- require nil termination for varargs functions. @done(2010-06-10)
-	- store builders in values so they don’t have to be referenced explicitly. @done(2010-06-10)
 Value:
-	- ARXStructureValue. @done(2010-06-10)
-	- ARXPointerValue.
 Type:
-	- give function types names for the argument types.
 Compiler:
 	- implement interpretation.
+	- rename ARXCompiler to ARXJITCompiler.
 	- implement static compilation.
 		- implement cross-compilation.
 Module:
-	- in the presence of block support, implement -functionWithName:type:implementationBlock: which takes as its last parameter a block which takes a function and a builder.
-		This will get the function if it exists, and if not will create it with the block.
 	- build types from “@encode” directives.
+	- named globals. @done(2010-06-12)
+	- named constants.
 Housekeeping:
-	- stop using module providers.
+	- stop using module providers altogether.
 	- unique objects.
-		- modules.
-		- types.
-		- contexts.
-		- blocks.
 		- functions?
 		- optimizers.
