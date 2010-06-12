@@ -235,7 +235,7 @@
 	return [ARXValue valueWithValueRef: LLVMBuildCondBr(self.builderRef, condition.valueRef, thenBlock.blockRef, elseBlock.blockRef)];
 }
 
--(ARXValue *)jumpToBlock:(ARXBlock *)block {
+-(ARXValue *)goto:(ARXBlock *)block {
 	return [ARXValue valueWithValueRef: LLVMBuildBr(self.builderRef, block.blockRef)];
 }
 

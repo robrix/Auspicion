@@ -40,6 +40,10 @@
 	return [function addBlockWithName: name];
 }
 
+-(void)goto:(ARXBlock *)destination {
+	[self.builder goto: destination];
+}
+
 
 -(ARXPointerValue *)allocateVariableOfType:(ARXType *)type value:(ARXValue *)value {
 	ARXPointerValue *address = [self.builder allocateLocal: @"" type: type];

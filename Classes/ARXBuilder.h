@@ -60,6 +60,6 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 -(ARXValue *)getElement:(ARXValue *)address atIndex:(NSUInteger)index;
 
 -(ARXValue *)if:(ARXValue *)condition then:(ARXBlock *)thenBlock else:(ARXBlock *)elseBlock;
--(ARXValue *)jumpToBlock:(ARXBlock *)block;
+-(ARXValue *)goto:(ARXBlock *)block;
 
 @end
