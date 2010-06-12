@@ -20,7 +20,7 @@
 
 -(BOOL)verifyWithError:(NSError **)error;
 
--(ARXBlock *)appendBlockWithName:(NSString *)name;
+-(ARXBlock *)addBlockWithName:(NSString *)name;
 
 @property (nonatomic, readonly) ARXBlock *entryBlock;
 

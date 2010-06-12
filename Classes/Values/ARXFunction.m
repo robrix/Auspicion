@@ -62,7 +62,7 @@
 }
 
 
--(ARXBlock *)appendBlockWithName:(NSString *)name {
+-(ARXBlock *)addBlockWithName:(NSString *)name {
 	return [ARXBlock blockWithBlockRef: LLVMAppendBasicBlockInContext(self.functionType.returnType.context.contextRef, self.valueRef, [name UTF8String])];
 }
 
