@@ -36,6 +36,7 @@
 -(ARXValue *)constantUnsignedInt32:(uint32_t)integer;
 
 -(ARXValue *)constantUntypedPointer:(void *)pointer;
+-(ARXValue *)constantPointer:(void *)pointer ofType:(ARXType *)type;
 
 -(ARXValue *)constantNullOfType:(ARXType *)type;
 

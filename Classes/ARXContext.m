@@ -110,6 +110,10 @@
 	return [ARXValue valueWithValueRef: LLVMConstIntToPtr(LLVMConstInt(self.integerType.typeRef, (NSUInteger)pointer, 0), self.untypedPointerType.typeRef)];
 }
 
+-(ARXValue *)constantPointer:(void *)pointer ofType:(ARXType *)type {
+	return [ARXValue valueWithValueRef: LLVMConstIntToPtr(LLVMConstInt(self.integerType.typeRef, (NSUInteger)pointer, 0), type.typeRef)];
+}
+
 
 -(ARXValue *)constantNullOfType:(ARXType *)type {
 	return [ARXValue valueWithValueRef: LLVMConstNull(type.typeRef)];
