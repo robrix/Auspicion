@@ -24,7 +24,7 @@ Housekeeping:
 		- functions?
 	- move to the <blah>+Protected.h model.
 		- block. @done(2010-06-12)
-		- builder.
+		- builder. @done(2010-06-12)
 		- compiler.
 		- context.
 		- function. @done(2010-06-12)

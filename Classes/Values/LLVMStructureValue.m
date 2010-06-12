@@ -2,7 +2,7 @@
 // Created by Rob Rix on 2010-06-10
 // Copyright 2010 Monochrome Industries
 
-#import "LLVMConcreteBuilder.h"
+#import "LLVMBuilder+Protected.h"
 #import "LLVMContext.h"
 #import "LLVMPointerValue.h"
 #import "LLVMStructureValue.h"
