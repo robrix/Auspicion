@@ -9,6 +9,7 @@
 #import "ARXFunctionBuilder.h"
 #import "ARXModule.h"
 #import "ARXModule+Protected.h"
+#import "ARXPointerValue.h"
 #import "ARXType+Protected.h"
 #import "ARXValue+Protected.h"
 
@@ -70,10 +71,6 @@
 	return function;
 }
 
--(ARXFunction *)functionWithName:(NSString *)name typeName:(NSString *)typeName {
-	return [self functionWithName: name type: [self typeNamed: typeName]];
-}
-
 
 -(BOOL)verifyWithError:(NSError **)error {
 	char *errorMessage = NULL;
@@ -95,11 +92,6 @@
 }
 
 
--(ARXBuilder *)builder {
-	return nil;
-}
-
-
 -(ARXType *)typeNamed:(NSString *)name {
 	NSParameterAssert(name != nil);
 	LLVMTypeRef typeRef = LLVMGetTypeByName(self.moduleRef, [name UTF8String]);
@@ -110,6 +102,20 @@
 	NSParameterAssert(type != nil);
 	NSParameterAssert(name != nil);
 	LLVMAddTypeName(self.moduleRef, [name UTF8String], type.typeRef);
+}
+
+
+-(ARXPointerValue *)globalPointerNamed:(NSString *)name {
+	return [ARXPointerValue valueWithValueRef: LLVMGetNamedGlobal(self.moduleRef, name.UTF8String)];
+}
+
+-(ARXValue *)globalNamed:(NSString *)name {
+	return [self globalPointerNamed: name].value;
+}
+
+-(void)setGlobal:(ARXValue *)global forName:(NSString *)name {
+	LLVMAddGlobal(self.moduleRef, global.type.typeRef, name.UTF8String);
+	[self globalPointerNamed: name].value = global;
 }
 
 @end
