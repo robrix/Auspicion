@@ -2,7 +2,7 @@
 // Created by Rob Rix on 2009-12-29
 // Copyright 2009 Monochrome Industries
 
-@class ARXContext, ARXStructureType;
+@class ARXContext, ARXFunctionType, ARXStructureType;
 
 #import <Foundation/Foundation.h>
 
@@ -28,8 +28,8 @@
 
 +(ARXType *)voidTypeInContext:(ARXContext *)context;
 
-+(ARXType *)functionTypeWithReturnType:(ARXType *)_returnType argumentTypes:(NSArray *)argumentTypes variadic:(BOOL)variadic;
-+(ARXType *)functionType:(ARXType *)_returnType, ... NS_REQUIRES_NIL_TERMINATION; // implied non-variadic
++(ARXFunctionType *)functionTypeWithReturnType:(ARXType *)_returnType argumentTypes:(NSArray *)argumentTypes variadic:(BOOL)variadic;
++(ARXFunctionType *)functionType:(ARXType *)_returnType, ... NS_REQUIRES_NIL_TERMINATION; // implied non-variadic
 
 +(ARXType *)arrayTypeWithCount:(NSUInteger)count type:(ARXType *)type;
 +(ARXStructureType *)structureTypeWithTypes:(NSArray *)types;

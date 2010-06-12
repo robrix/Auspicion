@@ -14,7 +14,7 @@
 
 @implementation ARXFunction
 
-+(id)functionInModule:(ARXModule *)module withName:(NSString *)name type:(ARXType *)type {
++(ARXFunction *)functionInModule:(ARXModule *)module withName:(NSString *)name type:(ARXType *)type {
 	return [ARXFunction valueWithValueRef: LLVMAddFunction(module.moduleRef, [name UTF8String], type.typeRef)];
 }
 

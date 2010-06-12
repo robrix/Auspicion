@@ -8,7 +8,7 @@
 
 @interface ARXFunction : ARXValue
 
-+(id)functionInModule:(ARXModule *)module withName:(NSString *)name type:(ARXType *)type;
++(ARXFunction *)functionInModule:(ARXModule *)module withName:(NSString *)name type:(ARXType *)type;
 
 @property (nonatomic, readonly) ARXFunctionType *functionType;
 

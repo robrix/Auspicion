@@ -6,7 +6,10 @@
 #import "ARXBuilder.h"
 #import "ARXContext.h"
 #import "ARXFunction.h"
+#import "ARXFunctionType.h"
 #import "ARXModule.h"
+#import "ARXPointerType.h"
+#import "ARXPointerValue.h"
 #import "ARXStructureValue.h"
 #import "ARXType+Protected.h"
 #import "ARXValue+Protected.h"
@@ -14,11 +17,21 @@
 
 @implementation ARXValue
 
-+(Class)classForTypeKind:(LLVMTypeKind)kind {
++(Class)classForType:(ARXType *)type {
 	Class result = Nil;
-	switch(kind) {
+	switch(type.typeKind) {
 		case LLVMStructTypeKind:
 			result = [ARXStructureValue class];
+			break;
+		case LLVMFunctionTypeKind:
+			result = [ARXFunction class];
+			break;
+		case LLVMPointerTypeKind:
+			if([[(ARXPointerType *)type referencedType] isKindOfClass: [ARXFunctionType class]]) {
+				result = [ARXFunction class];
+			} else {
+				result = [ARXPointerValue class];
+			}
 			break;
 		default:
 			result = self;
@@ -28,11 +41,11 @@
 }
 
 +(id)valueWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)_name {
-	return [[[[self classForTypeKind: [[ARXType typeOfValueRef: _valueRef] typeKind]] alloc] initWithValueRef: _valueRef name: _name] autorelease];
+	return [[[[self classForType: [ARXType typeOfValueRef: _valueRef]] alloc] initWithValueRef: _valueRef name: _name] autorelease];
 }
 
 +(id)valueWithValueRef:(LLVMValueRef)_valueRef {
-	return [[[[self classForTypeKind: [[ARXType typeOfValueRef: _valueRef] typeKind]] alloc] initWithValueRef: _valueRef name: @""] autorelease];
+	return [[[[self classForType: [ARXType typeOfValueRef: _valueRef]] alloc] initWithValueRef: _valueRef name: @""] autorelease];
 }
 
 -(id)initWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)_name {
