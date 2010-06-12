@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class LLVMBlock, LLVMContext, LLVMFunction, LLVMType, LLVMValue;
+@class LLVMBlock, LLVMBooleanValue, LLVMContext, LLVMFunction, LLVMType, LLVMValue;
 
 /*
 Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder methods take exactly two arguments. For example, -add: is used like so:
@@ -39,13 +39,13 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 // -(LLVMValue *)offsetPointer:(LLVMValue *)pointerValue by:(LLVMValue *)offsetValue;
 // -(LLVMValue *)dereference:(LLVMValue *)pointer;
 
--(LLVMValue *)and:(LLVMValue *)left, ...;
--(LLVMValue *)or:(LLVMValue *)left, ...;
+-(LLVMBooleanValue *)and:(LLVMValue *)left, ...;
+-(LLVMBooleanValue *)or:(LLVMValue *)left, ...;
 
--(LLVMValue *)unsignedLessOrEqual:(LLVMValue *)left, ...;
--(LLVMValue *)unsignedLessThan:(LLVMValue *)left, ...;
--(LLVMValue *)equal:(LLVMValue *)left, ...;
--(LLVMValue *)notEqual:(LLVMValue *)left, ...;
+-(LLVMBooleanValue *)unsignedLessOrEqual:(LLVMValue *)left, ...;
+-(LLVMBooleanValue *)unsignedLessThan:(LLVMValue *)left, ...;
+-(LLVMBooleanValue *)equal:(LLVMValue *)left, ...;
+-(LLVMBooleanValue *)notEqual:(LLVMValue *)left, ...;
 
 -(LLVMValue *)allocateLocal:(NSString *)name type:(LLVMType *)type;
 

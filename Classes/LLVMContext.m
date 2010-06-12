@@ -4,8 +4,8 @@
 
 #import "LLVMContext.h"
 #import "LLVMConcreteContext.h"
-#import "LLVMConcreteType.h"
-#import "LLVMConcreteValue.h"
+#import "LLVMType+Protected.h"
+#import "LLVMValue+Protected.h"
 
 @implementation LLVMContext
 
@@ -64,7 +64,7 @@
 	return [LLVMType voidTypeInContext: self];
 }
 
--(LLVMType *)structTypeWithTypes:(LLVMType *)type, ... {
+-(LLVMStructureType *)structTypeWithTypes:(LLVMType *)type, ... {
 	NSMutableArray *types = [NSMutableArray arrayWithObject: type];
 	va_list list;
 	va_start(list, type);
@@ -78,37 +78,37 @@
 
 // constants
 -(LLVMValue *)constantInteger:(NSInteger)integer {
-	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.integerType.typeRef, integer, 1)];
+	return [LLVMValue valueWithValueRef: LLVMConstInt(self.integerType.typeRef, integer, 1)];
 }
 
 -(LLVMValue *)constantUnsignedInteger:(NSUInteger)integer {
-	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.integerType.typeRef, integer, 0)];
+	return [LLVMValue valueWithValueRef: LLVMConstInt(self.integerType.typeRef, integer, 0)];
 }
 
 -(LLVMValue *)constantInt64:(int64_t)integer {
-	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.int64Type.typeRef, integer, 1)];
+	return [LLVMValue valueWithValueRef: LLVMConstInt(self.int64Type.typeRef, integer, 1)];
 }
 
 -(LLVMValue *)constantUnsignedInt64:(uint64_t)integer {
-	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.int64Type.typeRef, integer, 0)];
+	return [LLVMValue valueWithValueRef: LLVMConstInt(self.int64Type.typeRef, integer, 0)];
 }
 
 -(LLVMValue *)constantInt32:(int32_t)integer {
-	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.int32Type.typeRef, integer, 1)];
+	return [LLVMValue valueWithValueRef: LLVMConstInt(self.int32Type.typeRef, integer, 1)];
 }
 
 -(LLVMValue *)constantUnsignedInt32:(uint32_t)integer {
-	return [LLVMConcreteValue valueWithValueRef: LLVMConstInt(self.int32Type.typeRef, integer, 0)];
+	return [LLVMValue valueWithValueRef: LLVMConstInt(self.int32Type.typeRef, integer, 0)];
 }
 
 
 -(LLVMValue *)constantUntypedPointer:(void *)pointer {
-	return [LLVMConcreteValue valueWithValueRef: LLVMConstIntToPtr(LLVMConstInt(self.integerType.typeRef, (NSUInteger)pointer, 0), self.untypedPointerType.typeRef)];
+	return [LLVMValue valueWithValueRef: LLVMConstIntToPtr(LLVMConstInt(self.integerType.typeRef, (NSUInteger)pointer, 0), self.untypedPointerType.typeRef)];
 }
 
 
 -(LLVMValue *)constantNullOfType:(LLVMType *)type {
-	return [LLVMConcreteValue valueWithValueRef: LLVMConstNull(type.typeRef)];
+	return [LLVMValue valueWithValueRef: LLVMConstNull(type.typeRef)];
 }
 
 
@@ -127,7 +127,7 @@
 	for(LLVMValue *value in values) {
 		valueRefs[i++] = value.valueRef;
 	}
-	return [LLVMConcreteValue valueWithValueRef: LLVMConstStructInContext(self.contextRef, valueRefs, values.count, NO)];
+	return [LLVMValue valueWithValueRef: LLVMConstStructInContext(self.contextRef, valueRefs, values.count, NO)];
 }
 
 @end

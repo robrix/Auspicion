@@ -1,19 +1,23 @@
 Builder:
-	- in call:, determine the number of arguments from the arity of the function.
-		- require nil termination for varargs functions.
-	- store builders in values so they don’t have to be referenced explicitly.
+	- in call:, determine the number of arguments from the arity of the function. @done(2010-06-10)
+		- require nil termination for varargs functions. @done(2010-06-10)
+	- store builders in values so they don’t have to be referenced explicitly. @done(2010-06-10)
 Value:
-	- LLVMBooleanValue, returned by comparison methods.
-	- LLVMStructValue.
-	- LLVMReferenceValue.
+	- LLVMStructureValue. @done(2010-06-10)
+	- LLVMPointerValue.
 Type:
 	- give function types names for the argument types.
 Compiler:
 	- implement interpretation.
 	- implement static compilation.
 		- implement cross-compilation.
-
 Module:
 	- in the presence of block support, implement -functionWithName:type:implementationBlock: which takes as its last parameter a block which takes a function and a builder.
 		This will get the function if it exists, and if not will create it with the block.
 	- build types from “@encode” directives.
+Housekeeping:
+	- unique objects.
+		- modules.
+		- types.
+		- contexts.
+		- functions?

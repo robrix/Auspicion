@@ -15,9 +15,10 @@
 @interface LLVMConcreteModule : LLVMModule {
 	LLVMModuleRef moduleRef;
 	LLVMModuleProviderRef moduleProviderRef;
-	LLVMContext *context;
+	LLVMBuilder *builder;
 }
 
 -(id)initWithName:(NSString *)_name context:(LLVMContext *)_context;
+-(id)initWithModuleRef:(LLVMModuleRef)_moduleRef;
 
 @end

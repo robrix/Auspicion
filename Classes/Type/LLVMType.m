@@ -3,11 +3,48 @@
 // Copyright 2009 Monochrome Industries
 
 #import "LLVMConcreteContext.h"
-#import "LLVMConcreteType.h"
+#import "LLVMStructureType.h"
 #import "LLVMType.h"
+#import "LLVMType+Protected.h"
 #import "AuspicionLLVM.h"
 
 @implementation LLVMType
+
++(Class)classForTypeKind:(LLVMTypeKind)kind {
+	Class result = Nil;
+	switch(kind) {
+		case LLVMStructTypeKind:
+			result = [LLVMStructureType class];
+			break;
+		default:
+			result = self;
+			break;
+	}
+	return result;
+}
+
++(id)typeWithTypeRef:(LLVMTypeRef)_typeRef {
+	return [[[[self classForTypeKind: LLVMGetTypeKind(_typeRef)] alloc] initWithTypeRef: _typeRef] autorelease];
+}
+
++(id)typeOfValueRef:(LLVMValueRef)valueRef {
+	return [self typeWithTypeRef: LLVMTypeOf(valueRef)];
+}
+
+-(id)initWithTypeRef:(LLVMTypeRef)_typeRef {
+	if(self = [super init]) {
+		typeRef = _typeRef;
+	}
+	return self;
+}
+
+
+@synthesize typeRef;
+
+-(LLVMTypeKind)typeKind {
+	return LLVMGetTypeKind(self.typeRef);
+}
+
 
 +(LLVMType *)integerTypeInContext:(LLVMContext *)context {
 #ifdef __LP64__
@@ -19,37 +56,37 @@
 
 
 +(LLVMType *)int1TypeInContext:(LLVMContext *)context {
-	return [LLVMConcreteType typeWithTypeRef: LLVMInt1TypeInContext(context.contextRef)];
+	return [LLVMType typeWithTypeRef: LLVMInt1TypeInContext(context.contextRef)];
 }
 
 +(LLVMType *)int8TypeInContext:(LLVMContext *)context {
-	return [LLVMConcreteType typeWithTypeRef: LLVMInt8TypeInContext(context.contextRef)];
+	return [LLVMType typeWithTypeRef: LLVMInt8TypeInContext(context.contextRef)];
 }
 
 +(LLVMType *)int16TypeInContext:(LLVMContext *)context {
-	return [LLVMConcreteType typeWithTypeRef: LLVMInt16TypeInContext(context.contextRef)];
+	return [LLVMType typeWithTypeRef: LLVMInt16TypeInContext(context.contextRef)];
 }
 
 +(LLVMType *)int32TypeInContext:(LLVMContext *)context {
-	return [LLVMConcreteType typeWithTypeRef: LLVMInt32TypeInContext(context.contextRef)];
+	return [LLVMType typeWithTypeRef: LLVMInt32TypeInContext(context.contextRef)];
 }
 
 +(LLVMType *)int64TypeInContext:(LLVMContext *)context {
-	return [LLVMConcreteType typeWithTypeRef: LLVMInt64TypeInContext(context.contextRef)];
+	return [LLVMType typeWithTypeRef: LLVMInt64TypeInContext(context.contextRef)];
 }
 
 
 +(LLVMType *)floatTypeInContext:(LLVMContext *)context {
-	return [LLVMConcreteType typeWithTypeRef: LLVMFloatTypeInContext(context.contextRef)];
+	return [LLVMType typeWithTypeRef: LLVMFloatTypeInContext(context.contextRef)];
 }
 
 +(LLVMType *)doubleTypeInContext:(LLVMContext *)context {
-	return [LLVMConcreteType typeWithTypeRef: LLVMDoubleTypeInContext(context.contextRef)];
+	return [LLVMType typeWithTypeRef: LLVMDoubleTypeInContext(context.contextRef)];
 }
 
 
 +(LLVMType *)pointerTypeToType:(LLVMType *)type addressSpace:(NSUInteger)addressSpace {
-	return [LLVMConcreteType typeWithTypeRef: LLVMPointerType(type.typeRef, addressSpace)];
+	return [LLVMType typeWithTypeRef: LLVMPointerType(type.typeRef, addressSpace)];
 }
 
 +(LLVMType *)pointerTypeToType:(LLVMType *)type {
@@ -62,7 +99,7 @@
 
 
 +(LLVMType *)voidTypeInContext:(LLVMContext *)context {
-	return [LLVMConcreteType typeWithTypeRef: LLVMVoidTypeInContext(context.contextRef)];
+	return [LLVMType typeWithTypeRef: LLVMVoidTypeInContext(context.contextRef)];
 }
 
 
@@ -72,7 +109,7 @@
 	for(LLVMType *type in argumentTypes) {
 		argumentTypeRefs[i++] = type.typeRef;
 	}
-	return [LLVMConcreteType typeWithTypeRef: LLVMFunctionType(_returnType.typeRef, argumentTypeRefs, argumentTypes.count, variadic)];
+	return [LLVMType typeWithTypeRef: LLVMFunctionType(_returnType.typeRef, argumentTypeRefs, argumentTypes.count, variadic)];
 }
 
 +(LLVMType *)functionType:(LLVMType *)returnType, ... {
@@ -89,20 +126,20 @@
 
 
 +(LLVMType *)arrayTypeWithCount:(NSUInteger)count type:(LLVMType *)type {
-	return [LLVMConcreteType typeWithTypeRef: LLVMArrayType(type.typeRef, count)];
+	return [LLVMType typeWithTypeRef: LLVMArrayType(type.typeRef, count)];
 }
 
-+(LLVMType *)structTypeWithTypes:(NSArray *)types {
++(LLVMStructureType *)structTypeWithTypes:(NSArray *)types {
 	LLVMTypeRef typeRefs[types.count];
 	NSUInteger i = 0;
 	for(LLVMType *type in types) {
 		typeRefs[i++] = type.typeRef;
 	}
 	NSParameterAssert(types.count > 0);
-	return [LLVMConcreteType typeWithTypeRef: LLVMStructType(typeRefs, types.count, NO)];
+	return [LLVMType typeWithTypeRef: LLVMStructType(typeRefs, types.count, NO)];
 }
 
-+(LLVMType *)structTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types {
++(LLVMStructureType *)structTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types {
 	LLVMTypeRef typeRefs[types.count];
 	NSUInteger i = 0;
 	for(LLVMType *type in types) {
@@ -110,7 +147,7 @@
 	}
 	NSParameterAssert(context != nil);
 	NSParameterAssert(types.count > 0);
-	return [LLVMConcreteType typeWithTypeRef: LLVMStructTypeInContext(context.contextRef, typeRefs, types.count, NO)];
+	return [LLVMType typeWithTypeRef: LLVMStructTypeInContext(context.contextRef, typeRefs, types.count, NO)];
 }
 
 +(LLVMType *)unionTypeWithTypes:(NSArray *)types {
@@ -120,13 +157,7 @@
 		typeRefs[i++] = type.typeRef;
 	}
 	NSParameterAssert(types.count > 0);
-	return [LLVMConcreteType typeWithTypeRef: LLVMUnionType(typeRefs, types.count)];
-}
-
-
--(LLVMTypeRef)typeRef {
-	[self doesNotRecognizeSelector: _cmd];
-	return NULL;
+	return [LLVMType typeWithTypeRef: LLVMUnionType(typeRefs, types.count)];
 }
 
 

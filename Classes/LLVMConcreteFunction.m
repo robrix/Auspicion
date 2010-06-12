@@ -3,27 +3,22 @@
 // Copyright 2009 Monochrome Industries
 
 #import "LLVMConcreteFunction.h"
-#import "LLVMConcreteValue.h"
 
 @implementation LLVMConcreteFunction
 
-+(id)functionWithFunctionRef:(LLVMValueRef)_functionRef inModule:(LLVMModule *)module {
-	return [[[self alloc] initWithFunctionRef: _functionRef inModule: module] autorelease];
++(id)functionWithFunctionRef:(LLVMValueRef)_functionRef {
+	return [[[self alloc] initWithFunctionRef: _functionRef] autorelease];
 }
 
--(id)initWithFunctionRef:(LLVMValueRef)_functionRef inModule:(LLVMModule *)_module {
+-(id)initWithFunctionRef:(LLVMValueRef)_functionRef {
 	if(self = [super init]) {
 		functionRef = _functionRef;
 		NSParameterAssert(functionRef != NULL);
-		module = [_module retain];
-		NSParameterAssert(module != nil);
 	}
 	return self;
 }
 
 
 @synthesize functionRef;
-
-@synthesize module;
 
 @end

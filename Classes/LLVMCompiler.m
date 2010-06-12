@@ -7,8 +7,8 @@
 #import "LLVMConcreteCompiler.h"
 #import "LLVMConcreteFunction.h"
 #import "LLVMConcreteModule.h"
-#import "LLVMConcreteValue.h"
 #import "LLVMContext.h"
+#import "LLVMValue+Protected.h"
 
 @implementation LLVMCompiler
 

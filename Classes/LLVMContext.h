@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class LLVMType, LLVMValue;
+@class LLVMStructureType, LLVMType, LLVMValue;
 
 @interface LLVMContext : NSObject
 
@@ -26,7 +26,7 @@
 
 @property (nonatomic, readonly) LLVMType *voidType;
 
--(LLVMType *)structTypeWithTypes:(LLVMType *)type, ... NS_REQUIRES_NIL_TERMINATION;
+-(LLVMStructureType *)structTypeWithTypes:(LLVMType *)type, ... NS_REQUIRES_NIL_TERMINATION;
 
 
 // constants

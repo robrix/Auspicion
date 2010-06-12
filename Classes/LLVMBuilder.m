@@ -2,13 +2,14 @@
 // Created by Rob Rix on 2009-12-29
 // Copyright 2009 Monochrome Industries
 
+#import "LLVMBooleanValue.h"
 #import "LLVMBuilder.h"
 #import "LLVMConcreteBlock.h"
 #import "LLVMConcreteBuilder.h"
 #import "LLVMConcreteContext.h"
 #import "LLVMConcreteFunction.h"
-#import "LLVMConcreteType.h"
-#import "LLVMConcreteValue.h"
+#import "LLVMType+Protected.h"
+#import "LLVMValue+Protected.h"
 
 @implementation LLVMBuilder
 
@@ -41,7 +42,7 @@
 
 -(LLVMValue *)return:(LLVMValue *)value {
 	NSParameterAssert(value != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildRet(self.builderRef, value.valueRef)];
+	return [LLVMValue valueWithValueRef: LLVMBuildRet(self.builderRef, value.valueRef)];
 }
 
 
@@ -52,7 +53,7 @@
 	for(LLVMValue *argument in arguments) {
 		argumentRefs[i++] = argument.valueRef;
 	}
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildCall(self.builderRef, function.valueRef, argumentRefs, arguments.count, "")];
+	return [LLVMValue valueWithValueRef: LLVMBuildCall(self.builderRef, function.valueRef, argumentRefs, arguments.count, "")];
 }
 
 -(LLVMValue *)call:(LLVMValue *)function argument:(LLVMValue *)argument {
@@ -76,7 +77,7 @@
 	NSParameterAssert(condition != nil);
 	NSParameterAssert(thenValue != nil);
 	NSParameterAssert(elseValue != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildSelect(self.builderRef, condition.valueRef, thenValue.valueRef, elseValue.valueRef, "")];
+	return [LLVMValue valueWithValueRef: LLVMBuildSelect(self.builderRef, condition.valueRef, thenValue.valueRef, elseValue.valueRef, "")];
 }
 
 
@@ -87,7 +88,7 @@
 	va_end(list);
 	NSParameterAssert(left != nil);
 	NSParameterAssert(right != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildAdd(self.builderRef, left.valueRef, right.valueRef, "")];
+	return [LLVMValue valueWithValueRef: LLVMBuildAdd(self.builderRef, left.valueRef, right.valueRef, "")];
 }
 
 -(LLVMValue *)subtract:(LLVMValue *)left, ... {
@@ -97,97 +98,97 @@
 	va_end(list);
 	NSParameterAssert(left != nil);
 	NSParameterAssert(right != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildSub(self.builderRef, left.valueRef, right.valueRef, "")];
+	return [LLVMValue valueWithValueRef: LLVMBuildSub(self.builderRef, left.valueRef, right.valueRef, "")];
 }
 
 -(LLVMValue *)not:(LLVMValue *)value {
 	NSParameterAssert(value != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildNot(self.builderRef, value.valueRef, "")];
+	return [LLVMValue valueWithValueRef: LLVMBuildNot(self.builderRef, value.valueRef, "")];
 }
 
 
 -(LLVMValue *)stringPointer:(NSString *)string {
 	NSParameterAssert(string != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildGlobalStringPtr(self.builderRef, [string UTF8String], "")];
+	return [LLVMValue valueWithValueRef: LLVMBuildGlobalStringPtr(self.builderRef, [string UTF8String], "")];
 }
 
 
 // -(LLVMValue *)offsetPointer:(LLVMValue *)pointerValue by:(LLVMValue *)offsetValue {
 // 	LLVMValueRef offsetValueRefs[] = { offsetValue.valueRef };
-// 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildGEP(self.builderRef, pointerValue.valueRef, offsetValueRefs, 1, "")];
+// 	return [LLVMValue valueWithValueRef: LLVMBuildGEP(self.builderRef, pointerValue.valueRef, offsetValueRefs, 1, "")];
 // }
 
 // -(LLVMValue *)dereference:(LLVMValue *)pointer {
-// 	return [LLVMConcreteValue valueWithValueRef: LLVMBuildGEP(self.builderRef, pointer.valueRef, (LLVMValueRef[]){ [self.context constantInteger: 0].valueRef }, 1, "")];
+// 	return [LLVMValue valueWithValueRef: LLVMBuildGEP(self.builderRef, pointer.valueRef, (LLVMValueRef[]){ [self.context constantInteger: 0].valueRef }, 1, "")];
 // }
 
 
--(LLVMValue *)and:(LLVMValue *)left, ... {
+-(LLVMBooleanValue *)and:(LLVMValue *)left, ... {
 	va_list list;
 	va_start(list, left);
 	LLVMValue *right = va_arg(list, LLVMValue *);
 	va_end(list);
 	NSParameterAssert(left != nil);
 	NSParameterAssert(right != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildAnd(self.builderRef, left.valueRef, right.valueRef, "")];
+	return [LLVMBooleanValue valueWithValueRef: LLVMBuildAnd(self.builderRef, left.valueRef, right.valueRef, "")];
 }
 
--(LLVMValue *)or:(LLVMValue *)left, ... {
+-(LLVMBooleanValue *)or:(LLVMValue *)left, ... {
 	va_list list;
 	va_start(list, left);
 	LLVMValue *right = va_arg(list, LLVMValue *);
 	va_end(list);
 	NSParameterAssert(left != nil);
 	NSParameterAssert(right != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildOr(self.builderRef, left.valueRef, right.valueRef, "")];
+	return [LLVMBooleanValue valueWithValueRef: LLVMBuildOr(self.builderRef, left.valueRef, right.valueRef, "")];
 }
 
 
--(LLVMValue *)unsignedLessOrEqual:(LLVMValue *)left, ... {
+-(LLVMBooleanValue *)unsignedLessOrEqual:(LLVMValue *)left, ... {
 	va_list list;
 	va_start(list, left);
 	LLVMValue *right = va_arg(list, LLVMValue *);
 	va_end(list);
 	NSParameterAssert(left != nil);
 	NSParameterAssert(right != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntULE, left.valueRef, right.valueRef, "")];
+	return [LLVMBooleanValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntULE, left.valueRef, right.valueRef, "")];
 }
 
--(LLVMValue *)unsignedLessThan:(LLVMValue *)left, ... {
+-(LLVMBooleanValue *)unsignedLessThan:(LLVMValue *)left, ... {
 	va_list list;
 	va_start(list, left);
 	LLVMValue *right = va_arg(list, LLVMValue *);
 	va_end(list);
 	NSParameterAssert(left != nil);
 	NSParameterAssert(right != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntULT, left.valueRef, right.valueRef, "")];
+	return [LLVMBooleanValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntULT, left.valueRef, right.valueRef, "")];
 }
 
--(LLVMValue *)equal:(LLVMValue *)left, ... {
+-(LLVMBooleanValue *)equal:(LLVMValue *)left, ... {
 	va_list list;
 	va_start(list, left);
 	LLVMValue *right = va_arg(list, LLVMValue *);
 	va_end(list);
 	NSParameterAssert(left != nil);
 	NSParameterAssert(right != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntEQ, left.valueRef, right.valueRef, "")];
+	return [LLVMBooleanValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntEQ, left.valueRef, right.valueRef, "")];
 }
 
--(LLVMValue *)notEqual:(LLVMValue *)left, ... {
+-(LLVMBooleanValue *)notEqual:(LLVMValue *)left, ... {
 	va_list list;
 	va_start(list, left);
 	LLVMValue *right = va_arg(list, LLVMValue *);
 	va_end(list);
 	NSParameterAssert(left != nil);
 	NSParameterAssert(right != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntNE, left.valueRef, right.valueRef, "")];
+	return [LLVMBooleanValue valueWithValueRef: LLVMBuildICmp(self.builderRef, LLVMIntNE, left.valueRef, right.valueRef, "")];
 }
 
 
 -(LLVMValue *)allocateLocal:(NSString *)name type:(LLVMType *)type {
 	NSParameterAssert(name != nil);
 	NSParameterAssert(type != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildAlloca(self.builderRef, type.typeRef, [name UTF8String]) name: name];
+	return [LLVMValue valueWithValueRef: LLVMBuildAlloca(self.builderRef, type.typeRef, [name UTF8String]) name: name];
 }
 
 
@@ -198,7 +199,7 @@
 	va_end(list);
 	NSParameterAssert(local != nil);
 	NSParameterAssert(value != nil);
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildStore(self.builderRef, value.valueRef, local.valueRef)];
+	return [LLVMValue valueWithValueRef: LLVMBuildStore(self.builderRef, value.valueRef, local.valueRef)];
 }
 
 -(LLVMValue *)setElements:(LLVMValue *)address, ... {
@@ -216,20 +217,20 @@
 }
 
 -(LLVMValue *)get:(LLVMValue *)local {
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildLoad(self.builderRef, local.valueRef, [local.name UTF8String])];
+	return [LLVMValue valueWithValueRef: LLVMBuildLoad(self.builderRef, local.valueRef, [local.name UTF8String])];
 }
 
 -(LLVMValue *)getElement:(LLVMValue *)address atIndex:(NSUInteger)index {
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildLoad(self.builderRef, LLVMBuildGEP(self.builderRef, address.valueRef, (LLVMValueRef[]){ [self.context constantUnsignedInt32: 0].valueRef, [self.context constantUnsignedInt32: index].valueRef }, 2, ""), [[NSString stringWithFormat: @"element %u", index] UTF8String])];
+	return [LLVMValue valueWithValueRef: LLVMBuildLoad(self.builderRef, LLVMBuildGEP(self.builderRef, address.valueRef, (LLVMValueRef[]){ [self.context constantUnsignedInt32: 0].valueRef, [self.context constantUnsignedInt32: index].valueRef }, 2, ""), [[NSString stringWithFormat: @"element %u", index] UTF8String])];
 }
 
 
 -(LLVMValue *)if:(LLVMValue *)condition then:(LLVMBlock *)thenBlock else:(LLVMBlock *)elseBlock {
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildCondBr(self.builderRef, condition.valueRef, thenBlock.blockRef, elseBlock.blockRef)];
+	return [LLVMValue valueWithValueRef: LLVMBuildCondBr(self.builderRef, condition.valueRef, thenBlock.blockRef, elseBlock.blockRef)];
 }
 
 -(LLVMValue *)jumpToBlock:(LLVMBlock *)block {
-	return [LLVMConcreteValue valueWithValueRef: LLVMBuildBr(self.builderRef, block.blockRef)];
+	return [LLVMValue valueWithValueRef: LLVMBuildBr(self.builderRef, block.blockRef)];
 }
 
 @end

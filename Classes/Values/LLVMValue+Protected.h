@@ -1,19 +1,12 @@
-// LLVMConcreteValue.h
-// Created by Rob Rix on 2009-12-29
-// Copyright 2009 Monochrome Industries
+// LLVMValue+Protected.m
+// Created by Rob Rix on 2010-06-09
+// Copyright 2010 Monochrome Industries
 
 #import "LLVMValue.h"
 
 @interface LLVMValue ()
 
 @property (nonatomic, readonly) LLVMValueRef valueRef;
-
-@end
-
-
-@interface LLVMConcreteValue : LLVMValue {
-	LLVMValueRef valueRef;
-}
 
 +(id)valueWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)name;
 +(id)valueWithValueRef:(LLVMValueRef)_valueRef;

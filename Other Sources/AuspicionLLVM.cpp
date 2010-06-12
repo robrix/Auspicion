@@ -6,6 +6,8 @@
 
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
 #include "llvm/Function.h"
+#include "llvm/LLVMContext.h"
+#include "llvm/Module.h"
 #include "llvm/Support/raw_ostream.h"
 #include "string"
 
@@ -15,11 +17,20 @@ void *AuspicionLLVMGetPointerToFunction(LLVMExecutionEngineRef compiler, LLVMVal
 	return cppCompiler->getPointerToFunction(cppFunction);
 }
 
+
 LLVMTypeRef AuspicionLLVMGetFunctionType(LLVMValueRef function) {
 	llvm::Function *cppFunction = llvm::unwrap<llvm::Function>(function);
 	const llvm::FunctionType *cppType = cppFunction->getFunctionType();
 	return llvm::wrap(cppType);
 }
+
+
+LLVMContextRef AuspicionLLVMModuleGetContext(LLVMModuleRef module) {
+	llvm::Module *cppModule = llvm::unwrap(module);
+	llvm::LLVMContext *context = &cppModule->getContext();
+	return llvm::wrap(context);
+}
+
 
 char *AuspicionLLVMPrintValue(LLVMValueRef value) {
 	std::string string;

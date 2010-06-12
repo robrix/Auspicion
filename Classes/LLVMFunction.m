@@ -3,18 +3,19 @@
 // Copyright 2009 Monochrome Industries
 
 #import "AuspicionLLVM.h"
+#import "LLVMBuilder.h"
 #import "LLVMConcreteBlock.h"
 #import "LLVMConcreteContext.h"
 #import "LLVMConcreteFunction.h"
 #import "LLVMConcreteModule.h"
-#import "LLVMConcreteType.h"
-#import "LLVMConcreteValue.h"
 #import "LLVMFunction.h"
+#import "LLVMType+Protected.h"
+#import "LLVMValue+Protected.h"
 
 @implementation LLVMFunction
 
 +(id)functionInModule:(LLVMModule *)module withName:(NSString *)name type:(LLVMType *)type {
-	return [LLVMConcreteFunction functionWithFunctionRef: LLVMAddFunction(module.moduleRef, [name UTF8String], type.typeRef) inModule: module];
+	return [LLVMConcreteFunction functionWithFunctionRef: LLVMAddFunction(module.moduleRef, [name UTF8String], type.typeRef)];
 }
 
 
@@ -38,12 +39,12 @@
 
 
 -(LLVMType *)functionType {
-	return [LLVMConcreteType typeWithTypeRef: AuspicionLLVMGetFunctionType(self.functionRef)];
+	return [LLVMType typeWithTypeRef: AuspicionLLVMGetFunctionType(self.functionRef)];
 }
 
 
 -(LLVMType *)returnType {
-	return [LLVMConcreteType typeWithTypeRef: LLVMGetReturnType(self.functionType.typeRef)];
+	return [LLVMType typeWithTypeRef: LLVMGetReturnType(self.functionType.typeRef)];
 }
 
 -(NSArray *)argumentTypes {
@@ -52,7 +53,7 @@
 	LLVMGetParamTypes(self.functionType.typeRef, typeRefs);
 	NSMutableArray *argumentTypes = [[NSMutableArray alloc] initWithCapacity: count];
 	for(NSUInteger i = 0; i < count; i++) {
-		[argumentTypes addObject: [LLVMConcreteType typeWithTypeRef: typeRefs[i]]];
+		[argumentTypes addObject: [LLVMType typeWithTypeRef: typeRefs[i]]];
 	}
 	return [argumentTypes autorelease];
 }
@@ -63,13 +64,20 @@
 }
 
 -(LLVMModule *)module {
-	[self doesNotRecognizeSelector: _cmd];
-	return nil;
+	return [[[LLVMConcreteModule alloc] initWithModuleRef: LLVMGetGlobalParent(self.functionRef)] autorelease];
 }
 
 
--(LLVMValue *)parameterAtIndex:(NSUInteger)index {
-	return [LLVMConcreteValue valueWithValueRef: LLVMGetParam(self.functionRef, index)];
+-(LLVMValue *)argumentAtIndex:(NSUInteger)index {
+	return [LLVMValue valueWithValueRef: LLVMGetParam(self.functionRef, index)];
+}
+
+-(NSUInteger)arity {
+	return LLVMCountParamTypes(self.functionType.typeRef);
+}
+
+-(BOOL)hasVariableArity {
+	return LLVMIsFunctionVarArg(self.functionType.typeRef);
 }
 
 
@@ -100,5 +108,24 @@
 // 	free(bytes);
 // 	return result;
 // }
+
+
+-(LLVMValue *)call:(LLVMValue *)argument, ... {
+	va_list list;
+	NSMutableArray *arguments = [NSMutableArray array];
+	va_start(list, argument);
+	if(self.hasVariableArity) {
+		do {
+			[arguments addObject: argument];
+		} while(argument = va_arg(list, LLVMValue *));
+	} else {
+		for(NSUInteger i = 0; i < self.arity; i++) {
+			[arguments addObject: argument];
+			argument = va_arg(list, LLVMValue *);
+		}
+	}
+	va_end(list);
+	return [self.module.builder call: self arguments: arguments];
+}
 
 @end
