@@ -5,18 +5,39 @@
 #import "AuspicionLLVM.h"
 #import "LLVMBuilder.h"
 #import "LLVMConcreteContext.h"
-#import "LLVMConcreteModule.h"
 #import "LLVMFunction+Protected.h"
 #import "LLVMFunctionBuilder.h"
 #import "LLVMModule.h"
+#import "LLVMModule+Protected.h"
 #import "LLVMType+Protected.h"
 #import "LLVMValue+Protected.h"
 
 @implementation LLVMModule
 
+@synthesize moduleRef, moduleProviderRef, builder;
+
 +(LLVMModule *)moduleWithName:(NSString *)_name inContext:(LLVMContext *)_context {
-	return [[[LLVMConcreteModule alloc] initWithName: _name context: _context] autorelease];
+	return [[[self alloc] initWithName: _name context: _context] autorelease];
 }
+
+-(id)initWithName:(NSString *)_name context:(LLVMContext *)_context {
+	return [self initWithModuleRef: LLVMModuleCreateWithNameInContext([_name UTF8String], _context.contextRef)];
+}
+
+-(id)initWithModuleRef:(LLVMModuleRef)_moduleRef {
+	if(self = [super init]) {
+		moduleRef = _moduleRef;
+		moduleProviderRef = LLVMCreateModuleProviderForExistingModule(moduleRef);
+		builder = [[LLVMBuilder builderWithContext: self.context] retain];
+	}
+	return self;
+}
+
+-(void)dealloc {
+	[builder release];
+	[super dealloc];
+}
+
 
 
 -(id)init {
@@ -24,17 +45,6 @@
 		typesByName = [[NSMutableDictionary alloc] init];
 	}
 	return self;
-}
-
-
--(LLVMModuleRef)moduleRef {
-	[self doesNotRecognizeSelector: _cmd];
-	return NULL;
-}
-
--(LLVMModuleProviderRef)moduleProviderRef {
-	[self doesNotRecognizeSelector: _cmd];
-	return NULL;
 }
 
 

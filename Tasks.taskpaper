@@ -27,5 +27,5 @@ Housekeeping:
 		- compiler.
 		- context.
 		- function. @done(2010-06-12)
-		- model.
+		- module. @done(2010-06-12)
 		- optimizer.
