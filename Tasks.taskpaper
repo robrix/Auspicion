@@ -3,8 +3,8 @@ Builder:
 		- require nil termination for varargs functions. @done(2010-06-10)
 	- store builders in values so they don’t have to be referenced explicitly. @done(2010-06-10)
 Value:
-	- LLVMStructureValue. @done(2010-06-10)
-	- LLVMPointerValue.
+	- ALLVMStructureValue. @done(2010-06-10)
+	- ALLVMPointerValue.
 Type:
 	- give function types names for the argument types.
 Compiler:
@@ -18,9 +18,9 @@ Module:
 Housekeeping:
 	- stop using module providers.
 	- unique objects.
-		- modules. @done(2010-06-12)
-		- types. @done(2010-06-12)
-		- contexts. @done(2010-06-12)
-		- blocks. @done(2010-06-12)
+		- modules.
+		- types.
+		- contexts.
+		- blocks.
 		- functions?
 		- optimizers.

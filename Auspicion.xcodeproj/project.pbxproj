@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D404EA2510F1E9F6007612E9 /* LLVMBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = D404EA2310F1E9F6007612E9 /* LLVMBlock.h */; };
-		D404EA2610F1E9F6007612E9 /* LLVMBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = D404EA2410F1E9F6007612E9 /* LLVMBlock.m */; };
+		D404EA2510F1E9F6007612E9 /* ALLVMBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = D404EA2310F1E9F6007612E9 /* ALLVMBlock.h */; };
+		D404EA2610F1E9F6007612E9 /* ALLVMBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = D404EA2410F1E9F6007612E9 /* ALLVMBlock.m */; };
 		D405880210EA0CE100A9E853 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
-		D405880A10EA0CF000A9E853 /* LLVMContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D405880610EA0CF000A9E853 /* LLVMContext.h */; };
-		D405880B10EA0CF000A9E853 /* LLVMContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D405880710EA0CF000A9E853 /* LLVMContext.m */; };
-		D405881C10EA0EB100A9E853 /* LLVMModule.h in Headers */ = {isa = PBXBuildFile; fileRef = D405881810EA0EB100A9E853 /* LLVMModule.h */; };
-		D405881D10EA0EB100A9E853 /* LLVMModule.m in Sources */ = {isa = PBXBuildFile; fileRef = D405881910EA0EB100A9E853 /* LLVMModule.m */; };
-		D405883A10EA13EF00A9E853 /* LLVMBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = D405883810EA13EF00A9E853 /* LLVMBuilder.h */; };
-		D405883B10EA13EF00A9E853 /* LLVMBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = D405883910EA13EF00A9E853 /* LLVMBuilder.m */; };
+		D405880A10EA0CF000A9E853 /* ALLVMContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D405880610EA0CF000A9E853 /* ALLVMContext.h */; };
+		D405880B10EA0CF000A9E853 /* ALLVMContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D405880710EA0CF000A9E853 /* ALLVMContext.m */; };
+		D405881C10EA0EB100A9E853 /* ALLVMModule.h in Headers */ = {isa = PBXBuildFile; fileRef = D405881810EA0EB100A9E853 /* ALLVMModule.h */; };
+		D405881D10EA0EB100A9E853 /* ALLVMModule.m in Sources */ = {isa = PBXBuildFile; fileRef = D405881910EA0EB100A9E853 /* ALLVMModule.m */; };
+		D405883A10EA13EF00A9E853 /* ALLVMBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = D405883810EA13EF00A9E853 /* ALLVMBuilder.h */; };
+		D405883B10EA13EF00A9E853 /* ALLVMBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = D405883910EA13EF00A9E853 /* ALLVMBuilder.m */; };
 		D405886610EA168B00A9E853 /* libLLVMAnalysis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405885410EA168B00A9E853 /* libLLVMAnalysis.a */; };
 		D405886710EA168C00A9E853 /* libLLVMAsmPrinter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405885510EA168B00A9E853 /* libLLVMAsmPrinter.a */; };
 		D405886810EA168C00A9E853 /* libLLVMCodeGen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405885610EA168B00A9E853 /* libLLVMCodeGen.a */; };
@@ -35,41 +35,46 @@
 		D405887610EA168C00A9E853 /* libLLVMX86Disassembler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405886410EA168B00A9E853 /* libLLVMX86Disassembler.a */; };
 		D405887710EA168C00A9E853 /* libLLVMX86Info.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D405886510EA168B00A9E853 /* libLLVMX86Info.a */; };
 		D415F90C11A9A5210027AAD8 /* libLLVMInstCombine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D415F90B11A9A5210027AAD8 /* libLLVMInstCombine.a */; };
-		D48B255811B364A9007CBBB4 /* LLVMFunctionBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = D48B255611B364A9007CBBB4 /* LLVMFunctionBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D48B255911B364A9007CBBB4 /* LLVMFunctionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = D48B255711B364A9007CBBB4 /* LLVMFunctionBuilder.m */; };
-		D4CF5EA811BF98F600C9DD15 /* LLVMValue.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF5EA411BF98F600C9DD15 /* LLVMValue.h */; };
-		D4CF5EA911BF98F600C9DD15 /* LLVMValue.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF5EA511BF98F600C9DD15 /* LLVMValue.m */; };
-		D4CF5F1A11BFF0C300C9DD15 /* LLVMBooleanValue.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF5F1611BFF0C300C9DD15 /* LLVMBooleanValue.h */; };
-		D4CF5F1B11BFF0C300C9DD15 /* LLVMBooleanValue.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF5F1711BFF0C300C9DD15 /* LLVMBooleanValue.m */; };
-		D4CF5F6C11C13B3D00C9DD15 /* LLVMType.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF5F6811C13B3D00C9DD15 /* LLVMType.h */; };
-		D4CF5F6D11C13B3D00C9DD15 /* LLVMType.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF5F6911C13B3D00C9DD15 /* LLVMType.m */; };
-		D4CF5F8B11C1412D00C9DD15 /* LLVMType+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF5F8A11C1412D00C9DD15 /* LLVMType+Protected.h */; };
-		D4CF5F8F11C1413900C9DD15 /* LLVMStructureType.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF5F8D11C1413900C9DD15 /* LLVMStructureType.h */; };
-		D4CF5F9011C1413900C9DD15 /* LLVMStructureType.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF5F8E11C1413900C9DD15 /* LLVMStructureType.m */; };
-		D4CF600E11C32E8600C9DD15 /* LLVMPointerValue.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF600A11C32E8600C9DD15 /* LLVMPointerValue.h */; };
-		D4CF600F11C32E8600C9DD15 /* LLVMPointerValue.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF600B11C32E8600C9DD15 /* LLVMPointerValue.m */; };
-		D4CF601011C32E8600C9DD15 /* LLVMStructureValue.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF600C11C32E8600C9DD15 /* LLVMStructureValue.h */; };
-		D4CF601111C32E8600C9DD15 /* LLVMStructureValue.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF600D11C32E8600C9DD15 /* LLVMStructureValue.m */; };
+		D48B255811B364A9007CBBB4 /* ALLVMFunctionBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = D48B255611B364A9007CBBB4 /* ALLVMFunctionBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D48B255911B364A9007CBBB4 /* ALLVMFunctionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = D48B255711B364A9007CBBB4 /* ALLVMFunctionBuilder.m */; };
+		D4CF5EA811BF98F600C9DD15 /* ALLVMValue.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF5EA411BF98F600C9DD15 /* ALLVMValue.h */; };
+		D4CF5EA911BF98F600C9DD15 /* ALLVMValue.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF5EA511BF98F600C9DD15 /* ALLVMValue.m */; };
+		D4CF5F1A11BFF0C300C9DD15 /* ALLVMBooleanValue.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF5F1611BFF0C300C9DD15 /* ALLVMBooleanValue.h */; };
+		D4CF5F1B11BFF0C300C9DD15 /* ALLVMBooleanValue.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF5F1711BFF0C300C9DD15 /* ALLVMBooleanValue.m */; };
+		D4CF5F6C11C13B3D00C9DD15 /* ALLVMType.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF5F6811C13B3D00C9DD15 /* ALLVMType.h */; };
+		D4CF5F6D11C13B3D00C9DD15 /* ALLVMType.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF5F6911C13B3D00C9DD15 /* ALLVMType.m */; };
+		D4CF5F8B11C1412D00C9DD15 /* ALLVMType+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF5F8A11C1412D00C9DD15 /* ALLVMType+Protected.h */; };
+		D4CF5F8F11C1413900C9DD15 /* ALLVMStructureType.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF5F8D11C1413900C9DD15 /* ALLVMStructureType.h */; };
+		D4CF5F9011C1413900C9DD15 /* ALLVMStructureType.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF5F8E11C1413900C9DD15 /* ALLVMStructureType.m */; };
+		D4CF600E11C32E8600C9DD15 /* ALLVMPointerValue.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF600A11C32E8600C9DD15 /* ALLVMPointerValue.h */; };
+		D4CF600F11C32E8600C9DD15 /* ALLVMPointerValue.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF600B11C32E8600C9DD15 /* ALLVMPointerValue.m */; };
+		D4CF601011C32E8600C9DD15 /* ALLVMStructureValue.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF600C11C32E8600C9DD15 /* ALLVMStructureValue.h */; };
+		D4CF601111C32E8600C9DD15 /* ALLVMStructureValue.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF600D11C32E8600C9DD15 /* ALLVMStructureValue.m */; };
 		D4CF603F11C3302900C9DD15 /* libAuspicion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC07E0554694100DB518D /* libAuspicion.a */; };
-		D4CF604111C3306E00C9DD15 /* LLVMValueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF604011C3306E00C9DD15 /* LLVMValueTests.m */; };
+		D4CF604111C3306E00C9DD15 /* ALLVMValueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF604011C3306E00C9DD15 /* ALLVMValueTests.m */; };
 		D4CF609911C331A400C9DD15 /* RXAssertions.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF607411C331A400C9DD15 /* RXAssertions.m */; };
-		D4CF60BE11C3332600C9DD15 /* LLVMValue+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60BD11C3332600C9DD15 /* LLVMValue+Protected.h */; };
-		D4CF60CC11C3394600C9DD15 /* LLVMFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60C911C3394600C9DD15 /* LLVMFunction.h */; };
-		D4CF60CD11C3394600C9DD15 /* LLVMFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF60CA11C3394600C9DD15 /* LLVMFunction.m */; };
-		D4CF60CE11C3394600C9DD15 /* LLVMFunction+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60CB11C3394600C9DD15 /* LLVMFunction+Protected.h */; };
-		D4CF60E911C3456E00C9DD15 /* LLVMModule+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60E811C3456E00C9DD15 /* LLVMModule+Protected.h */; };
-		D4CF60F511C3472300C9DD15 /* LLVMBlock+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60F411C3472300C9DD15 /* LLVMBlock+Protected.h */; };
-		D4CF611411C3481600C9DD15 /* LLVMBuilder+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF611311C3481600C9DD15 /* LLVMBuilder+Protected.h */; };
+		D4CF60BE11C3332600C9DD15 /* ALLVMValue+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60BD11C3332600C9DD15 /* ALLVMValue+Protected.h */; };
+		D4CF60CC11C3394600C9DD15 /* ALLVMFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60C911C3394600C9DD15 /* ALLVMFunction.h */; };
+		D4CF60CD11C3394600C9DD15 /* ALLVMFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF60CA11C3394600C9DD15 /* ALLVMFunction.m */; };
+		D4CF60CE11C3394600C9DD15 /* ALLVMFunction+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60CB11C3394600C9DD15 /* ALLVMFunction+Protected.h */; };
+		D4CF60E911C3456E00C9DD15 /* ALLVMModule+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60E811C3456E00C9DD15 /* ALLVMModule+Protected.h */; };
+		D4CF60F511C3472300C9DD15 /* ALLVMBlock+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60F411C3472300C9DD15 /* ALLVMBlock+Protected.h */; };
+		D4CF611411C3481600C9DD15 /* ALLVMBuilder+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF611311C3481600C9DD15 /* ALLVMBuilder+Protected.h */; };
 		D4CF617411C3537600C9DD15 /* NSObject+UniqueFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF617211C3537600C9DD15 /* NSObject+UniqueFactory.h */; };
 		D4CF617511C3537600C9DD15 /* NSObject+UniqueFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF617311C3537600C9DD15 /* NSObject+UniqueFactory.m */; };
-		D4CF61D411C3775600C9DD15 /* LLVMModuleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF61D311C3775600C9DD15 /* LLVMModuleTests.m */; };
-		D4D9DCDE10EB31DC003EEE90 /* LLVMCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */; };
-		D4D9DCDF10EB31DC003EEE90 /* LLVMCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */; };
+		D4CF61D411C3775600C9DD15 /* ALLVMModuleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF61D311C3775600C9DD15 /* ALLVMModuleTests.m */; };
+		D4D74FEC11C39DB9002FF2F1 /* ALLVMFunctionType.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D74FEA11C39DB9002FF2F1 /* ALLVMFunctionType.h */; };
+		D4D74FED11C39DB9002FF2F1 /* ALLVMFunctionType.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D74FEB11C39DB9002FF2F1 /* ALLVMFunctionType.m */; };
+		D4D74FFD11C3A056002FF2F1 /* ALLVMCompiler+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D74FFC11C3A056002FF2F1 /* ALLVMCompiler+Protected.h */; };
+		D4D74FFF11C3A061002FF2F1 /* ALLVMContext+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D74FFE11C3A061002FF2F1 /* ALLVMContext+Protected.h */; };
+		D4D7500111C3A06B002FF2F1 /* ALLVMOptimizer+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D7500011C3A06B002FF2F1 /* ALLVMOptimizer+Protected.h */; };
+		D4D9DCDE10EB31DC003EEE90 /* ALLVMCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* ALLVMCompiler.h */; };
+		D4D9DCDF10EB31DC003EEE90 /* ALLVMCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* ALLVMCompiler.m */; };
 		D4D9DE5E10EB5F68003EEE90 /* libAuspicionLLVM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */; };
 		D4D9DE6610EB5FBC003EEE90 /* AuspicionLLVM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DE6410EB5FBC003EEE90 /* AuspicionLLVM.cpp */; };
 		D4D9DE6710EB5FBC003EEE90 /* AuspicionLLVM.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DE6510EB5FBC003EEE90 /* AuspicionLLVM.h */; };
-		D4D9DEBE10EB6903003EEE90 /* LLVMOptimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DEBA10EB6903003EEE90 /* LLVMOptimizer.h */; };
-		D4D9DEBF10EB6903003EEE90 /* LLVMOptimizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DEBB10EB6903003EEE90 /* LLVMOptimizer.m */; };
+		D4D9DEBE10EB6903003EEE90 /* ALLVMOptimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DEBA10EB6903003EEE90 /* ALLVMOptimizer.h */; };
+		D4D9DEBF10EB6903003EEE90 /* ALLVMOptimizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DEBB10EB6903003EEE90 /* ALLVMOptimizer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,14 +98,14 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF5E0370ADEE00C91783 /* Auspicion.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Auspicion.pch; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libAuspicion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAuspicion.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D404EA2310F1E9F6007612E9 /* LLVMBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMBlock.h; path = Classes/LLVMBlock.h; sourceTree = "<group>"; };
-		D404EA2410F1E9F6007612E9 /* LLVMBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMBlock.m; path = Classes/LLVMBlock.m; sourceTree = "<group>"; };
-		D405880610EA0CF000A9E853 /* LLVMContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMContext.h; path = Classes/LLVMContext.h; sourceTree = "<group>"; };
-		D405880710EA0CF000A9E853 /* LLVMContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMContext.m; path = Classes/LLVMContext.m; sourceTree = "<group>"; };
-		D405881810EA0EB100A9E853 /* LLVMModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMModule.h; path = Classes/LLVMModule.h; sourceTree = "<group>"; };
-		D405881910EA0EB100A9E853 /* LLVMModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMModule.m; path = Classes/LLVMModule.m; sourceTree = "<group>"; };
-		D405883810EA13EF00A9E853 /* LLVMBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMBuilder.h; path = Classes/LLVMBuilder.h; sourceTree = "<group>"; };
-		D405883910EA13EF00A9E853 /* LLVMBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMBuilder.m; path = Classes/LLVMBuilder.m; sourceTree = "<group>"; };
+		D404EA2310F1E9F6007612E9 /* ALLVMBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALLVMBlock.h; path = Classes/ALLVMBlock.h; sourceTree = "<group>"; };
+		D404EA2410F1E9F6007612E9 /* ALLVMBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALLVMBlock.m; path = Classes/ALLVMBlock.m; sourceTree = "<group>"; };
+		D405880610EA0CF000A9E853 /* ALLVMContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALLVMContext.h; path = Classes/ALLVMContext.h; sourceTree = "<group>"; };
+		D405880710EA0CF000A9E853 /* ALLVMContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALLVMContext.m; path = Classes/ALLVMContext.m; sourceTree = "<group>"; };
+		D405881810EA0EB100A9E853 /* ALLVMModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALLVMModule.h; path = Classes/ALLVMModule.h; sourceTree = "<group>"; };
+		D405881910EA0EB100A9E853 /* ALLVMModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALLVMModule.m; path = Classes/ALLVMModule.m; sourceTree = "<group>"; };
+		D405883810EA13EF00A9E853 /* ALLVMBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALLVMBuilder.h; path = Classes/ALLVMBuilder.h; sourceTree = "<group>"; };
+		D405883910EA13EF00A9E853 /* ALLVMBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALLVMBuilder.m; path = Classes/ALLVMBuilder.m; sourceTree = "<group>"; };
 		D405885410EA168B00A9E853 /* libLLVMAnalysis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMAnalysis.a; path = External/LLVM/Libraries/libLLVMAnalysis.a; sourceTree = "<group>"; };
 		D405885510EA168B00A9E853 /* libLLVMAsmPrinter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMAsmPrinter.a; path = External/LLVM/Libraries/libLLVMAsmPrinter.a; sourceTree = "<group>"; };
 		D405885610EA168B00A9E853 /* libLLVMCodeGen.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMCodeGen.a; path = External/LLVM/Libraries/libLLVMCodeGen.a; sourceTree = "<group>"; };
@@ -122,43 +127,48 @@
 		D407955910EB280B0061CF6C /* Auspicion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Auspicion.plist; sourceTree = "<group>"; };
 		D407958910EB28E90061CF6C /* Auspicion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Auspicion.h; sourceTree = "<group>"; };
 		D415F90B11A9A5210027AAD8 /* libLLVMInstCombine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMInstCombine.a; path = External/LLVM/Libraries/libLLVMInstCombine.a; sourceTree = "<group>"; };
-		D48B255611B364A9007CBBB4 /* LLVMFunctionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMFunctionBuilder.h; path = Classes/LLVMFunctionBuilder.h; sourceTree = "<group>"; };
-		D48B255711B364A9007CBBB4 /* LLVMFunctionBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMFunctionBuilder.m; path = Classes/LLVMFunctionBuilder.m; sourceTree = "<group>"; };
-		D4CF5EA411BF98F600C9DD15 /* LLVMValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLVMValue.h; sourceTree = "<group>"; };
-		D4CF5EA511BF98F600C9DD15 /* LLVMValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMValue.m; sourceTree = "<group>"; };
-		D4CF5F1611BFF0C300C9DD15 /* LLVMBooleanValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLVMBooleanValue.h; sourceTree = "<group>"; };
-		D4CF5F1711BFF0C300C9DD15 /* LLVMBooleanValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMBooleanValue.m; sourceTree = "<group>"; };
-		D4CF5F6811C13B3D00C9DD15 /* LLVMType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLVMType.h; sourceTree = "<group>"; };
-		D4CF5F6911C13B3D00C9DD15 /* LLVMType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMType.m; sourceTree = "<group>"; };
-		D4CF5F8A11C1412D00C9DD15 /* LLVMType+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LLVMType+Protected.h"; sourceTree = "<group>"; };
-		D4CF5F8D11C1413900C9DD15 /* LLVMStructureType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLVMStructureType.h; sourceTree = "<group>"; };
-		D4CF5F8E11C1413900C9DD15 /* LLVMStructureType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMStructureType.m; sourceTree = "<group>"; };
-		D4CF600A11C32E8600C9DD15 /* LLVMPointerValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLVMPointerValue.h; sourceTree = "<group>"; };
-		D4CF600B11C32E8600C9DD15 /* LLVMPointerValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMPointerValue.m; sourceTree = "<group>"; };
-		D4CF600C11C32E8600C9DD15 /* LLVMStructureValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLVMStructureValue.h; sourceTree = "<group>"; };
-		D4CF600D11C32E8600C9DD15 /* LLVMStructureValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMStructureValue.m; sourceTree = "<group>"; };
+		D48B255611B364A9007CBBB4 /* ALLVMFunctionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALLVMFunctionBuilder.h; path = Classes/ALLVMFunctionBuilder.h; sourceTree = "<group>"; };
+		D48B255711B364A9007CBBB4 /* ALLVMFunctionBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALLVMFunctionBuilder.m; path = Classes/ALLVMFunctionBuilder.m; sourceTree = "<group>"; };
+		D4CF5EA411BF98F600C9DD15 /* ALLVMValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALLVMValue.h; sourceTree = "<group>"; };
+		D4CF5EA511BF98F600C9DD15 /* ALLVMValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLVMValue.m; sourceTree = "<group>"; };
+		D4CF5F1611BFF0C300C9DD15 /* ALLVMBooleanValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALLVMBooleanValue.h; sourceTree = "<group>"; };
+		D4CF5F1711BFF0C300C9DD15 /* ALLVMBooleanValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLVMBooleanValue.m; sourceTree = "<group>"; };
+		D4CF5F6811C13B3D00C9DD15 /* ALLVMType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALLVMType.h; sourceTree = "<group>"; };
+		D4CF5F6911C13B3D00C9DD15 /* ALLVMType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLVMType.m; sourceTree = "<group>"; };
+		D4CF5F8A11C1412D00C9DD15 /* ALLVMType+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALLVMType+Protected.h"; sourceTree = "<group>"; };
+		D4CF5F8D11C1413900C9DD15 /* ALLVMStructureType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALLVMStructureType.h; sourceTree = "<group>"; };
+		D4CF5F8E11C1413900C9DD15 /* ALLVMStructureType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLVMStructureType.m; sourceTree = "<group>"; };
+		D4CF600A11C32E8600C9DD15 /* ALLVMPointerValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALLVMPointerValue.h; sourceTree = "<group>"; };
+		D4CF600B11C32E8600C9DD15 /* ALLVMPointerValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLVMPointerValue.m; sourceTree = "<group>"; };
+		D4CF600C11C32E8600C9DD15 /* ALLVMStructureValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALLVMStructureValue.h; sourceTree = "<group>"; };
+		D4CF600D11C32E8600C9DD15 /* ALLVMStructureValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLVMStructureValue.m; sourceTree = "<group>"; };
 		D4CF603311C32F8000C9DD15 /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4CF603B11C3300400C9DD15 /* Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
-		D4CF604011C3306E00C9DD15 /* LLVMValueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMValueTests.m; sourceTree = "<group>"; };
+		D4CF604011C3306E00C9DD15 /* ALLVMValueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLVMValueTests.m; sourceTree = "<group>"; };
 		D4CF607311C331A400C9DD15 /* RXAssertions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RXAssertions.h; sourceTree = "<group>"; };
 		D4CF607411C331A400C9DD15 /* RXAssertions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RXAssertions.m; sourceTree = "<group>"; };
-		D4CF60BD11C3332600C9DD15 /* LLVMValue+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LLVMValue+Protected.h"; sourceTree = "<group>"; };
-		D4CF60C911C3394600C9DD15 /* LLVMFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLVMFunction.h; sourceTree = "<group>"; };
-		D4CF60CA11C3394600C9DD15 /* LLVMFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMFunction.m; sourceTree = "<group>"; };
-		D4CF60CB11C3394600C9DD15 /* LLVMFunction+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LLVMFunction+Protected.h"; sourceTree = "<group>"; };
-		D4CF60E811C3456E00C9DD15 /* LLVMModule+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LLVMModule+Protected.h"; path = "Classes/LLVMModule+Protected.h"; sourceTree = "<group>"; };
-		D4CF60F411C3472300C9DD15 /* LLVMBlock+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LLVMBlock+Protected.h"; path = "Classes/LLVMBlock+Protected.h"; sourceTree = "<group>"; };
-		D4CF611311C3481600C9DD15 /* LLVMBuilder+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LLVMBuilder+Protected.h"; path = "Classes/LLVMBuilder+Protected.h"; sourceTree = "<group>"; };
+		D4CF60BD11C3332600C9DD15 /* ALLVMValue+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALLVMValue+Protected.h"; sourceTree = "<group>"; };
+		D4CF60C911C3394600C9DD15 /* ALLVMFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALLVMFunction.h; sourceTree = "<group>"; };
+		D4CF60CA11C3394600C9DD15 /* ALLVMFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLVMFunction.m; sourceTree = "<group>"; };
+		D4CF60CB11C3394600C9DD15 /* ALLVMFunction+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALLVMFunction+Protected.h"; sourceTree = "<group>"; };
+		D4CF60E811C3456E00C9DD15 /* ALLVMModule+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ALLVMModule+Protected.h"; path = "Classes/ALLVMModule+Protected.h"; sourceTree = "<group>"; };
+		D4CF60F411C3472300C9DD15 /* ALLVMBlock+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ALLVMBlock+Protected.h"; path = "Classes/ALLVMBlock+Protected.h"; sourceTree = "<group>"; };
+		D4CF611311C3481600C9DD15 /* ALLVMBuilder+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ALLVMBuilder+Protected.h"; path = "Classes/ALLVMBuilder+Protected.h"; sourceTree = "<group>"; };
 		D4CF617211C3537600C9DD15 /* NSObject+UniqueFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+UniqueFactory.h"; path = "Classes/NSObject+UniqueFactory.h"; sourceTree = "<group>"; };
 		D4CF617311C3537600C9DD15 /* NSObject+UniqueFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+UniqueFactory.m"; path = "Classes/NSObject+UniqueFactory.m"; sourceTree = "<group>"; };
-		D4CF61D311C3775600C9DD15 /* LLVMModuleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMModuleTests.m; sourceTree = "<group>"; };
-		D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMCompiler.h; path = Classes/LLVMCompiler.h; sourceTree = "<group>"; };
-		D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMCompiler.m; path = Classes/LLVMCompiler.m; sourceTree = "<group>"; };
+		D4CF61D311C3775600C9DD15 /* ALLVMModuleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLVMModuleTests.m; sourceTree = "<group>"; };
+		D4D74FEA11C39DB9002FF2F1 /* ALLVMFunctionType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALLVMFunctionType.h; sourceTree = "<group>"; };
+		D4D74FEB11C39DB9002FF2F1 /* ALLVMFunctionType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALLVMFunctionType.m; sourceTree = "<group>"; };
+		D4D74FFC11C3A056002FF2F1 /* ALLVMCompiler+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ALLVMCompiler+Protected.h"; path = "Classes/ALLVMCompiler+Protected.h"; sourceTree = "<group>"; };
+		D4D74FFE11C3A061002FF2F1 /* ALLVMContext+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ALLVMContext+Protected.h"; path = "Classes/ALLVMContext+Protected.h"; sourceTree = "<group>"; };
+		D4D7500011C3A06B002FF2F1 /* ALLVMOptimizer+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ALLVMOptimizer+Protected.h"; path = "Classes/ALLVMOptimizer+Protected.h"; sourceTree = "<group>"; };
+		D4D9DCDA10EB31DC003EEE90 /* ALLVMCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALLVMCompiler.h; path = Classes/ALLVMCompiler.h; sourceTree = "<group>"; };
+		D4D9DCDB10EB31DC003EEE90 /* ALLVMCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALLVMCompiler.m; path = Classes/ALLVMCompiler.m; sourceTree = "<group>"; };
 		D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAuspicionLLVM.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4D9DE6410EB5FBC003EEE90 /* AuspicionLLVM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AuspicionLLVM.cpp; sourceTree = "<group>"; };
 		D4D9DE6510EB5FBC003EEE90 /* AuspicionLLVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuspicionLLVM.h; sourceTree = "<group>"; };
-		D4D9DEBA10EB6903003EEE90 /* LLVMOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMOptimizer.h; path = Classes/LLVMOptimizer.h; sourceTree = "<group>"; };
-		D4D9DEBB10EB6903003EEE90 /* LLVMOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMOptimizer.m; path = Classes/LLVMOptimizer.m; sourceTree = "<group>"; };
+		D4D9DEBA10EB6903003EEE90 /* ALLVMOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALLVMOptimizer.h; path = Classes/ALLVMOptimizer.h; sourceTree = "<group>"; };
+		D4D9DEBB10EB6903003EEE90 /* ALLVMOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALLVMOptimizer.m; path = Classes/ALLVMOptimizer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,23 +271,26 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D404EA2310F1E9F6007612E9 /* LLVMBlock.h */,
-				D404EA2410F1E9F6007612E9 /* LLVMBlock.m */,
-				D4CF60F411C3472300C9DD15 /* LLVMBlock+Protected.h */,
-				D405883810EA13EF00A9E853 /* LLVMBuilder.h */,
-				D405883910EA13EF00A9E853 /* LLVMBuilder.m */,
-				D4CF611311C3481600C9DD15 /* LLVMBuilder+Protected.h */,
-				D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */,
-				D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */,
-				D405880610EA0CF000A9E853 /* LLVMContext.h */,
-				D405880710EA0CF000A9E853 /* LLVMContext.m */,
-				D48B255611B364A9007CBBB4 /* LLVMFunctionBuilder.h */,
-				D48B255711B364A9007CBBB4 /* LLVMFunctionBuilder.m */,
-				D405881810EA0EB100A9E853 /* LLVMModule.h */,
-				D405881910EA0EB100A9E853 /* LLVMModule.m */,
-				D4CF60E811C3456E00C9DD15 /* LLVMModule+Protected.h */,
-				D4D9DEBA10EB6903003EEE90 /* LLVMOptimizer.h */,
-				D4D9DEBB10EB6903003EEE90 /* LLVMOptimizer.m */,
+				D404EA2310F1E9F6007612E9 /* ALLVMBlock.h */,
+				D404EA2410F1E9F6007612E9 /* ALLVMBlock.m */,
+				D4CF60F411C3472300C9DD15 /* ALLVMBlock+Protected.h */,
+				D405883810EA13EF00A9E853 /* ALLVMBuilder.h */,
+				D405883910EA13EF00A9E853 /* ALLVMBuilder.m */,
+				D4CF611311C3481600C9DD15 /* ALLVMBuilder+Protected.h */,
+				D4D9DCDA10EB31DC003EEE90 /* ALLVMCompiler.h */,
+				D4D9DCDB10EB31DC003EEE90 /* ALLVMCompiler.m */,
+				D4D74FFC11C3A056002FF2F1 /* ALLVMCompiler+Protected.h */,
+				D405880610EA0CF000A9E853 /* ALLVMContext.h */,
+				D405880710EA0CF000A9E853 /* ALLVMContext.m */,
+				D4D74FFE11C3A061002FF2F1 /* ALLVMContext+Protected.h */,
+				D48B255611B364A9007CBBB4 /* ALLVMFunctionBuilder.h */,
+				D48B255711B364A9007CBBB4 /* ALLVMFunctionBuilder.m */,
+				D405881810EA0EB100A9E853 /* ALLVMModule.h */,
+				D405881910EA0EB100A9E853 /* ALLVMModule.m */,
+				D4CF60E811C3456E00C9DD15 /* ALLVMModule+Protected.h */,
+				D4D9DEBA10EB6903003EEE90 /* ALLVMOptimizer.h */,
+				D4D9DEBB10EB6903003EEE90 /* ALLVMOptimizer.m */,
+				D4D7500011C3A06B002FF2F1 /* ALLVMOptimizer+Protected.h */,
 				D4CF5F6511C13B3D00C9DD15 /* Type */,
 				D4CF5EA111BF98F600C9DD15 /* Values */,
 				D4CF617211C3537600C9DD15 /* NSObject+UniqueFactory.h */,
@@ -309,18 +322,18 @@
 		D4CF5EA111BF98F600C9DD15 /* Values */ = {
 			isa = PBXGroup;
 			children = (
-				D4CF5F1611BFF0C300C9DD15 /* LLVMBooleanValue.h */,
-				D4CF5F1711BFF0C300C9DD15 /* LLVMBooleanValue.m */,
-				D4CF60C911C3394600C9DD15 /* LLVMFunction.h */,
-				D4CF60CA11C3394600C9DD15 /* LLVMFunction.m */,
-				D4CF60CB11C3394600C9DD15 /* LLVMFunction+Protected.h */,
-				D4CF600A11C32E8600C9DD15 /* LLVMPointerValue.h */,
-				D4CF600B11C32E8600C9DD15 /* LLVMPointerValue.m */,
-				D4CF600C11C32E8600C9DD15 /* LLVMStructureValue.h */,
-				D4CF600D11C32E8600C9DD15 /* LLVMStructureValue.m */,
-				D4CF5EA411BF98F600C9DD15 /* LLVMValue.h */,
-				D4CF5EA511BF98F600C9DD15 /* LLVMValue.m */,
-				D4CF60BD11C3332600C9DD15 /* LLVMValue+Protected.h */,
+				D4CF5F1611BFF0C300C9DD15 /* ALLVMBooleanValue.h */,
+				D4CF5F1711BFF0C300C9DD15 /* ALLVMBooleanValue.m */,
+				D4CF60C911C3394600C9DD15 /* ALLVMFunction.h */,
+				D4CF60CA11C3394600C9DD15 /* ALLVMFunction.m */,
+				D4CF60CB11C3394600C9DD15 /* ALLVMFunction+Protected.h */,
+				D4CF600A11C32E8600C9DD15 /* ALLVMPointerValue.h */,
+				D4CF600B11C32E8600C9DD15 /* ALLVMPointerValue.m */,
+				D4CF600C11C32E8600C9DD15 /* ALLVMStructureValue.h */,
+				D4CF600D11C32E8600C9DD15 /* ALLVMStructureValue.m */,
+				D4CF5EA411BF98F600C9DD15 /* ALLVMValue.h */,
+				D4CF5EA511BF98F600C9DD15 /* ALLVMValue.m */,
+				D4CF60BD11C3332600C9DD15 /* ALLVMValue+Protected.h */,
 			);
 			name = Values;
 			path = Classes/Values;
@@ -329,11 +342,13 @@
 		D4CF5F6511C13B3D00C9DD15 /* Type */ = {
 			isa = PBXGroup;
 			children = (
-				D4CF5F8D11C1413900C9DD15 /* LLVMStructureType.h */,
-				D4CF5F8E11C1413900C9DD15 /* LLVMStructureType.m */,
-				D4CF5F6811C13B3D00C9DD15 /* LLVMType.h */,
-				D4CF5F6911C13B3D00C9DD15 /* LLVMType.m */,
-				D4CF5F8A11C1412D00C9DD15 /* LLVMType+Protected.h */,
+				D4D74FEA11C39DB9002FF2F1 /* ALLVMFunctionType.h */,
+				D4D74FEB11C39DB9002FF2F1 /* ALLVMFunctionType.m */,
+				D4CF5F8D11C1413900C9DD15 /* ALLVMStructureType.h */,
+				D4CF5F8E11C1413900C9DD15 /* ALLVMStructureType.m */,
+				D4CF5F6811C13B3D00C9DD15 /* ALLVMType.h */,
+				D4CF5F6911C13B3D00C9DD15 /* ALLVMType.m */,
+				D4CF5F8A11C1412D00C9DD15 /* ALLVMType+Protected.h */,
 			);
 			name = Type;
 			path = Classes/Type;
@@ -342,8 +357,8 @@
 		D4CF602C11C32F5700C9DD15 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				D4CF61D311C3775600C9DD15 /* LLVMModuleTests.m */,
-				D4CF604011C3306E00C9DD15 /* LLVMValueTests.m */,
+				D4CF61D311C3775600C9DD15 /* ALLVMModuleTests.m */,
+				D4CF604011C3306E00C9DD15 /* ALLVMValueTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -382,27 +397,31 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D405880A10EA0CF000A9E853 /* LLVMContext.h in Headers */,
-				D405881C10EA0EB100A9E853 /* LLVMModule.h in Headers */,
-				D405883A10EA13EF00A9E853 /* LLVMBuilder.h in Headers */,
-				D4D9DCDE10EB31DC003EEE90 /* LLVMCompiler.h in Headers */,
-				D4D9DEBE10EB6903003EEE90 /* LLVMOptimizer.h in Headers */,
-				D404EA2510F1E9F6007612E9 /* LLVMBlock.h in Headers */,
-				D48B255811B364A9007CBBB4 /* LLVMFunctionBuilder.h in Headers */,
-				D4CF5EA811BF98F600C9DD15 /* LLVMValue.h in Headers */,
-				D4CF5F1A11BFF0C300C9DD15 /* LLVMBooleanValue.h in Headers */,
-				D4CF5F6C11C13B3D00C9DD15 /* LLVMType.h in Headers */,
-				D4CF5F8B11C1412D00C9DD15 /* LLVMType+Protected.h in Headers */,
-				D4CF5F8F11C1413900C9DD15 /* LLVMStructureType.h in Headers */,
-				D4CF600E11C32E8600C9DD15 /* LLVMPointerValue.h in Headers */,
-				D4CF601011C32E8600C9DD15 /* LLVMStructureValue.h in Headers */,
-				D4CF60BE11C3332600C9DD15 /* LLVMValue+Protected.h in Headers */,
-				D4CF60CC11C3394600C9DD15 /* LLVMFunction.h in Headers */,
-				D4CF60CE11C3394600C9DD15 /* LLVMFunction+Protected.h in Headers */,
-				D4CF60E911C3456E00C9DD15 /* LLVMModule+Protected.h in Headers */,
-				D4CF60F511C3472300C9DD15 /* LLVMBlock+Protected.h in Headers */,
-				D4CF611411C3481600C9DD15 /* LLVMBuilder+Protected.h in Headers */,
+				D405880A10EA0CF000A9E853 /* ALLVMContext.h in Headers */,
+				D405881C10EA0EB100A9E853 /* ALLVMModule.h in Headers */,
+				D405883A10EA13EF00A9E853 /* ALLVMBuilder.h in Headers */,
+				D4D9DCDE10EB31DC003EEE90 /* ALLVMCompiler.h in Headers */,
+				D4D9DEBE10EB6903003EEE90 /* ALLVMOptimizer.h in Headers */,
+				D404EA2510F1E9F6007612E9 /* ALLVMBlock.h in Headers */,
+				D48B255811B364A9007CBBB4 /* ALLVMFunctionBuilder.h in Headers */,
+				D4CF5EA811BF98F600C9DD15 /* ALLVMValue.h in Headers */,
+				D4CF5F1A11BFF0C300C9DD15 /* ALLVMBooleanValue.h in Headers */,
+				D4CF5F6C11C13B3D00C9DD15 /* ALLVMType.h in Headers */,
+				D4CF5F8B11C1412D00C9DD15 /* ALLVMType+Protected.h in Headers */,
+				D4CF5F8F11C1413900C9DD15 /* ALLVMStructureType.h in Headers */,
+				D4CF600E11C32E8600C9DD15 /* ALLVMPointerValue.h in Headers */,
+				D4CF601011C32E8600C9DD15 /* ALLVMStructureValue.h in Headers */,
+				D4CF60BE11C3332600C9DD15 /* ALLVMValue+Protected.h in Headers */,
+				D4CF60CC11C3394600C9DD15 /* ALLVMFunction.h in Headers */,
+				D4CF60CE11C3394600C9DD15 /* ALLVMFunction+Protected.h in Headers */,
+				D4CF60E911C3456E00C9DD15 /* ALLVMModule+Protected.h in Headers */,
+				D4CF60F511C3472300C9DD15 /* ALLVMBlock+Protected.h in Headers */,
+				D4CF611411C3481600C9DD15 /* ALLVMBuilder+Protected.h in Headers */,
 				D4CF617411C3537600C9DD15 /* NSObject+UniqueFactory.h in Headers */,
+				D4D74FEC11C39DB9002FF2F1 /* ALLVMFunctionType.h in Headers */,
+				D4D74FFD11C3A056002FF2F1 /* ALLVMCompiler+Protected.h in Headers */,
+				D4D74FFF11C3A061002FF2F1 /* ALLVMContext+Protected.h in Headers */,
+				D4D7500111C3A06B002FF2F1 /* ALLVMOptimizer+Protected.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,21 +542,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D405880B10EA0CF000A9E853 /* LLVMContext.m in Sources */,
-				D405881D10EA0EB100A9E853 /* LLVMModule.m in Sources */,
-				D405883B10EA13EF00A9E853 /* LLVMBuilder.m in Sources */,
-				D4D9DCDF10EB31DC003EEE90 /* LLVMCompiler.m in Sources */,
-				D4D9DEBF10EB6903003EEE90 /* LLVMOptimizer.m in Sources */,
-				D404EA2610F1E9F6007612E9 /* LLVMBlock.m in Sources */,
-				D48B255911B364A9007CBBB4 /* LLVMFunctionBuilder.m in Sources */,
-				D4CF5EA911BF98F600C9DD15 /* LLVMValue.m in Sources */,
-				D4CF5F1B11BFF0C300C9DD15 /* LLVMBooleanValue.m in Sources */,
-				D4CF5F6D11C13B3D00C9DD15 /* LLVMType.m in Sources */,
-				D4CF5F9011C1413900C9DD15 /* LLVMStructureType.m in Sources */,
-				D4CF600F11C32E8600C9DD15 /* LLVMPointerValue.m in Sources */,
-				D4CF601111C32E8600C9DD15 /* LLVMStructureValue.m in Sources */,
-				D4CF60CD11C3394600C9DD15 /* LLVMFunction.m in Sources */,
+				D405880B10EA0CF000A9E853 /* ALLVMContext.m in Sources */,
+				D405881D10EA0EB100A9E853 /* ALLVMModule.m in Sources */,
+				D405883B10EA13EF00A9E853 /* ALLVMBuilder.m in Sources */,
+				D4D9DCDF10EB31DC003EEE90 /* ALLVMCompiler.m in Sources */,
+				D4D9DEBF10EB6903003EEE90 /* ALLVMOptimizer.m in Sources */,
+				D404EA2610F1E9F6007612E9 /* ALLVMBlock.m in Sources */,
+				D48B255911B364A9007CBBB4 /* ALLVMFunctionBuilder.m in Sources */,
+				D4CF5EA911BF98F600C9DD15 /* ALLVMValue.m in Sources */,
+				D4CF5F1B11BFF0C300C9DD15 /* ALLVMBooleanValue.m in Sources */,
+				D4CF5F6D11C13B3D00C9DD15 /* ALLVMType.m in Sources */,
+				D4CF5F9011C1413900C9DD15 /* ALLVMStructureType.m in Sources */,
+				D4CF600F11C32E8600C9DD15 /* ALLVMPointerValue.m in Sources */,
+				D4CF601111C32E8600C9DD15 /* ALLVMStructureValue.m in Sources */,
+				D4CF60CD11C3394600C9DD15 /* ALLVMFunction.m in Sources */,
 				D4CF617511C3537600C9DD15 /* NSObject+UniqueFactory.m in Sources */,
+				D4D74FED11C39DB9002FF2F1 /* ALLVMFunctionType.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,9 +565,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4CF604111C3306E00C9DD15 /* LLVMValueTests.m in Sources */,
+				D4CF604111C3306E00C9DD15 /* ALLVMValueTests.m in Sources */,
 				D4CF609911C331A400C9DD15 /* RXAssertions.m in Sources */,
-				D4CF61D411C3775600C9DD15 /* LLVMModuleTests.m in Sources */,
+				D4CF61D411C3775600C9DD15 /* ALLVMModuleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
