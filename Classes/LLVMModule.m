@@ -49,7 +49,7 @@
 
 
 -(LLVMFunction *)externalFunctionWithName:(NSString *)name type:(LLVMType *)type {
-	LLVMFunction *function = [self functionWithName: name];
+	LLVMFunction *function = [self functionNamed: name];
 	if(!function) {
 		function = [LLVMFunction functionInModule: self withName: name type: type];
 		function.linkage = LLVMExternalLinkage;
@@ -58,7 +58,7 @@
 }
 
 
--(LLVMFunction *)functionWithName:(NSString *)name {
+-(LLVMFunction *)functionNamed:(NSString *)name {
 	LLVMValueRef functionRef = LLVMGetNamedFunction(self.moduleRef, [name UTF8String]);
 	return functionRef ? [LLVMFunction valueWithValueRef: functionRef] : nil;
 }

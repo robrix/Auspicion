@@ -19,7 +19,7 @@ typedef void (^LLVMModuleFunctionDefinitionBlock)(LLVMFunctionBuilder *);
 
 -(LLVMFunction *)externalFunctionWithName:(NSString *)name type:(LLVMType *)type;
 
--(LLVMFunction *)functionWithName:(NSString *)name; // returns the named function if it exists
+-(LLVMFunction *)functionNamed:(NSString *)name; // returns the named function if it exists
 -(LLVMFunction *)functionWithName:(NSString *)name type:(LLVMType *)type; // creates a new function with the given name and type
 -(LLVMFunction *)functionWithName:(NSString *)name type:(LLVMType *)type definition:(LLVMModuleFunctionDefinitionBlock)definition;
 -(LLVMFunction *)functionWithName:(NSString *)name typeName:(NSString *)typeName; // creates a new function with the given name and type

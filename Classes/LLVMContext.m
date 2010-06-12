@@ -5,6 +5,7 @@
 #import "LLVMContext+Protected.h"
 #import "LLVMType+Protected.h"
 #import "LLVMValue+Protected.h"
+#import "NSObject+UniqueFactory.h"
 
 @implementation LLVMContext
 

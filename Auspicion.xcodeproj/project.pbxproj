@@ -62,6 +62,7 @@
 		D4CF611411C3481600C9DD15 /* LLVMBuilder+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF611311C3481600C9DD15 /* LLVMBuilder+Protected.h */; };
 		D4CF617411C3537600C9DD15 /* NSObject+UniqueFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF617211C3537600C9DD15 /* NSObject+UniqueFactory.h */; };
 		D4CF617511C3537600C9DD15 /* NSObject+UniqueFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF617311C3537600C9DD15 /* NSObject+UniqueFactory.m */; };
+		D4CF61D411C3775600C9DD15 /* LLVMModuleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF61D311C3775600C9DD15 /* LLVMModuleTests.m */; };
 		D4D9DCDE10EB31DC003EEE90 /* LLVMCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */; };
 		D4D9DCDF10EB31DC003EEE90 /* LLVMCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */; };
 		D4D9DE5E10EB5F68003EEE90 /* libAuspicionLLVM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */; };
@@ -76,7 +77,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D /* Auspicion (Static Library) */;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = "Auspicion (Static Library)";
 		};
 		D4D9DE5A10EB5F62003EEE90 /* PBXContainerItemProxy */ = {
@@ -150,6 +151,7 @@
 		D4CF611311C3481600C9DD15 /* LLVMBuilder+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LLVMBuilder+Protected.h"; path = "Classes/LLVMBuilder+Protected.h"; sourceTree = "<group>"; };
 		D4CF617211C3537600C9DD15 /* NSObject+UniqueFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+UniqueFactory.h"; path = "Classes/NSObject+UniqueFactory.h"; sourceTree = "<group>"; };
 		D4CF617311C3537600C9DD15 /* NSObject+UniqueFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+UniqueFactory.m"; path = "Classes/NSObject+UniqueFactory.m"; sourceTree = "<group>"; };
+		D4CF61D311C3775600C9DD15 /* LLVMModuleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMModuleTests.m; sourceTree = "<group>"; };
 		D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMCompiler.h; path = Classes/LLVMCompiler.h; sourceTree = "<group>"; };
 		D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMCompiler.m; path = Classes/LLVMCompiler.m; sourceTree = "<group>"; };
 		D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAuspicionLLVM.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -340,6 +342,7 @@
 		D4CF602C11C32F5700C9DD15 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				D4CF61D311C3775600C9DD15 /* LLVMModuleTests.m */,
 				D4CF604011C3306E00C9DD15 /* LLVMValueTests.m */,
 			);
 			path = Tests;
@@ -544,6 +547,7 @@
 			files = (
 				D4CF604111C3306E00C9DD15 /* LLVMValueTests.m in Sources */,
 				D4CF609911C331A400C9DD15 /* RXAssertions.m in Sources */,
+				D4CF61D411C3775600C9DD15 /* LLVMModuleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,6 +591,7 @@
 					"\"$(SRCROOT)/External/LLVM/Libraries\"",
 					"\"$(SRCROOT)/build/Debug\"",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Auspicion;
 			};
 			name = Debug;
@@ -604,6 +609,7 @@
 					"\"$(SRCROOT)/External/LLVM/Libraries\"",
 					"\"$(SRCROOT)/build/Debug\"",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Auspicion;
 			};
 			name = Release;
@@ -661,6 +667,8 @@
 					Cocoa,
 					"-framework",
 					SenTestingKit,
+					"-lstdc++",
+					"-ObjC",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Tests;
@@ -685,6 +693,8 @@
 					Cocoa,
 					"-framework",
 					SenTestingKit,
+					"-lstdc++",
+					"-ObjC",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Tests;
