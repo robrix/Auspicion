@@ -12,4 +12,6 @@
 
 @property (nonatomic, readonly) ARXFunction *parentFunction;
 
+-(void)define:(void(^)())block;
+
 @end

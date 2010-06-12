@@ -24,6 +24,8 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 -(void)positionAtEndOfFunction:(ARXFunction *)function;
 -(void)positionAtEndOfBlock:(ARXBlock *)block;
 
+@property (nonatomic, readonly) ARXBlock *currentBlock;
+
 // can these be improved upon?
 -(ARXValue *)return:(ARXValue *)value;
 
