@@ -4,7 +4,7 @@
 
 #import "LLVMConcreteContext.h"
 #import "LLVMConcreteCompiler.h"
-#import "LLVMConcreteModule.h"
+#import "LLVMModule+Protected.h"
 
 @implementation LLVMConcreteCompiler
 

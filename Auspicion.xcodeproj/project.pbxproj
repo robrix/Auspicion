@@ -16,8 +16,6 @@
 		D405880910EA0CF000A9E853 /* LLVMConcreteContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D405880510EA0CF000A9E853 /* LLVMConcreteContext.m */; };
 		D405880A10EA0CF000A9E853 /* LLVMContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D405880610EA0CF000A9E853 /* LLVMContext.h */; };
 		D405880B10EA0CF000A9E853 /* LLVMContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D405880710EA0CF000A9E853 /* LLVMContext.m */; };
-		D405881A10EA0EB100A9E853 /* LLVMConcreteModule.h in Headers */ = {isa = PBXBuildFile; fileRef = D405881610EA0EB100A9E853 /* LLVMConcreteModule.h */; };
-		D405881B10EA0EB100A9E853 /* LLVMConcreteModule.m in Sources */ = {isa = PBXBuildFile; fileRef = D405881710EA0EB100A9E853 /* LLVMConcreteModule.m */; };
 		D405881C10EA0EB100A9E853 /* LLVMModule.h in Headers */ = {isa = PBXBuildFile; fileRef = D405881810EA0EB100A9E853 /* LLVMModule.h */; };
 		D405881D10EA0EB100A9E853 /* LLVMModule.m in Sources */ = {isa = PBXBuildFile; fileRef = D405881910EA0EB100A9E853 /* LLVMModule.m */; };
 		D405883610EA13E900A9E853 /* LLVMConcreteBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = D405883410EA13E900A9E853 /* LLVMConcreteBuilder.h */; };
@@ -65,6 +63,7 @@
 		D4CF60CC11C3394600C9DD15 /* LLVMFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60C911C3394600C9DD15 /* LLVMFunction.h */; };
 		D4CF60CD11C3394600C9DD15 /* LLVMFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF60CA11C3394600C9DD15 /* LLVMFunction.m */; };
 		D4CF60CE11C3394600C9DD15 /* LLVMFunction+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60CB11C3394600C9DD15 /* LLVMFunction+Protected.h */; };
+		D4CF60E911C3456E00C9DD15 /* LLVMModule+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60E811C3456E00C9DD15 /* LLVMModule+Protected.h */; };
 		D4D9DCD810EB31D4003EEE90 /* LLVMConcreteCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCD410EB31D4003EEE90 /* LLVMConcreteCompiler.h */; };
 		D4D9DCD910EB31D4003EEE90 /* LLVMConcreteCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCD510EB31D4003EEE90 /* LLVMConcreteCompiler.m */; };
 		D4D9DCDE10EB31DC003EEE90 /* LLVMCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */; };
@@ -107,8 +106,6 @@
 		D405880510EA0CF000A9E853 /* LLVMConcreteContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMConcreteContext.m; path = Classes/LLVMConcreteContext.m; sourceTree = "<group>"; };
 		D405880610EA0CF000A9E853 /* LLVMContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMContext.h; path = Classes/LLVMContext.h; sourceTree = "<group>"; };
 		D405880710EA0CF000A9E853 /* LLVMContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMContext.m; path = Classes/LLVMContext.m; sourceTree = "<group>"; };
-		D405881610EA0EB100A9E853 /* LLVMConcreteModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMConcreteModule.h; path = Classes/LLVMConcreteModule.h; sourceTree = "<group>"; };
-		D405881710EA0EB100A9E853 /* LLVMConcreteModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMConcreteModule.m; path = Classes/LLVMConcreteModule.m; sourceTree = "<group>"; };
 		D405881810EA0EB100A9E853 /* LLVMModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMModule.h; path = Classes/LLVMModule.h; sourceTree = "<group>"; };
 		D405881910EA0EB100A9E853 /* LLVMModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMModule.m; path = Classes/LLVMModule.m; sourceTree = "<group>"; };
 		D405883410EA13E900A9E853 /* LLVMConcreteBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMConcreteBuilder.h; path = Classes/LLVMConcreteBuilder.h; sourceTree = "<group>"; };
@@ -160,6 +157,7 @@
 		D4CF60C911C3394600C9DD15 /* LLVMFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLVMFunction.h; sourceTree = "<group>"; };
 		D4CF60CA11C3394600C9DD15 /* LLVMFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLVMFunction.m; sourceTree = "<group>"; };
 		D4CF60CB11C3394600C9DD15 /* LLVMFunction+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LLVMFunction+Protected.h"; sourceTree = "<group>"; };
+		D4CF60E811C3456E00C9DD15 /* LLVMModule+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LLVMModule+Protected.h"; path = "Classes/LLVMModule+Protected.h"; sourceTree = "<group>"; };
 		D4D9DCD410EB31D4003EEE90 /* LLVMConcreteCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMConcreteCompiler.h; path = Classes/LLVMConcreteCompiler.h; sourceTree = "<group>"; };
 		D4D9DCD510EB31D4003EEE90 /* LLVMConcreteCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMConcreteCompiler.m; path = Classes/LLVMConcreteCompiler.m; sourceTree = "<group>"; };
 		D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMCompiler.h; path = Classes/LLVMCompiler.h; sourceTree = "<group>"; };
@@ -287,8 +285,6 @@
 				D4D9DCD510EB31D4003EEE90 /* LLVMConcreteCompiler.m */,
 				D405880410EA0CF000A9E853 /* LLVMConcreteContext.h */,
 				D405880510EA0CF000A9E853 /* LLVMConcreteContext.m */,
-				D405881610EA0EB100A9E853 /* LLVMConcreteModule.h */,
-				D405881710EA0EB100A9E853 /* LLVMConcreteModule.m */,
 				D4D9DEB410EB68FB003EEE90 /* LLVMConcreteOptimizer.h */,
 				D4D9DEB510EB68FB003EEE90 /* LLVMConcreteOptimizer.m */,
 				D405880610EA0CF000A9E853 /* LLVMContext.h */,
@@ -297,6 +293,7 @@
 				D48B255711B364A9007CBBB4 /* LLVMFunctionBuilder.m */,
 				D405881810EA0EB100A9E853 /* LLVMModule.h */,
 				D405881910EA0EB100A9E853 /* LLVMModule.m */,
+				D4CF60E811C3456E00C9DD15 /* LLVMModule+Protected.h */,
 				D4D9DEBA10EB6903003EEE90 /* LLVMOptimizer.h */,
 				D4D9DEBB10EB6903003EEE90 /* LLVMOptimizer.m */,
 				D4CF5F6511C13B3D00C9DD15 /* Type */,
@@ -402,7 +399,6 @@
 			files = (
 				D405880810EA0CF000A9E853 /* LLVMConcreteContext.h in Headers */,
 				D405880A10EA0CF000A9E853 /* LLVMContext.h in Headers */,
-				D405881A10EA0EB100A9E853 /* LLVMConcreteModule.h in Headers */,
 				D405881C10EA0EB100A9E853 /* LLVMModule.h in Headers */,
 				D405883610EA13E900A9E853 /* LLVMConcreteBuilder.h in Headers */,
 				D405883A10EA13EF00A9E853 /* LLVMBuilder.h in Headers */,
@@ -423,6 +419,7 @@
 				D4CF60BE11C3332600C9DD15 /* LLVMValue+Protected.h in Headers */,
 				D4CF60CC11C3394600C9DD15 /* LLVMFunction.h in Headers */,
 				D4CF60CE11C3394600C9DD15 /* LLVMFunction+Protected.h in Headers */,
+				D4CF60E911C3456E00C9DD15 /* LLVMModule+Protected.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,7 +542,6 @@
 			files = (
 				D405880910EA0CF000A9E853 /* LLVMConcreteContext.m in Sources */,
 				D405880B10EA0CF000A9E853 /* LLVMContext.m in Sources */,
-				D405881B10EA0EB100A9E853 /* LLVMConcreteModule.m in Sources */,
 				D405881D10EA0EB100A9E853 /* LLVMModule.m in Sources */,
 				D405883710EA13E900A9E853 /* LLVMConcreteBuilder.m in Sources */,
 				D405883B10EA13EF00A9E853 /* LLVMBuilder.m in Sources */,

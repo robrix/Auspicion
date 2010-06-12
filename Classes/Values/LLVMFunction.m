@@ -6,9 +6,9 @@
 #import "LLVMBuilder.h"
 #import "LLVMConcreteBlock.h"
 #import "LLVMConcreteContext.h"
-#import "LLVMConcreteModule.h"
 #import "LLVMFunction.h"
 #import "LLVMFunction+Protected.h"
+#import "LLVMModule+Protected.h"
 #import "LLVMType+Protected.h"
 #import "LLVMValue+Protected.h"
 
@@ -54,7 +54,7 @@
 }
 
 -(LLVMModule *)module {
-	return [[[LLVMConcreteModule alloc] initWithModuleRef: LLVMGetGlobalParent(self.valueRef)] autorelease];
+	return [[[LLVMModule alloc] initWithModuleRef: LLVMGetGlobalParent(self.valueRef)] autorelease];
 }
 
 

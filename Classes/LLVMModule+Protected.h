@@ -1,6 +1,6 @@
-// LLVMConcreteModule.h
-// Created by Rob Rix on 2009-12-29
-// Copyright 2009 Monochrome Industries
+// LLVMModule+Protected.m
+// Created by Rob Rix on 2010-06-12
+// Copyright 2010 Monochrome Industries
 
 #import "LLVMModule.h"
 
@@ -8,15 +8,6 @@
 
 @property (nonatomic, readonly) LLVMModuleRef moduleRef;
 @property (nonatomic, readonly) LLVMModuleProviderRef moduleProviderRef;
-
-@end
-
-
-@interface LLVMConcreteModule : LLVMModule {
-	LLVMModuleRef moduleRef;
-	LLVMModuleProviderRef moduleProviderRef;
-	LLVMBuilder *builder;
-}
 
 -(id)initWithName:(NSString *)_name context:(LLVMContext *)_context;
 -(id)initWithModuleRef:(LLVMModuleRef)_moduleRef;

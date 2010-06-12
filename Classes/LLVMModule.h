@@ -9,6 +9,9 @@
 typedef void (^LLVMModuleFunctionDefinitionBlock)(LLVMFunctionBuilder *);
 
 @interface LLVMModule : NSObject {
+	struct LLVMOpaqueModule * moduleRef;
+	struct LLVMOpaqueModuleProvider * moduleProviderRef;
+	LLVMBuilder *builder;
 	NSMutableDictionary *typesByName;
 }
 

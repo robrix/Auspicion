@@ -5,9 +5,9 @@
 #import "AuspicionLLVM.h"
 #import "LLVMCompiler.h"
 #import "LLVMConcreteCompiler.h"
-#import "LLVMConcreteModule.h"
 #import "LLVMContext.h"
 #import "LLVMFunction.h"
+#import "LLVMModule+Protected.h"
 #import "LLVMValue+Protected.h"
 
 @implementation LLVMCompiler
