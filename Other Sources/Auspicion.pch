@@ -15,7 +15,7 @@
 	#ifdef AUSPICION_UNIT_TESTS
 		#import "RXAssertions.h"
 		#import "Auspicion.h"
-		#import "ALLVMType+Protected.h"
-		#import "ALLVMValue+Protected.h"
+		#import "ARXType+Protected.h"
+		#import "ARXValue+Protected.h"
 	#endif
 #endif
