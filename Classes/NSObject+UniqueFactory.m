@@ -3,6 +3,7 @@
 // Copyright 2010 Monochrome Industries
 
 #import "NSObject+UniqueFactory.h"
+#import <objc/message.h>
 
 @implementation NSObject (NSObjectUniqueFactory)
 
