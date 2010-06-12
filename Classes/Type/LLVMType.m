@@ -31,6 +31,7 @@
 }
 
 +(id)typeWithTypeRef:(LLVMTypeRef)_typeRef {
+	NSParameterAssert(_typeRef != NULL);
 	return [[self classForTypeKind: LLVMGetTypeKind(_typeRef)] createUniqueInstanceForReference: _typeRef initializer: @selector(initWithTypeRef:)];
 }
 
