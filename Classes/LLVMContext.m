@@ -2,22 +2,25 @@
 // Created by Rob Rix on 2009-12-29
 // Copyright 2009 Monochrome Industries
 
-#import "LLVMContext.h"
-#import "LLVMConcreteContext.h"
+#import "LLVMContext+Protected.h"
 #import "LLVMType+Protected.h"
 #import "LLVMValue+Protected.h"
 
 @implementation LLVMContext
 
 +(LLVMContext *)context {
-	return [[[LLVMConcreteContext alloc] initWithContextRef: LLVMContextCreate()] autorelease];
+	return [[[LLVMContext alloc] initWithContextRef: LLVMContextCreate()] autorelease];
+}
+
+-(id)initWithContextRef:(LLVMContextRef)_contextRef {
+	if(self = [super init]) {
+		contextRef = _contextRef;
+	}
+	return self;
 }
 
 
--(LLVMContextRef)contextRef {
-	[self doesNotRecognizeSelector: _cmd];
-	return NULL;
-}
+@synthesize contextRef;
 
 
 // types

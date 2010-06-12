@@ -7,7 +7,7 @@
 @class LLVMFunction;
 
 @interface LLVMBlock : NSObject {
-	LLVMBasicBlockRef blockRef;
+	struct LLVMOpaqueBasicBlock * blockRef;
 }
 
 @property (nonatomic, readonly) LLVMFunction *parentFunction;

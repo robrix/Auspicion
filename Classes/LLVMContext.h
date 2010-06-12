@@ -6,7 +6,9 @@
 
 @class LLVMStructureType, LLVMType, LLVMValue;
 
-@interface LLVMContext : NSObject
+@interface LLVMContext : NSObject {
+	struct LLVMOpaqueContext * contextRef;
+}
 
 +(LLVMContext *)context;
 
