@@ -4,7 +4,7 @@
 
 #import "AuspicionLLVM.h"
 #import "LLVMBuilder.h"
-#import "LLVMConcreteContext.h"
+#import "LLVMContext+Protected.h"
 #import "LLVMFunction+Protected.h"
 #import "LLVMFunctionBuilder.h"
 #import "LLVMModule.h"
@@ -100,7 +100,7 @@
 
 
 -(LLVMContext *)context {
-	return [[[LLVMConcreteContext alloc] initWithContextRef: AuspicionLLVMModuleGetContext(self.moduleRef)] autorelease];
+	return [[[LLVMContext alloc] initWithContextRef: AuspicionLLVMModuleGetContext(self.moduleRef)] autorelease];
 }
 
 

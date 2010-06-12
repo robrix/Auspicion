@@ -2,7 +2,7 @@
 // Created by Rob Rix on 2009-12-29
 // Copyright 2009 Monochrome Industries
 
-#import "LLVMConcreteContext.h"
+#import "LLVMContext+Protected.h"
 #import "LLVMStructureType.h"
 #import "LLVMType.h"
 #import "LLVMType+Protected.h"
@@ -162,7 +162,7 @@
 
 
 -(LLVMContext *)context {
-	return [[[LLVMConcreteContext alloc] initWithContextRef: LLVMGetTypeContext(self.typeRef)] autorelease];
+	return [[[LLVMContext alloc] initWithContextRef: LLVMGetTypeContext(self.typeRef)] autorelease];
 }
 
 

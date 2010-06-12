@@ -6,7 +6,7 @@
 #import "LLVMBooleanValue.h"
 #import "LLVMBuilder.h"
 #import "LLVMBuilder+Protected.h"
-#import "LLVMConcreteContext.h"
+#import "LLVMContext+Protected.h"
 #import "LLVMFunction.h"
 #import "LLVMType+Protected.h"
 #import "LLVMValue+Protected.h"
