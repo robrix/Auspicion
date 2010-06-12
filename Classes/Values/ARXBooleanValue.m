@@ -26,4 +26,9 @@
 	return [self.builder condition: self then: either else: or];
 }
 
+
+-(ARXBooleanValue *)and:(ARXValue *)other {
+	return [self.builder and: self, other];
+}
+
 @end

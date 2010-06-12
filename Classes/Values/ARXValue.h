@@ -24,6 +24,8 @@
 -(ARXBooleanValue *)equals:(ARXValue *)other;
 -(ARXBooleanValue *)notEquals:(ARXValue *)other;
 
+-(ARXBooleanValue *)isUnsignedLessThan:(ARXValue *)other;
+
 
 -(ARXValue *)plus:(ARXValue *)other;
 
