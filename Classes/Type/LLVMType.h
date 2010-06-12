@@ -32,8 +32,8 @@
 +(LLVMType *)functionType:(LLVMType *)_returnType, ... NS_REQUIRES_NIL_TERMINATION; // implied non-variadic
 
 +(LLVMType *)arrayTypeWithCount:(NSUInteger)count type:(LLVMType *)type;
-+(LLVMStructureType *)structTypeWithTypes:(NSArray *)types;
-+(LLVMStructureType *)structTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types;
++(LLVMStructureType *)structureTypeWithTypes:(NSArray *)types;
++(LLVMStructureType *)structureTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types;
 +(LLVMType *)unionTypeWithTypes:(NSArray *)types;
 
 @property (nonatomic, readonly) LLVMContext *context;

@@ -24,7 +24,7 @@
 
 @property (nonatomic, readonly) LLVMType *voidType;
 
--(LLVMStructureType *)structTypeWithTypes:(LLVMType *)type, ... NS_REQUIRES_NIL_TERMINATION;
+-(LLVMStructureType *)structureTypeWithTypes:(LLVMType *)type, ... NS_REQUIRES_NIL_TERMINATION;
 
 
 // constants
@@ -39,6 +39,6 @@
 
 -(LLVMValue *)constantNullOfType:(LLVMType *)type;
 
--(LLVMValue *)constantStruct:(LLVMValue *)value, ... NS_REQUIRES_NIL_TERMINATION;
+-(LLVMValue *)constantStructure:(LLVMValue *)value, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end

@@ -87,6 +87,7 @@
 
 
 +(LLVMType *)pointerTypeToType:(LLVMType *)type addressSpace:(NSUInteger)addressSpace {
+	NSParameterAssert(type != nil);
 	return [LLVMType typeWithTypeRef: LLVMPointerType(type.typeRef, addressSpace)];
 }
 
@@ -130,7 +131,7 @@
 	return [LLVMType typeWithTypeRef: LLVMArrayType(type.typeRef, count)];
 }
 
-+(LLVMStructureType *)structTypeWithTypes:(NSArray *)types {
++(LLVMStructureType *)structureTypeWithTypes:(NSArray *)types {
 	LLVMTypeRef typeRefs[types.count];
 	NSUInteger i = 0;
 	for(LLVMType *type in types) {
@@ -140,7 +141,7 @@
 	return [LLVMType typeWithTypeRef: LLVMStructType(typeRefs, types.count, NO)];
 }
 
-+(LLVMStructureType *)structTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types {
++(LLVMStructureType *)structureTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types {
 	LLVMTypeRef typeRefs[types.count];
 	NSUInteger i = 0;
 	for(LLVMType *type in types) {

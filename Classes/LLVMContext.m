@@ -68,7 +68,7 @@
 	return [LLVMType voidTypeInContext: self];
 }
 
--(LLVMStructureType *)structTypeWithTypes:(LLVMType *)type, ... {
+-(LLVMStructureType *)structureTypeWithTypes:(LLVMType *)type, ... {
 	NSMutableArray *types = [NSMutableArray arrayWithObject: type];
 	va_list list;
 	va_start(list, type);
@@ -76,7 +76,7 @@
 		[types addObject: type];
 	}
 	va_end(list);
-	return [LLVMType structTypeInContext: self withTypes: types];
+	return [LLVMType structureTypeInContext: self withTypes: types];
 }
 
 
@@ -116,7 +116,7 @@
 }
 
 
--(LLVMValue *)constantStruct:(LLVMValue *)value, ... {
+-(LLVMValue *)constantStructure:(LLVMValue *)value, ... {
 	NSParameterAssert(value != nil);
 	NSMutableArray *values = [NSMutableArray arrayWithObject: value];
 	va_list list;
