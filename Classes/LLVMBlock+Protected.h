@@ -7,7 +7,6 @@
 @interface LLVMBlock ()
 
 +(id)blockWithBlockRef:(LLVMBasicBlockRef)_blockRef;
--(id)initWithBlockRef:(LLVMBasicBlockRef)_blockRef;
 
 @property (nonatomic, readonly) LLVMBasicBlockRef blockRef;
 

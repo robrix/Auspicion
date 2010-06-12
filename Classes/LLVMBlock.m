@@ -9,15 +9,15 @@
 
 @implementation LLVMBlock
 
-+(id)blockWithBlockRef:(LLVMBasicBlockRef)_blockRef {
-	return [[[self alloc] initWithBlockRef: _blockRef] autorelease];
-}
-
 -(id)initWithBlockRef:(LLVMBasicBlockRef)_blockRef {
 	if(self = [super init]) {
 		blockRef = _blockRef;
 	}
 	return self;
+}
+
++(id)blockWithBlockRef:(LLVMBasicBlockRef)_blockRef {
+	return [self createUniqueInstanceForReference: _blockRef initializer: @selector(initWithBlockRef:)];
 }
 
 
