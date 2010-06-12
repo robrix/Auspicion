@@ -12,6 +12,7 @@
 	NSUInteger i = 0;
 	for(NSString *name in names) {
 		[tempNames setObject: [NSNumber numberWithUnsignedInteger: i] forKey: name];
+		i++;
 	}
 	elementNames = [tempNames copy];
 	[tempNames release];
