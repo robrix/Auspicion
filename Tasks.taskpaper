@@ -16,9 +16,11 @@ Module:
 		This will get the function if it exists, and if not will create it with the block.
 	- build types from “@encode” directives.
 Housekeeping:
+	- stop using module providers.
 	- unique objects.
 		- modules.
 		- types.
-		- contexts.
-		- blocks
+		- contexts. @done(2010-06-12)
+		- blocks.
 		- functions?
+		- optimizers.

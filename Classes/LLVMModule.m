@@ -100,7 +100,7 @@
 
 
 -(LLVMContext *)context {
-	return [[[LLVMContext alloc] initWithContextRef: AuspicionLLVMModuleGetContext(self.moduleRef)] autorelease];
+	return [LLVMContext contextWithContextRef: AuspicionLLVMModuleGetContext(self.moduleRef)];
 }
 
 
