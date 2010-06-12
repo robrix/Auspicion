@@ -10,4 +10,6 @@
 
 -(ARXValue *)select:(ARXValue *)either or:(ARXValue *)or;
 
+-(ARXBooleanValue *)and:(ARXValue *)other;
+
 @end

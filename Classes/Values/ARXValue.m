@@ -100,6 +100,10 @@
 	return [self.builder notEqual: self, other];
 }
 
+-(ARXBooleanValue *)isUnsignedLessThan:(ARXValue *)other {
+	return [self.builder unsignedLessThan: self, other];
+}
+
 
 -(ARXValue *)plus:(ARXValue *)other {
 	return [self.builder add: self, other];
