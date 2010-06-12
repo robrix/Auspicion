@@ -4,18 +4,18 @@
 
 #import <Foundation/Foundation.h>
 
-#import <Auspicion/LLVMBuilder.h>
-#import <Auspicion/LLVMCompiler.h>
-#import <Auspicion/LLVMContext.h>
-#import <Auspicion/LLVMFunction.h>
-#import <Auspicion/LLVMFunctionBuilder.h>
-#import <Auspicion/LLVMModule.h>
-#import <Auspicion/LLVMOptimizer.h>
-
-#import <Auspicion/LLVMType.h>
-#import <Auspicion/LLVMStructureType.h>
-
-#import <Auspicion/LLVMValue.h>
-#import <Auspicion/LLVMBooleanValue.h>
-#import <Auspicion/LLVMPointerValue.h>
-#import <Auspicion/LLVMStructureValue.h>
+#import "LLVMBuilder.h"
+#import "LLVMCompiler.h"
+#import "LLVMContext.h"
+#import "LLVMFunction.h"
+#import "LLVMFunctionBuilder.h"
+#import "LLVMModule.h"
+#import "LLVMOptimizer.h"
+         
+#import "LLVMType.h"
+#import "LLVMStructureType.h"
+         
+#import "LLVMValue.h"
+#import "LLVMBooleanValue.h"
+#import "LLVMPointerValue.h"
+#import "LLVMStructureValue.h"
