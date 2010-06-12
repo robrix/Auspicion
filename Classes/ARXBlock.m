@@ -4,7 +4,9 @@
 
 #import "ARXBlock.h"
 #import "ARXBlock+Protected.h"
+#import "ARXBuilder.h"
 #import "ARXFunction.h"
+#import "ARXModule.h"
 #import "ARXValue+Protected.h"
 
 @implementation ARXBlock
@@ -26,6 +28,15 @@
 
 -(ARXFunction *)parentFunction {
 	return [ARXFunction valueWithValueRef: LLVMGetBasicBlockParent(self.blockRef)];
+}
+
+
+-(void)define:(void(^)())block {
+	ARXBuilder *builder = self.parentFunction.module.builder;
+	ARXBlock *previous = builder.currentBlock;
+	[builder positionAtEndOfBlock: self];
+	block();
+	[builder positionAtEndOfBlock: previous];
 }
 
 @end

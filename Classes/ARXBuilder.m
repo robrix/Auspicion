@@ -41,6 +41,11 @@
 }
 
 
+-(ARXBlock *)currentBlock {
+	return [ARXBlock blockWithBlockRef: LLVMGetInsertBlock(self.builderRef)];
+}
+
+
 -(ARXValue *)return:(ARXValue *)value {
 	NSParameterAssert(value != nil);
 	return [ARXValue valueWithValueRef: LLVMBuildRet(self.builderRef, value.valueRef)];

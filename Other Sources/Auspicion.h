@@ -4,6 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "ARXBlock.h"
 #import "ARXBuilder.h"
 #import "ARXCompiler.h"
 #import "ARXContext.h"
