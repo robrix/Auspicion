@@ -6,9 +6,11 @@
 
 @class LLVMContext, LLVMFunction, LLVMModule;
 
-@interface LLVMCompiler : NSObject
+@interface LLVMCompiler : NSObject {
+	struct LLVMOpaqueModuleProvider * moduleProviderRef;
+	struct LLVMOpaqueExecutionEngine * compilerRef;
+}
 
-+(id)sharedCompiler;
 +(id)compilerWithContext:(LLVMContext *)context;
 
 -(void *)compiledFunction:(LLVMFunction *)function;
