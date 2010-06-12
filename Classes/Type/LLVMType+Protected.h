@@ -9,7 +9,6 @@
 @property (nonatomic, readonly) LLVMTypeRef typeRef;
 
 +(id)typeWithTypeRef:(LLVMTypeRef)_typeRef;
--(id)initWithTypeRef:(LLVMTypeRef)_typeRef;
 
 +(id)typeOfValueRef:(LLVMValueRef)valueRef;
 

@@ -10,6 +10,13 @@
 
 @implementation LLVMType
 
+-(id)initWithTypeRef:(LLVMTypeRef)_typeRef {
+	if(self = [super init]) {
+		typeRef = _typeRef;
+	}
+	return self;
+}
+
 +(Class)classForTypeKind:(LLVMTypeKind)kind {
 	Class result = Nil;
 	switch(kind) {
@@ -24,22 +31,16 @@
 }
 
 +(id)typeWithTypeRef:(LLVMTypeRef)_typeRef {
-	return [[[[self classForTypeKind: LLVMGetTypeKind(_typeRef)] alloc] initWithTypeRef: _typeRef] autorelease];
+	return [[self classForTypeKind: LLVMGetTypeKind(_typeRef)] createUniqueInstanceForReference: _typeRef initializer: @selector(initWithTypeRef:)];
 }
 
 +(id)typeOfValueRef:(LLVMValueRef)valueRef {
 	return [self typeWithTypeRef: LLVMTypeOf(valueRef)];
 }
 
--(id)initWithTypeRef:(LLVMTypeRef)_typeRef {
-	if(self = [super init]) {
-		typeRef = _typeRef;
-	}
-	return self;
-}
-
 
 @synthesize typeRef;
+
 
 -(LLVMTypeKind)typeKind {
 	return LLVMGetTypeKind(self.typeRef);
