@@ -2,9 +2,9 @@
 // Created by Rob Rix on 2009-12-29
 // Copyright 2009 Monochrome Industries
 
+#import "LLVMBlock+Protected.h"
 #import "LLVMBuilder.h"
 #import "LLVMContext.h"
-#import "LLVMConcreteBlock.h"
 #import "LLVMConcreteBuilder.h"
 #import "LLVMFunction.h"
 #import "LLVMModule.h"
@@ -63,7 +63,7 @@
 
 
 -(LLVMBlock *)parentBlock {
-	return [LLVMConcreteBlock blockWithBlockRef: LLVMGetInstructionParent(self.valueRef)];
+	return [LLVMBlock blockWithBlockRef: LLVMGetInstructionParent(self.valueRef)];
 }
 
 -(LLVMModule *)module {

@@ -2,9 +2,9 @@
 // Created by Rob Rix on 2009-12-29
 // Copyright 2009 Monochrome Industries
 
+#import "LLVMBlock+Protected.h"
 #import "LLVMBooleanValue.h"
 #import "LLVMBuilder.h"
-#import "LLVMConcreteBlock.h"
 #import "LLVMConcreteBuilder.h"
 #import "LLVMConcreteContext.h"
 #import "LLVMFunction.h"
