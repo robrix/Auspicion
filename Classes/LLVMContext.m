@@ -21,16 +21,7 @@
 }
 
 +(LLVMContext *)contextWithContextRef:(LLVMContextRef)_contextRef {
-	static NSMutableDictionary *contextsByRef = nil;
-	if(!contextsByRef) {
-		contextsByRef = [[NSMutableDictionary alloc] init];
-	}
-	LLVMContext *context = [contextsByRef objectForKey: [NSValue valueWithPointer: _contextRef]];
-	if(!context) {
-		context = [[[self alloc] initWithContextRef: _contextRef] autorelease];
-		[contextsByRef setObject: context forKey: [NSValue valueWithPointer: _contextRef]];
-	}
-	return context;
+	return [self createUniqueInstanceForReference: _contextRef initializer: @selector(initWithContextRef:)];
 }
 
 +(LLVMContext *)context {

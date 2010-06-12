@@ -9,7 +9,6 @@
 @property (nonatomic, readonly) LLVMModuleRef moduleRef;
 @property (nonatomic, readonly) LLVMModuleProviderRef moduleProviderRef;
 
--(id)initWithName:(NSString *)_name context:(LLVMContext *)_context;
--(id)initWithModuleRef:(LLVMModuleRef)_moduleRef;
++(LLVMModule *)moduleWithModuleRef:(LLVMModuleRef)_moduleRef;
 
 @end

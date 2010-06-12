@@ -11,6 +11,7 @@
 #import "llvm-c/Transforms/Scalar.h"
 #ifdef __OBJC__
 	#import <Foundation/Foundation.h>
+	#import "NSObject+UniqueFactory.h"
 	#ifdef AUSPICION_UNIT_TESTS
 		#import "RXAssertions.h"
 		#import "Auspicion.h"

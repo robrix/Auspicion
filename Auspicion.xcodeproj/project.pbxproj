@@ -60,6 +60,8 @@
 		D4CF60E911C3456E00C9DD15 /* LLVMModule+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60E811C3456E00C9DD15 /* LLVMModule+Protected.h */; };
 		D4CF60F511C3472300C9DD15 /* LLVMBlock+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF60F411C3472300C9DD15 /* LLVMBlock+Protected.h */; };
 		D4CF611411C3481600C9DD15 /* LLVMBuilder+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF611311C3481600C9DD15 /* LLVMBuilder+Protected.h */; };
+		D4CF617411C3537600C9DD15 /* NSObject+UniqueFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = D4CF617211C3537600C9DD15 /* NSObject+UniqueFactory.h */; };
+		D4CF617511C3537600C9DD15 /* NSObject+UniqueFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CF617311C3537600C9DD15 /* NSObject+UniqueFactory.m */; };
 		D4D9DCDE10EB31DC003EEE90 /* LLVMCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */; };
 		D4D9DCDF10EB31DC003EEE90 /* LLVMCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */; };
 		D4D9DE5E10EB5F68003EEE90 /* libAuspicionLLVM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */; };
@@ -146,6 +148,8 @@
 		D4CF60E811C3456E00C9DD15 /* LLVMModule+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LLVMModule+Protected.h"; path = "Classes/LLVMModule+Protected.h"; sourceTree = "<group>"; };
 		D4CF60F411C3472300C9DD15 /* LLVMBlock+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LLVMBlock+Protected.h"; path = "Classes/LLVMBlock+Protected.h"; sourceTree = "<group>"; };
 		D4CF611311C3481600C9DD15 /* LLVMBuilder+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LLVMBuilder+Protected.h"; path = "Classes/LLVMBuilder+Protected.h"; sourceTree = "<group>"; };
+		D4CF617211C3537600C9DD15 /* NSObject+UniqueFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+UniqueFactory.h"; path = "Classes/NSObject+UniqueFactory.h"; sourceTree = "<group>"; };
+		D4CF617311C3537600C9DD15 /* NSObject+UniqueFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+UniqueFactory.m"; path = "Classes/NSObject+UniqueFactory.m"; sourceTree = "<group>"; };
 		D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMCompiler.h; path = Classes/LLVMCompiler.h; sourceTree = "<group>"; };
 		D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMCompiler.m; path = Classes/LLVMCompiler.m; sourceTree = "<group>"; };
 		D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAuspicionLLVM.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -274,6 +278,8 @@
 				D4D9DEBB10EB6903003EEE90 /* LLVMOptimizer.m */,
 				D4CF5F6511C13B3D00C9DD15 /* Type */,
 				D4CF5EA111BF98F600C9DD15 /* Values */,
+				D4CF617211C3537600C9DD15 /* NSObject+UniqueFactory.h */,
+				D4CF617311C3537600C9DD15 /* NSObject+UniqueFactory.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -393,6 +399,7 @@
 				D4CF60E911C3456E00C9DD15 /* LLVMModule+Protected.h in Headers */,
 				D4CF60F511C3472300C9DD15 /* LLVMBlock+Protected.h in Headers */,
 				D4CF611411C3481600C9DD15 /* LLVMBuilder+Protected.h in Headers */,
+				D4CF617411C3537600C9DD15 /* NSObject+UniqueFactory.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +534,7 @@
 				D4CF600F11C32E8600C9DD15 /* LLVMPointerValue.m in Sources */,
 				D4CF601111C32E8600C9DD15 /* LLVMStructureValue.m in Sources */,
 				D4CF60CD11C3394600C9DD15 /* LLVMFunction.m in Sources */,
+				D4CF617511C3537600C9DD15 /* NSObject+UniqueFactory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -53,7 +53,7 @@
 }
 
 -(LLVMModule *)module {
-	return [[[LLVMModule alloc] initWithModuleRef: LLVMGetGlobalParent(self.valueRef)] autorelease];
+	return [LLVMModule moduleWithModuleRef: LLVMGetGlobalParent(self.valueRef)];
 }
 
 
