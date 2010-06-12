@@ -101,10 +101,14 @@
 
 
 -(LLVMType *)typeNamed:(NSString *)name {
-	return [LLVMType typeWithTypeRef: LLVMGetTypeByName(self.moduleRef, [name UTF8String])];
+	NSParameterAssert(name != nil);
+	LLVMTypeRef typeRef = LLVMGetTypeByName(self.moduleRef, [name UTF8String]);
+	return typeRef ? [LLVMType typeWithTypeRef: typeRef] : NULL;
 }
 
 -(void)setType:(LLVMType *)type forName:(NSString *)name {
+	NSParameterAssert(type != nil);
+	NSParameterAssert(name != nil);
 	LLVMAddTypeName(self.moduleRef, [name UTF8String], type.typeRef);
 }
 
