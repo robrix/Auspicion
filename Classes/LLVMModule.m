@@ -16,14 +16,6 @@
 
 @synthesize moduleRef, moduleProviderRef, builder;
 
-+(LLVMModule *)moduleWithName:(NSString *)_name inContext:(LLVMContext *)_context {
-	return [[[self alloc] initWithName: _name context: _context] autorelease];
-}
-
--(id)initWithName:(NSString *)_name context:(LLVMContext *)_context {
-	return [self initWithModuleRef: LLVMModuleCreateWithNameInContext([_name UTF8String], _context.contextRef)];
-}
-
 -(id)initWithModuleRef:(LLVMModuleRef)_moduleRef {
 	if(self = [super init]) {
 		moduleRef = _moduleRef;
@@ -31,6 +23,14 @@
 		builder = [[LLVMBuilder builderWithContext: self.context] retain];
 	}
 	return self;
+}
+
++(LLVMModule *)moduleWithModuleRef:(LLVMModuleRef)_moduleRef {
+	return [self createUniqueInstanceForReference: _moduleRef initializer: @selector(initWithModuleRef:)];
+}
+
++(LLVMModule *)moduleWithName:(NSString *)_name inContext:(LLVMContext *)_context {
+	return [self moduleWithModuleRef: LLVMModuleCreateWithNameInContext([_name UTF8String], _context.contextRef)];
 }
 
 -(void)dealloc {
