@@ -7,7 +7,7 @@
 #import "LLVMConcreteBlock.h"
 #import "LLVMConcreteBuilder.h"
 #import "LLVMConcreteContext.h"
-#import "LLVMConcreteFunction.h"
+#import "LLVMFunction.h"
 #import "LLVMType+Protected.h"
 #import "LLVMValue+Protected.h"
 

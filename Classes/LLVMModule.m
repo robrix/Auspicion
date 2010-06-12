@@ -5,11 +5,12 @@
 #import "AuspicionLLVM.h"
 #import "LLVMBuilder.h"
 #import "LLVMConcreteContext.h"
-#import "LLVMConcreteFunction.h"
 #import "LLVMConcreteModule.h"
+#import "LLVMFunction+Protected.h"
 #import "LLVMFunctionBuilder.h"
 #import "LLVMModule.h"
 #import "LLVMType+Protected.h"
+#import "LLVMValue+Protected.h"
 
 @implementation LLVMModule
 
@@ -49,12 +50,12 @@
 
 -(LLVMFunction *)functionWithName:(NSString *)name {
 	LLVMValueRef functionRef = LLVMGetNamedFunction(self.moduleRef, [name UTF8String]);
-	return functionRef ? [LLVMConcreteFunction functionWithFunctionRef: functionRef] : nil;
+	return functionRef ? [LLVMFunction valueWithValueRef: functionRef] : nil;
 }
 
 -(LLVMFunction *)functionWithName:(NSString *)name type:(LLVMType *)type {
 	LLVMFunction *function = [LLVMFunction functionInModule: self withName: name type: type];
-	LLVMAppendBasicBlock(function.functionRef, "entry");
+	LLVMAppendBasicBlock(function.valueRef, "entry");
 	return function;
 }
 

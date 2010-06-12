@@ -5,9 +5,9 @@
 #import "AuspicionLLVM.h"
 #import "LLVMCompiler.h"
 #import "LLVMConcreteCompiler.h"
-#import "LLVMConcreteFunction.h"
 #import "LLVMConcreteModule.h"
 #import "LLVMContext.h"
+#import "LLVMFunction.h"
 #import "LLVMValue+Protected.h"
 
 @implementation LLVMCompiler
@@ -33,7 +33,7 @@
 
 -(void *)compiledFunction:(LLVMFunction *)function {
 	NSParameterAssert(function != nil);
-	return AuspicionLLVMGetPointerToFunction(self.compilerRef, function.functionRef);
+	return AuspicionLLVMGetPointerToFunction(self.compilerRef, function.valueRef);
 }
 
 
