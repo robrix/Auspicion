@@ -12,7 +12,6 @@ typedef void (^LLVMModuleFunctionDefinitionBlock)(LLVMFunctionBuilder *);
 	struct LLVMOpaqueModule * moduleRef;
 	struct LLVMOpaqueModuleProvider * moduleProviderRef;
 	LLVMBuilder *builder;
-	NSMutableDictionary *typesByName;
 }
 
 +(LLVMModule *)moduleWithName:(NSString *)_name inContext:(LLVMContext *)_context;

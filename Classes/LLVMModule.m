@@ -39,15 +39,6 @@
 }
 
 
-
--(id)init {
-	if(self = [super init]) {
-		typesByName = [[NSMutableDictionary alloc] init];
-	}
-	return self;
-}
-
-
 -(LLVMFunction *)externalFunctionWithName:(NSString *)name type:(LLVMType *)type {
 	LLVMFunction *function = [self functionNamed: name];
 	if(!function) {
@@ -110,12 +101,11 @@
 
 
 -(LLVMType *)typeNamed:(NSString *)name {
-	return [typesByName objectForKey: name];
+	return [LLVMType typeWithTypeRef: LLVMGetTypeByName(self.moduleRef, [name UTF8String])];
 }
 
 -(void)setType:(LLVMType *)type forName:(NSString *)name {
 	LLVMAddTypeName(self.moduleRef, [name UTF8String], type.typeRef);
-	[typesByName setObject: type forKey: name];
 }
 
 @end
