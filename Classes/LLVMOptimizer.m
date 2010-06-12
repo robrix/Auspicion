@@ -2,26 +2,34 @@
 // Created by Rob Rix on 2009-12-30
 // Copyright 2009 Monochrome Industries
 
-#import "LLVMConcreteOptimizer.h"
+#import "LLVMCompiler+Protected.h"
 #import "LLVMModule+Protected.h"
-#import "LLVMOptimizer.h"
+#import "LLVMOptimizer+Protected.h"
 
 @implementation LLVMOptimizer
 
 +(id)optimizerWithCompiler:(LLVMCompiler *)compiler {
-	return [[[LLVMConcreteOptimizer alloc] initWithCompiler: compiler] autorelease];
+	return [[[self alloc] initWithCompiler: compiler] autorelease];
+}
+
+-(id)initWithCompiler:(LLVMCompiler *)_compiler {
+	if(self = [super init]) {
+		compiler = [_compiler retain];
+		NSParameterAssert(compiler != nil);
+		optimizerRef = LLVMCreatePassManager();
+		LLVMAddTargetData(LLVMGetExecutionEngineTargetData(compiler.compilerRef), optimizerRef);
+	}
+	return self;
+}
+
+-(void)dealloc {
+	[compiler release];
+	LLVMDisposePassManager(optimizerRef);
+	[super dealloc];
 }
 
 
--(LLVMCompiler *)compiler {
-	[self doesNotRecognizeSelector: _cmd];
-	return nil;
-}
-
--(LLVMPassManagerRef)optimizerRef {
-	[self doesNotRecognizeSelector: _cmd];
-	return NULL;
-}
+@synthesize compiler, optimizerRef;
 
 
 -(void)addConstantPropagationPass {

@@ -65,8 +65,6 @@
 		D4D9DE5E10EB5F68003EEE90 /* libAuspicionLLVM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */; };
 		D4D9DE6610EB5FBC003EEE90 /* AuspicionLLVM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DE6410EB5FBC003EEE90 /* AuspicionLLVM.cpp */; };
 		D4D9DE6710EB5FBC003EEE90 /* AuspicionLLVM.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DE6510EB5FBC003EEE90 /* AuspicionLLVM.h */; };
-		D4D9DEB810EB68FB003EEE90 /* LLVMConcreteOptimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DEB410EB68FB003EEE90 /* LLVMConcreteOptimizer.h */; };
-		D4D9DEB910EB68FB003EEE90 /* LLVMConcreteOptimizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DEB510EB68FB003EEE90 /* LLVMConcreteOptimizer.m */; };
 		D4D9DEBE10EB6903003EEE90 /* LLVMOptimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DEBA10EB6903003EEE90 /* LLVMOptimizer.h */; };
 		D4D9DEBF10EB6903003EEE90 /* LLVMOptimizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DEBB10EB6903003EEE90 /* LLVMOptimizer.m */; };
 /* End PBXBuildFile section */
@@ -153,8 +151,6 @@
 		D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAuspicionLLVM.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4D9DE6410EB5FBC003EEE90 /* AuspicionLLVM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AuspicionLLVM.cpp; sourceTree = "<group>"; };
 		D4D9DE6510EB5FBC003EEE90 /* AuspicionLLVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuspicionLLVM.h; sourceTree = "<group>"; };
-		D4D9DEB410EB68FB003EEE90 /* LLVMConcreteOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMConcreteOptimizer.h; path = Classes/LLVMConcreteOptimizer.h; sourceTree = "<group>"; };
-		D4D9DEB510EB68FB003EEE90 /* LLVMConcreteOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMConcreteOptimizer.m; path = Classes/LLVMConcreteOptimizer.m; sourceTree = "<group>"; };
 		D4D9DEBA10EB6903003EEE90 /* LLVMOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLVMOptimizer.h; path = Classes/LLVMOptimizer.h; sourceTree = "<group>"; };
 		D4D9DEBB10EB6903003EEE90 /* LLVMOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLVMOptimizer.m; path = Classes/LLVMOptimizer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -267,8 +263,6 @@
 				D4CF611311C3481600C9DD15 /* LLVMBuilder+Protected.h */,
 				D4D9DCDA10EB31DC003EEE90 /* LLVMCompiler.h */,
 				D4D9DCDB10EB31DC003EEE90 /* LLVMCompiler.m */,
-				D4D9DEB410EB68FB003EEE90 /* LLVMConcreteOptimizer.h */,
-				D4D9DEB510EB68FB003EEE90 /* LLVMConcreteOptimizer.m */,
 				D405880610EA0CF000A9E853 /* LLVMContext.h */,
 				D405880710EA0CF000A9E853 /* LLVMContext.m */,
 				D48B255611B364A9007CBBB4 /* LLVMFunctionBuilder.h */,
@@ -383,7 +377,6 @@
 				D405881C10EA0EB100A9E853 /* LLVMModule.h in Headers */,
 				D405883A10EA13EF00A9E853 /* LLVMBuilder.h in Headers */,
 				D4D9DCDE10EB31DC003EEE90 /* LLVMCompiler.h in Headers */,
-				D4D9DEB810EB68FB003EEE90 /* LLVMConcreteOptimizer.h in Headers */,
 				D4D9DEBE10EB6903003EEE90 /* LLVMOptimizer.h in Headers */,
 				D404EA2510F1E9F6007612E9 /* LLVMBlock.h in Headers */,
 				D48B255811B364A9007CBBB4 /* LLVMFunctionBuilder.h in Headers */,
@@ -524,7 +517,6 @@
 				D405881D10EA0EB100A9E853 /* LLVMModule.m in Sources */,
 				D405883B10EA13EF00A9E853 /* LLVMBuilder.m in Sources */,
 				D4D9DCDF10EB31DC003EEE90 /* LLVMCompiler.m in Sources */,
-				D4D9DEB910EB68FB003EEE90 /* LLVMConcreteOptimizer.m in Sources */,
 				D4D9DEBF10EB6903003EEE90 /* LLVMOptimizer.m in Sources */,
 				D404EA2610F1E9F6007612E9 /* LLVMBlock.m in Sources */,
 				D48B255911B364A9007CBBB4 /* LLVMFunctionBuilder.m in Sources */,
