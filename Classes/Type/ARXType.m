@@ -3,6 +3,8 @@
 // Copyright 2009 Monochrome Industries
 
 #import "ARXContext+Protected.h"
+#import "ARXFunctionType.h"
+#import "ARXPointerType.h"
 #import "ARXStructureType.h"
 #import "ARXType.h"
 #import "ARXType+Protected.h"
@@ -22,6 +24,12 @@
 	switch(kind) {
 		case LLVMStructTypeKind:
 			result = [ARXStructureType class];
+			break;
+		case LLVMFunctionTypeKind:
+			result = [ARXFunctionType class];
+			break;
+		case LLVMPointerTypeKind:
+			result = [ARXPointerType class];
 			break;
 		default:
 			result = self;
@@ -106,16 +114,16 @@
 }
 
 
-+(ARXType *)functionTypeWithReturnType:(ARXType *)_returnType argumentTypes:(NSArray *)argumentTypes variadic:(BOOL)variadic {
++(ARXFunctionType *)functionTypeWithReturnType:(ARXType *)_returnType argumentTypes:(NSArray *)argumentTypes variadic:(BOOL)variadic {
 	LLVMTypeRef argumentTypeRefs[argumentTypes.count];
 	NSUInteger i = 0;
 	for(ARXType *type in argumentTypes) {
 		argumentTypeRefs[i++] = type.typeRef;
 	}
-	return [ARXType typeWithTypeRef: LLVMFunctionType(_returnType.typeRef, argumentTypeRefs, argumentTypes.count, variadic)];
+	return [ARXFunctionType typeWithTypeRef: LLVMFunctionType(_returnType.typeRef, argumentTypeRefs, argumentTypes.count, variadic)];
 }
 
-+(ARXType *)functionType:(ARXType *)returnType, ... {
++(ARXFunctionType *)functionType:(ARXType *)returnType, ... {
 	va_list list;
 	NSMutableArray *argumentTypes = [NSMutableArray array];
 	va_start(list, returnType);
