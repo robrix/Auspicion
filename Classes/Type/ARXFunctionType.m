@@ -28,6 +28,7 @@
 	NSUInteger i = 0;
 	for(NSString *name in names) {
 		[tempNames setObject: [NSNumber numberWithUnsignedInteger: i] forKey: name];
+		i++;
 	}
 	argumentNames = [tempNames copy];
 	[tempNames release];
