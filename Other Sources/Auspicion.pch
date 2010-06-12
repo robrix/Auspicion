@@ -1,6 +1,3 @@
-#ifdef __OBJC__
-	#import <Foundation/Foundation.h>
-#endif
 #ifndef __STDC_LIMIT_MACROS
 	#define __STDC_LIMIT_MACROS
 #endif
@@ -12,3 +9,12 @@
 #import "llvm-c/Analysis.h"
 #import "llvm-c/Target.h"
 #import "llvm-c/Transforms/Scalar.h"
+#ifdef __OBJC__
+	#import <Foundation/Foundation.h>
+	#ifdef AUSPICION_UNIT_TESTS
+		#import "RXAssertions.h"
+		#import "Auspicion.h"
+		#import "LLVMType+Protected.h"
+		#import "LLVMValue+Protected.h"
+	#endif
+#endif
