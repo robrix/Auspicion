@@ -6,7 +6,10 @@
 
 @class LLVMCompiler, LLVMModule;
 
-@interface LLVMOptimizer : NSObject
+@interface LLVMOptimizer : NSObject {
+	LLVMCompiler *compiler;
+	struct LLVMOpaquePassManager * optimizerRef;
+}
 
 +(id)optimizerWithCompiler:(LLVMCompiler *)compiler;
 
