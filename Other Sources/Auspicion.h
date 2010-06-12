@@ -8,7 +8,14 @@
 #import <Auspicion/LLVMCompiler.h>
 #import <Auspicion/LLVMContext.h>
 #import <Auspicion/LLVMFunction.h>
+#import <Auspicion/LLVMFunctionBuilder.h>
 #import <Auspicion/LLVMModule.h>
 #import <Auspicion/LLVMOptimizer.h>
+
 #import <Auspicion/LLVMType.h>
+#import <Auspicion/LLVMStructureType.h>
+
 #import <Auspicion/LLVMValue.h>
+#import <Auspicion/LLVMBooleanValue.h>
+#import <Auspicion/LLVMPointerValue.h>
+#import <Auspicion/LLVMStructureValue.h>

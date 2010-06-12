@@ -2,11 +2,14 @@
 // Created by Rob Rix on 2009-12-29
 // Copyright 2009 Monochrome Industries
 
+#import "AuspicionLLVM.h"
+#import "LLVMBuilder.h"
+#import "LLVMConcreteContext.h"
 #import "LLVMConcreteFunction.h"
 #import "LLVMConcreteModule.h"
-#import "LLVMConcreteType.h"
-#import "LLVMConcreteValue.h"
+#import "LLVMFunctionBuilder.h"
 #import "LLVMModule.h"
+#import "LLVMType+Protected.h"
 
 @implementation LLVMModule
 
@@ -34,7 +37,7 @@
 }
 
 
--(LLVMFunction *)declareExternalFunctionWithName:(NSString *)name type:(LLVMType *)type {
+-(LLVMFunction *)externalFunctionWithName:(NSString *)name type:(LLVMType *)type {
 	LLVMFunction *function = [self functionWithName: name];
 	if(!function) {
 		function = [LLVMFunction functionInModule: self withName: name type: type];
@@ -46,12 +49,22 @@
 
 -(LLVMFunction *)functionWithName:(NSString *)name {
 	LLVMValueRef functionRef = LLVMGetNamedFunction(self.moduleRef, [name UTF8String]);
-	return functionRef ? [LLVMConcreteFunction functionWithFunctionRef: functionRef inModule: self] : nil;
+	return functionRef ? [LLVMConcreteFunction functionWithFunctionRef: functionRef] : nil;
 }
 
 -(LLVMFunction *)functionWithName:(NSString *)name type:(LLVMType *)type {
 	LLVMFunction *function = [LLVMFunction functionInModule: self withName: name type: type];
 	LLVMAppendBasicBlock(function.functionRef, "entry");
+	return function;
+}
+
+-(LLVMFunction *)functionWithName:(NSString *)name type:(LLVMType *)type definition:(LLVMModuleFunctionDefinitionBlock)definition {
+	LLVMFunction *function = [self functionWithName: name type: type];
+	LLVMFunctionBuilder *functionBuilder = [[LLVMFunctionBuilder alloc] initWithFunction: function];
+	
+	definition(functionBuilder);
+	
+	[functionBuilder release];
 	return function;
 }
 
@@ -76,6 +89,11 @@
 
 
 -(LLVMContext *)context {
+	return [[[LLVMConcreteContext alloc] initWithContextRef: AuspicionLLVMModuleGetContext(self.moduleRef)] autorelease];
+}
+
+
+-(LLVMBuilder *)builder {
 	return nil;
 }
 

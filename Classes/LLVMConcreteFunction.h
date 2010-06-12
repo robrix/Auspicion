@@ -14,10 +14,9 @@
 
 @interface LLVMConcreteFunction : LLVMFunction {
 	LLVMValueRef functionRef;
-	LLVMModule *module;
 }
 
-+(id)functionWithFunctionRef:(LLVMValueRef)_functionRef inModule:(LLVMModule *)module;
--(id)initWithFunctionRef:(LLVMValueRef)_functionRef inModule:(LLVMModule *)module;
++(id)functionWithFunctionRef:(LLVMValueRef)_functionRef;
+-(id)initWithFunctionRef:(LLVMValueRef)_functionRef;
 
 @end

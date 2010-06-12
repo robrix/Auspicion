@@ -18,12 +18,16 @@
 @property (nonatomic, readonly) LLVMContext *context;
 @property (nonatomic, readonly) LLVMModule *module;
 
--(LLVMValue *)parameterAtIndex:(NSUInteger)index;
+-(LLVMValue *)argumentAtIndex:(NSUInteger)index;
+@property (nonatomic, readonly) NSUInteger arity;
+@property (nonatomic, readonly, getter=hasVariableArity) BOOL variableArity;
 
 -(BOOL)verifyWithError:(NSError **)error;
 
 -(LLVMBlock *)appendBlockWithName:(NSString *)name;
 
 @property (nonatomic, readonly) LLVMBlock *entryBlock;
+
+-(LLVMValue *)call:(LLVMValue *)arg, ...;
 
 @end

@@ -16,7 +16,10 @@ extern "C" {
 #endif
 
 void *AuspicionLLVMGetPointerToFunction(LLVMExecutionEngineRef compiler, LLVMValueRef function);
+
 LLVMTypeRef AuspicionLLVMGetFunctionType(LLVMValueRef function);
+
+LLVMContextRef AuspicionLLVMModuleGetContext(LLVMModuleRef module);
 
 // must free the resulting string
 char *AuspicionLLVMPrintValue(LLVMValueRef value);

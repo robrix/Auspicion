@@ -2,11 +2,13 @@
 // Created by Rob Rix on 2009-12-29
 // Copyright 2009 Monochrome Industries
 
-@class LLVMContext;
+@class LLVMContext, LLVMStructureType;
 
 #import <Foundation/Foundation.h>
 
-@interface LLVMType : NSObject
+@interface LLVMType : NSObject {
+	struct LLVMOpaqueType * typeRef;
+}
 
 // integer type is 64-bit on __LP64__, 32-bit otherwise, just like NSInteger/NSUInteger
 +(LLVMType *)integerTypeInContext:(LLVMContext *)context;
@@ -30,8 +32,8 @@
 +(LLVMType *)functionType:(LLVMType *)_returnType, ... NS_REQUIRES_NIL_TERMINATION; // implied non-variadic
 
 +(LLVMType *)arrayTypeWithCount:(NSUInteger)count type:(LLVMType *)type;
-+(LLVMType *)structTypeWithTypes:(NSArray *)types;
-+(LLVMType *)structTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types;
++(LLVMStructureType *)structTypeWithTypes:(NSArray *)types;
++(LLVMStructureType *)structTypeInContext:(LLVMContext *)context withTypes:(NSArray *)types;
 +(LLVMType *)unionTypeWithTypes:(NSArray *)types;
 
 @property (nonatomic, readonly) LLVMContext *context;

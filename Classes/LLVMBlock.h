@@ -4,8 +4,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class LLVMFunction;
+
 @interface LLVMBlock : NSObject
 
-
+@property (nonatomic, readonly) LLVMFunction *parentFunction;
 
 @end
