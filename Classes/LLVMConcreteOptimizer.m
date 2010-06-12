@@ -2,7 +2,7 @@
 // Created by Rob Rix on 2009-12-30
 // Copyright 2009 Monochrome Industries
 
-#import "LLVMConcreteCompiler.h"
+#import "LLVMCompiler+Protected.h"
 #import "LLVMConcreteOptimizer.h"
 
 @implementation LLVMConcreteOptimizer

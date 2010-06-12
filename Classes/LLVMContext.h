@@ -8,10 +8,6 @@
 
 @interface LLVMContext : NSObject
 
-// returns a shared global context
-+(LLVMContext *)sharedContext;
-
-// returns a new private context
 +(LLVMContext *)context;
 
 // types
