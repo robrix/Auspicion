@@ -3,8 +3,8 @@ Builder:
 		- require nil termination for varargs functions. @done(2010-06-10)
 	- store builders in values so they don’t have to be referenced explicitly. @done(2010-06-10)
 Value:
-	- ALLVMStructureValue. @done(2010-06-10)
-	- ALLVMPointerValue.
+	- ARXStructureValue. @done(2010-06-10)
+	- ARXPointerValue.
 Type:
 	- give function types names for the argument types.
 Compiler:

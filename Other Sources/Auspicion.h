@@ -4,19 +4,19 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ALLVMBuilder.h"
-#import "ALLVMCompiler.h"
-#import "ALLVMContext.h"
-#import "ALLVMFunction.h"
-#import "ALLVMFunctionBuilder.h"
-#import "ALLVMModule.h"
-#import "ALLVMOptimizer.h"
+#import "ARXBuilder.h"
+#import "ARXCompiler.h"
+#import "ARXContext.h"
+#import "ARXFunction.h"
+#import "ARXFunctionBuilder.h"
+#import "ARXModule.h"
+#import "ARXOptimizer.h"
          
-#import "ALLVMType.h"
-#import "ALLVMFunctionType.h"
-#import "ALLVMStructureType.h"
+#import "ARXType.h"
+#import "ARXFunctionType.h"
+#import "ARXStructureType.h"
          
-#import "ALLVMValue.h"
-#import "ALLVMBooleanValue.h"
-#import "ALLVMPointerValue.h"
-#import "ALLVMStructureValue.h"
+#import "ARXValue.h"
+#import "ARXBooleanValue.h"
+#import "ARXPointerValue.h"
+#import "ARXStructureValue.h"
