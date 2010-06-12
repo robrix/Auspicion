@@ -3,7 +3,6 @@
 // Copyright 2010 Monochrome Industries
 
 #import "LLVMBlock.h"
-#import "LLVMConcreteFunction.h"
 
 @implementation LLVMBlock
 
@@ -13,7 +12,7 @@
 }
 
 -(LLVMFunction *)parentFunction {
-	return [LLVMConcreteFunction functionWithFunctionRef: LLVMGetBasicBlockParent(self.blockRef)];
+	return [LLVMFunction valueWithValueRef: LLVMGetBasicBlockParent(self.blockRef)];
 }
 
 @end

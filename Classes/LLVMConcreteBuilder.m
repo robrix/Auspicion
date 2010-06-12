@@ -4,7 +4,6 @@
 
 #import "LLVMConcreteBuilder.h"
 #import "LLVMConcreteContext.h"
-#import "LLVMConcreteFunction.h"
 
 @implementation LLVMConcreteBuilder
 

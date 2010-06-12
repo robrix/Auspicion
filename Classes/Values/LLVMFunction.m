@@ -6,40 +6,30 @@
 #import "LLVMBuilder.h"
 #import "LLVMConcreteBlock.h"
 #import "LLVMConcreteContext.h"
-#import "LLVMConcreteFunction.h"
 #import "LLVMConcreteModule.h"
 #import "LLVMFunction.h"
+#import "LLVMFunction+Protected.h"
 #import "LLVMType+Protected.h"
 #import "LLVMValue+Protected.h"
 
 @implementation LLVMFunction
 
 +(id)functionInModule:(LLVMModule *)module withName:(NSString *)name type:(LLVMType *)type {
-	return [LLVMConcreteFunction functionWithFunctionRef: LLVMAddFunction(module.moduleRef, [name UTF8String], type.typeRef)];
-}
-
-
--(LLVMValueRef)functionRef {
-	[self doesNotRecognizeSelector: _cmd];
-	return NULL;
-}
-
--(LLVMValueRef)valueRef {
-	return self.functionRef;
+	return [LLVMFunction valueWithValueRef: LLVMAddFunction(module.moduleRef, [name UTF8String], type.typeRef)];
 }
 
 
 -(LLVMLinkage)linkage {
-	return LLVMGetLinkage(self.functionRef);
+	return LLVMGetLinkage(self.valueRef);
 }
 
 -(void)setLinkage:(LLVMLinkage)_linkage {
-	LLVMSetLinkage(self.functionRef, _linkage);
+	LLVMSetLinkage(self.valueRef, _linkage);
 }
 
 
 -(LLVMType *)functionType {
-	return [LLVMType typeWithTypeRef: AuspicionLLVMGetFunctionType(self.functionRef)];
+	return [LLVMType typeWithTypeRef: AuspicionLLVMGetFunctionType(self.valueRef)];
 }
 
 
@@ -64,12 +54,12 @@
 }
 
 -(LLVMModule *)module {
-	return [[[LLVMConcreteModule alloc] initWithModuleRef: LLVMGetGlobalParent(self.functionRef)] autorelease];
+	return [[[LLVMConcreteModule alloc] initWithModuleRef: LLVMGetGlobalParent(self.valueRef)] autorelease];
 }
 
 
 -(LLVMValue *)argumentAtIndex:(NSUInteger)index {
-	return [LLVMValue valueWithValueRef: LLVMGetParam(self.functionRef, index)];
+	return [LLVMValue valueWithValueRef: LLVMGetParam(self.valueRef, index)];
 }
 
 -(NSUInteger)arity {
@@ -83,7 +73,7 @@
 
 -(BOOL)verifyWithError:(NSError **)error {
 	BOOL result = YES;
-	if(LLVMVerifyFunction(self.functionRef, LLVMReturnStatusAction) == 1) {
+	if(LLVMVerifyFunction(self.valueRef, LLVMReturnStatusAction) == 1) {
 		if(error)
 			*error = [NSError errorWithDomain: @"com.monochromeindustries.Auspicion" code: -2 userInfo: nil];
 		result = NO;
@@ -93,17 +83,17 @@
 
 
 -(LLVMBlock *)appendBlockWithName:(NSString *)name {
-	return [LLVMConcreteBlock blockWithBlockRef: LLVMAppendBasicBlockInContext(self.returnType.context.contextRef, self.functionRef, [name UTF8String])];
+	return [LLVMConcreteBlock blockWithBlockRef: LLVMAppendBasicBlockInContext(self.returnType.context.contextRef, self.valueRef, [name UTF8String])];
 }
 
 
 -(LLVMBlock *)entryBlock {
-	return [LLVMConcreteBlock blockWithBlockRef: LLVMGetEntryBasicBlock(self.functionRef)];
+	return [LLVMConcreteBlock blockWithBlockRef: LLVMGetEntryBasicBlock(self.valueRef)];
 }
 
 
 // -(NSString *)description {
-// 	char *bytes = AuspicionLLVMPrintValue(self.functionRef);
+// 	char *bytes = AuspicionLLVMPrintValue(self.valueRef);
 // 	NSString *result = [NSString stringWithCString: bytes encoding: NSUTF8StringEncoding];
 // 	free(bytes);
 // 	return result;

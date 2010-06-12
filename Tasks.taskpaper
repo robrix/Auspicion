@@ -21,3 +21,11 @@ Housekeeping:
 		- types.
 		- contexts.
 		- functions?
+	- move to the <blah>+Protected.h model.
+		- block.
+		- builder.
+		- compiler.
+		- context.
+		- function. @done(2010-06-12)
+		- model.
+		- optimizer.
