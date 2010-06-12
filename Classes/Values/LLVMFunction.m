@@ -3,8 +3,8 @@
 // Copyright 2009 Monochrome Industries
 
 #import "AuspicionLLVM.h"
+#import "LLVMBlock+Protected.h"
 #import "LLVMBuilder.h"
-#import "LLVMConcreteBlock.h"
 #import "LLVMConcreteContext.h"
 #import "LLVMFunction.h"
 #import "LLVMFunction+Protected.h"
@@ -83,12 +83,12 @@
 
 
 -(LLVMBlock *)appendBlockWithName:(NSString *)name {
-	return [LLVMConcreteBlock blockWithBlockRef: LLVMAppendBasicBlockInContext(self.returnType.context.contextRef, self.valueRef, [name UTF8String])];
+	return [LLVMBlock blockWithBlockRef: LLVMAppendBasicBlockInContext(self.returnType.context.contextRef, self.valueRef, [name UTF8String])];
 }
 
 
 -(LLVMBlock *)entryBlock {
-	return [LLVMConcreteBlock blockWithBlockRef: LLVMGetEntryBasicBlock(self.valueRef)];
+	return [LLVMBlock blockWithBlockRef: LLVMGetEntryBasicBlock(self.valueRef)];
 }
 
 
