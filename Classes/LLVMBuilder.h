@@ -12,7 +12,10 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 [builder add: left, right];
 */
 
-@interface LLVMBuilder : NSObject
+@interface LLVMBuilder : NSObject {
+	struct LLVMOpaqueBuilder *builderRef;
+	LLVMContext *context;
+}
 
 +(LLVMBuilder *)builderWithContext:(LLVMContext *)context;
 

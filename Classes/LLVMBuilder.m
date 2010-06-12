@@ -5,7 +5,7 @@
 #import "LLVMBlock+Protected.h"
 #import "LLVMBooleanValue.h"
 #import "LLVMBuilder.h"
-#import "LLVMConcreteBuilder.h"
+#import "LLVMBuilder+Protected.h"
 #import "LLVMConcreteContext.h"
 #import "LLVMFunction.h"
 #import "LLVMType+Protected.h"
@@ -14,19 +14,19 @@
 @implementation LLVMBuilder
 
 +(LLVMBuilder *)builderWithContext:(LLVMContext *)context {
-	return [[[LLVMConcreteBuilder alloc] initWithContext: context] autorelease];
+	return [[[LLVMBuilder alloc] initWithContext: context] autorelease];
+}
+
+-(id)initWithContext:(LLVMContext *)_context {
+	if(self = [super init]) {
+		builderRef = LLVMCreateBuilderInContext(_context.contextRef);
+		context = [_context retain];
+	}
+	return self;
 }
 
 
--(LLVMBuilderRef)builderRef {
-	[self doesNotRecognizeSelector: _cmd];
-	return NULL;
-}
-
--(LLVMContext *)context {
-	[self doesNotRecognizeSelector: _cmd];
-	return nil;
-}
+@synthesize builderRef, context;
 
 
 -(void)positionAtEndOfFunction:(LLVMFunction *)function {
