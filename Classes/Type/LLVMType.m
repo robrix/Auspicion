@@ -162,7 +162,7 @@
 
 
 -(LLVMContext *)context {
-	return [[[LLVMContext alloc] initWithContextRef: LLVMGetTypeContext(self.typeRef)] autorelease];
+	return [LLVMContext contextWithContextRef: LLVMGetTypeContext(self.typeRef)];
 }
 
 

@@ -8,15 +8,33 @@
 
 @implementation LLVMContext
 
-+(LLVMContext *)context {
-	return [[[LLVMContext alloc] initWithContextRef: LLVMContextCreate()] autorelease];
-}
-
 -(id)initWithContextRef:(LLVMContextRef)_contextRef {
 	if(self = [super init]) {
 		contextRef = _contextRef;
 	}
 	return self;
+}
+
+-(void)dealloc {
+	LLVMContextDispose(contextRef);
+	[super dealloc];
+}
+
++(LLVMContext *)contextWithContextRef:(LLVMContextRef)_contextRef {
+	static NSMutableDictionary *contextsByRef = nil;
+	if(!contextsByRef) {
+		contextsByRef = [[NSMutableDictionary alloc] init];
+	}
+	LLVMContext *context = [contextsByRef objectForKey: [NSValue valueWithPointer: _contextRef]];
+	if(!context) {
+		context = [[[self alloc] initWithContextRef: _contextRef] autorelease];
+		[contextsByRef setObject: context forKey: [NSValue valueWithPointer: _contextRef]];
+	}
+	return context;
+}
+
++(LLVMContext *)context {
+	return [self contextWithContextRef: LLVMContextCreate()];
 }
 
 

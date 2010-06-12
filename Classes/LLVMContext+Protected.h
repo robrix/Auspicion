@@ -6,7 +6,7 @@
 
 @interface LLVMContext ()
 
--(id)initWithContextRef:(LLVMContextRef)_contextRef;
++(LLVMContext *)contextWithContextRef:(LLVMContextRef)_contextRef;
 
 @property (nonatomic, readonly) LLVMContextRef contextRef;
 
