@@ -17,7 +17,7 @@
 	
 	[self.builder positionAtEndOfBlock: thenBlock];
 	block();
-	[self.builder jumpToBlock: postBlock];
+	[self.builder goto: postBlock];
 	[self.builder positionAtEndOfBlock: postBlock];
 }
 
