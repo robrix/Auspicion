@@ -19,7 +19,7 @@ Housekeeping:
 	- stop using module providers.
 	- unique objects.
 		- modules. @done(2010-06-12)
-		- types.
+		- types. @done(2010-06-12)
 		- contexts. @done(2010-06-12)
 		- blocks.
 		- functions?
