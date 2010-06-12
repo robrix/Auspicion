@@ -11,8 +11,8 @@
 
 -(void)ifTrue:(void(^)())block {
 	ARXBlock
-		*thenBlock = [self.parentBlock.parentFunction appendBlockWithName: [NSString stringWithFormat: @"%@ ifTrue", self.description]],
-		*postBlock = [self.parentBlock.parentFunction appendBlockWithName: [NSString stringWithFormat: @"%@ post", self.description]];
+		*thenBlock = [self.parentBlock.parentFunction addBlockWithName: [NSString stringWithFormat: @"%@ ifTrue", self.description]],
+		*postBlock = [self.parentBlock.parentFunction addBlockWithName: [NSString stringWithFormat: @"%@ post", self.description]];
 	[self.builder if: self then: thenBlock else: postBlock];
 	
 	[self.builder positionAtEndOfBlock: thenBlock];

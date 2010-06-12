@@ -36,6 +36,11 @@
 }
 
 
+-(ARXBlock *)addBlockWithName:(NSString *)name {
+	return [function addBlockWithName: name];
+}
+
+
 -(ARXPointerValue *)allocateVariableOfType:(ARXType *)type value:(ARXValue *)value {
 	ARXPointerValue *address = [self.builder allocateLocal: @"" type: type];
 	address.value = value;
