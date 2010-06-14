@@ -119,16 +119,14 @@
 }
 
 -(void)setGlobal:(ARXValue *)global forName:(NSString *)name {
-	LLVMAddGlobal(self.moduleRef, global.type.typeRef, name.UTF8String);
 	[self globalPointerNamed: name].isGlobal = YES;
 	[self globalPointerNamed: name].value = global;
-	// global.isGlobal = YES;
 }
 
--(void)initializeGlobal:(ARXValue *)global forName:(NSString *)name {
-	if(![self globalPointerNamed: name]) {
-		[self setGlobal: global forName: name];
-	}
+-(void)declareGlobalOfType:(ARXType *)type forName:(NSString *)name {
+	LLVMValueRef globalRef = LLVMAddGlobal(self.moduleRef, type.typeRef, name.UTF8String);
+	LLVMSetInitializer(globalRef, LLVMConstNull(type.typeRef));
+	LLVMSetLinkage(globalRef, LLVMPrivateLinkage);
 }
 
 @end
