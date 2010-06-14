@@ -15,9 +15,14 @@
 		*postBlock = [self.parentBlock.parentFunction addBlockWithName: [NSString stringWithFormat: @"%@ post", self.description]];
 	[self.builder if: self then: thenBlock else: postBlock];
 	
-	[self.builder positionAtEndOfBlock: thenBlock];
-	block();
-	[self.builder goto: postBlock];
+	[thenBlock define: ^{
+		block();
+		
+		if(!self.builder.currentBlock.lastInstruction.isTerminator) {
+			[self.builder goto: postBlock];
+		}
+	}];
+	
 	[self.builder positionAtEndOfBlock: postBlock];
 }
 

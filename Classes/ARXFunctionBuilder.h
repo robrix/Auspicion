@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class ARXBuilder, ARXFunction, ARXPointerValue, ARXType, ARXValue;
+@class ARXBuilder, ARXFunction, ARXPointerValue, ARXStructureValue, ARXType, ARXValue;
 
 @interface ARXFunctionBuilder : NSObject {
 	ARXFunction *function;
@@ -16,6 +16,8 @@
 @property (nonatomic, readonly) ARXBuilder *builder;
 
 -(ARXValue *)argumentNamed:(NSString *)name;
+-(ARXPointerValue *)pointerArgumentNamed:(NSString *)name;
+-(ARXStructureValue *)structureArgumentNamed:(NSString *)name;
 
 -(ARXBlock *)addBlockWithName:(NSString *)name;
 -(void)goto:(ARXBlock *)destination;

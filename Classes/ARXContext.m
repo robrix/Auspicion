@@ -76,7 +76,7 @@
 		[types addObject: type];
 	}
 	va_end(list);
-	return [ARXType structureTypeInContext: self withTypes: types];
+	return [ARXType structureTypeWithTypes: types inContext: self];
 }
 
 

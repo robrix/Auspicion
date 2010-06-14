@@ -33,9 +33,11 @@
 
 +(ARXType *)arrayTypeWithCount:(NSUInteger)count type:(ARXType *)type;
 +(ARXStructureType *)structureTypeWithTypes:(NSArray *)types;
-+(ARXStructureType *)structureTypeInContext:(ARXContext *)context withTypes:(NSArray *)types;
++(ARXStructureType *)structureTypeWithTypes:(NSArray *)types inContext:(ARXContext *)context;
 +(ARXType *)unionTypeWithTypes:(NSArray *)types;
 
 @property (nonatomic, readonly) ARXContext *context;
+
+@property (nonatomic, readonly) Class correspondingValueClass;
 
 @end

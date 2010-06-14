@@ -39,4 +39,10 @@
 	[builder positionAtEndOfBlock: previous];
 }
 
+
+-(ARXValue *)lastInstruction {
+	LLVMValueRef instuctionRef = LLVMGetLastInstruction(self.blockRef);
+	return instuctionRef ? [ARXValue valueWithValueRef: instuctionRef] : nil;
+}
+
 @end

@@ -3,6 +3,7 @@
 // Copyright 2010 Monochrome Industries
 
 #import "ARXStructureType.h"
+#import "ARXStructureValue.h"
 #import "ARXType+Protected.h"
 
 @implementation ARXStructureType
@@ -25,6 +26,11 @@
 
 -(NSUInteger)elementCount {
 	return LLVMCountStructElementTypes(self.typeRef);
+}
+
+
+-(Class)correspondingValueClass {
+	return [ARXStructureValue class];
 }
 
 @end

@@ -4,8 +4,11 @@
 
 #import "ARXValue.h"
 
+@class ARXStructureValue;
+
 @interface ARXPointerValue : ARXValue
 
 @property (nonatomic, copy) ARXValue *value;
+@property (nonatomic, readonly) ARXStructureValue *structureValue;
 
 @end

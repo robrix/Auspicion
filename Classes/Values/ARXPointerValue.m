@@ -4,6 +4,7 @@
 
 #import "ARXBuilder.h"
 #import "ARXPointerValue.h"
+#import "ARXStructureValue.h"
 
 @implementation ARXPointerValue
 
@@ -13,6 +14,11 @@
 
 -(void)setValue:(ARXValue *)value {
 	[self.builder set: self, value];
+}
+
+
+-(ARXStructureValue *)structureValue {
+	return (ARXStructureValue *)self.value;
 }
 
 @end

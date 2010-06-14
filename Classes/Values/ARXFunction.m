@@ -9,6 +9,7 @@
 #import "ARXFunction+Protected.h"
 #import "ARXFunctionType.h"
 #import "ARXModule+Protected.h"
+#import "ARXPointerValue.h"
 #import "ARXType+Protected.h"
 #import "ARXValue+Protected.h"
 
@@ -43,7 +44,9 @@
 
 
 -(ARXValue *)argumentAtIndex:(NSUInteger)index {
-	return [ARXValue valueWithValueRef: LLVMGetParam(self.valueRef, index)];
+	ARXValue *value = [ARXValue valueWithValueRef: LLVMGetParam(self.valueRef, index)];
+	value.isParameter = YES;
+	return value;
 }
 
 -(ARXValue *)argumentNamed:(NSString *)name {

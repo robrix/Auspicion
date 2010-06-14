@@ -191,6 +191,11 @@
 }
 
 
+-(ARXValue *)castValue:(ARXValue *)operand toType:(ARXType *)type {
+	return [ARXValue valueWithValueRef: LLVMBuildIntCast(self.builderRef, operand.valueRef, type.typeRef, "")];
+}
+
+
 -(ARXPointerValue *)allocateLocal:(NSString *)name type:(ARXType *)type {
 	NSParameterAssert(name != nil);
 	NSParameterAssert(type != nil);

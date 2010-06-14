@@ -7,9 +7,10 @@
 #import "ARXContext.h"
 #import "ARXFunction.h"
 #import "ARXFunctionType.h"
-#import "ARXModule.h"
+#import "ARXModule+Protected.h"
 #import "ARXPointerType.h"
 #import "ARXPointerValue.h"
+#import "ARXStructureType.h"
 #import "ARXStructureValue.h"
 #import "ARXType+Protected.h"
 #import "ARXValue+Protected.h"
@@ -17,43 +18,22 @@
 
 @implementation ARXValue
 
-+(Class)classForType:(ARXType *)type {
-	Class result = Nil;
-	switch(type.typeKind) {
-		case LLVMStructTypeKind:
-			result = [ARXStructureValue class];
-			break;
-		case LLVMFunctionTypeKind:
-			result = [ARXFunction class];
-			break;
-		case LLVMPointerTypeKind:
-			if([[(ARXPointerType *)type referencedType] isKindOfClass: [ARXFunctionType class]]) {
-				result = [ARXFunction class];
-			} else {
-				result = [ARXPointerValue class];
-			}
-			break;
-		default:
-			result = self;
-			break;
-	}
-	return result;
-}
-
-+(id)valueWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)_name {
-	return [[[[self classForType: [ARXType typeOfValueRef: _valueRef]] alloc] initWithValueRef: _valueRef name: _name] autorelease];
-}
-
-+(id)valueWithValueRef:(LLVMValueRef)_valueRef {
-	return [[[[self classForType: [ARXType typeOfValueRef: _valueRef]] alloc] initWithValueRef: _valueRef name: @""] autorelease];
-}
-
--(id)initWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)_name {
+-(id)initWithValueRef:(LLVMValueRef)_valueRef {
 	if(self = [super init]) {
 		valueRef = _valueRef;
 		NSParameterAssert(valueRef != NULL);
 	}
 	return self;
+}
+
++(id)valueWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)_name {
+	ARXValue *value = [self valueWithValueRef: _valueRef];
+	value.name = _name;
+	return value;
+}
+
++(id)valueWithValueRef:(LLVMValueRef)_valueRef {
+	return [[[ARXType typeOfValueRef: _valueRef] correspondingValueClass] createUniqueInstanceForReference: _valueRef initializer: @selector(initWithValueRef:)];
 }
 
 
@@ -75,11 +55,21 @@
 
 
 -(ARXBlock *)parentBlock {
-	return [ARXBlock blockWithBlockRef: LLVMGetInstructionParent(self.valueRef)];
+	return self.isParameter
+	?	nil
+	:	[ARXBlock blockWithBlockRef: LLVMGetInstructionParent(self.valueRef)];
+}
+
+-(ARXFunction *)parentFunction {
+	return self.isParameter
+	?	[ARXFunction valueWithValueRef: LLVMGetParamParent(self.valueRef)]
+	:	self.parentBlock.parentFunction;
 }
 
 -(ARXModule *)module {
-	return self.parentBlock.parentFunction.module;
+	return self.isGlobal
+	?	[ARXModule moduleWithModuleRef: LLVMGetGlobalParent(self.valueRef)]
+	:	self.parentFunction.module;
 }
 
 -(ARXContext *)context {
@@ -89,6 +79,14 @@
 
 -(ARXBuilder *)builder {
 	return self.module.builder;
+}
+
+
+@synthesize isParameter, isGlobal;
+
+
+-(BOOL)isTerminator {
+	return !!LLVMIsATerminatorInst(self.valueRef);
 }
 
 
@@ -107,6 +105,11 @@
 
 -(ARXValue *)plus:(ARXValue *)other {
 	return [self.builder add: self, other];
+}
+
+
+-(ARXBooleanValue *)toBoolean {
+	return (ARXBooleanValue *)[self.builder castValue: self toType: self.context.int1Type];
 }
 
 
