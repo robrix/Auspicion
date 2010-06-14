@@ -25,5 +25,6 @@
 -(ARXPointerValue *)allocateVariableOfType:(ARXType *)type value:(ARXValue *)value;
 
 -(void)return:(ARXValue *)value;
+-(void)return;
 
 @end

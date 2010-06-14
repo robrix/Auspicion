@@ -26,8 +26,8 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 
 @property (nonatomic, readonly) ARXBlock *currentBlock;
 
-// can these be improved upon?
 -(ARXValue *)return:(ARXValue *)value;
+-(ARXValue *)return;
 
 -(ARXValue *)call:(ARXValue *)function arguments:(NSArray *)arguments;
 -(ARXValue *)call:(ARXValue *)function argument:(ARXValue *)argument;
