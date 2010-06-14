@@ -106,7 +106,12 @@
 
 
 -(ARXPointerValue *)globalPointerNamed:(NSString *)name {
-	return [ARXPointerValue valueWithValueRef: LLVMGetNamedGlobal(self.moduleRef, name.UTF8String)];
+	LLVMValueRef pointerRef = LLVMGetNamedGlobal(self.moduleRef, name.UTF8String);
+	ARXPointerValue *pointer = nil;
+	if(pointerRef) {
+		pointer = [ARXPointerValue valueWithValueRef: pointerRef];
+	}
+	return pointer;
 }
 
 -(ARXValue *)globalNamed:(NSString *)name {
@@ -115,7 +120,15 @@
 
 -(void)setGlobal:(ARXValue *)global forName:(NSString *)name {
 	LLVMAddGlobal(self.moduleRef, global.type.typeRef, name.UTF8String);
+	[self globalPointerNamed: name].isGlobal = YES;
 	[self globalPointerNamed: name].value = global;
+	// global.isGlobal = YES;
+}
+
+-(void)initializeGlobal:(ARXValue *)global forName:(NSString *)name {
+	if(![self globalPointerNamed: name]) {
+		[self setGlobal: global forName: name];
+	}
 }
 
 @end

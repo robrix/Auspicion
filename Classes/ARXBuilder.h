@@ -52,6 +52,8 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 -(ARXBooleanValue *)equal:(ARXValue *)left, ...;
 -(ARXBooleanValue *)notEqual:(ARXValue *)left, ...;
 
+-(ARXValue *)castValue:(ARXValue *)operand toType:(ARXType *)type;
+
 -(ARXPointerValue *)allocateLocal:(NSString *)name type:(ARXType *)type;
 
 -(ARXValue *)set:(ARXValue *)address, ...;

@@ -10,6 +10,5 @@
 
 +(id)valueWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)name;
 +(id)valueWithValueRef:(LLVMValueRef)_valueRef;
--(id)initWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)name;
 
 @end

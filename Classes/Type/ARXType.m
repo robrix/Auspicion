@@ -2,12 +2,14 @@
 // Created by Rob Rix on 2009-12-29
 // Copyright 2009 Monochrome Industries
 
+#import "ARXBooleanType.h"
 #import "ARXContext+Protected.h"
 #import "ARXFunctionType.h"
 #import "ARXPointerType.h"
 #import "ARXStructureType.h"
 #import "ARXType.h"
 #import "ARXType+Protected.h"
+#import "ARXValue.h"
 #import "AuspicionLLVM.h"
 
 @implementation ARXType
@@ -19,9 +21,10 @@
 	return self;
 }
 
-+(Class)classForTypeKind:(LLVMTypeKind)kind {
++(Class)classForTypeRef:(LLVMTypeRef)typeRef {
 	Class result = Nil;
-	switch(kind) {
+	// if(LLVMGetTypeKind(typeRef) == LLVMPointerTypeKind) typeRef = LLVMGetElementType(typeRef);
+	switch(LLVMGetTypeKind(typeRef)) {
 		case LLVMStructTypeKind:
 			result = [ARXStructureType class];
 			break;
@@ -29,8 +32,22 @@
 			result = [ARXFunctionType class];
 			break;
 		case LLVMPointerTypeKind:
-			result = [ARXPointerType class];
+			{
+				LLVMTypeKind referencedTypeKind = LLVMGetTypeKind(LLVMGetElementType(typeRef));
+				if(referencedTypeKind == LLVMStructTypeKind) {
+					result = [ARXStructureType class];
+				} else if(referencedTypeKind == LLVMFunctionTypeKind) {
+					result = [ARXFunctionType class];
+				} else {
+					result = [ARXPointerType class];
+				}
+			}
 			break;
+		case LLVMIntegerTypeKind:
+			if(LLVMGetIntTypeWidth(typeRef) == 1) {
+				result = [ARXBooleanType class];
+				break;
+			}
 		default:
 			result = self;
 			break;
@@ -40,10 +57,11 @@
 
 +(id)typeWithTypeRef:(LLVMTypeRef)_typeRef {
 	NSParameterAssert(_typeRef != NULL);
-	return [[self classForTypeKind: LLVMGetTypeKind(_typeRef)] createUniqueInstanceForReference: _typeRef initializer: @selector(initWithTypeRef:)];
+	return [[self classForTypeRef: _typeRef] createUniqueInstanceForReference: _typeRef initializer: @selector(initWithTypeRef:)];
 }
 
 +(id)typeOfValueRef:(LLVMValueRef)valueRef {
+	NSParameterAssert(valueRef != NULL);
 	return [self typeWithTypeRef: LLVMTypeOf(valueRef)];
 }
 
@@ -150,13 +168,12 @@
 	return [ARXType typeWithTypeRef: LLVMStructType(typeRefs, types.count, NO)];
 }
 
-+(ARXStructureType *)structureTypeInContext:(ARXContext *)context withTypes:(NSArray *)types {
++(ARXStructureType *)structureTypeWithTypes:(NSArray *)types inContext:(ARXContext *)context {
 	LLVMTypeRef typeRefs[types.count];
 	NSUInteger i = 0;
 	for(ARXType *type in types) {
 		typeRefs[i++] = type.typeRef;
 	}
-	NSParameterAssert(context != nil);
 	NSParameterAssert(types.count > 0);
 	return [ARXType typeWithTypeRef: LLVMStructTypeInContext(context.contextRef, typeRefs, types.count, NO)];
 }
@@ -174,6 +191,11 @@
 
 -(ARXContext *)context {
 	return [ARXContext contextWithContextRef: LLVMGetTypeContext(self.typeRef)];
+}
+
+
+-(Class)correspondingValueClass {
+	return [ARXValue class];
 }
 
 

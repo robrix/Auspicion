@@ -4,7 +4,7 @@
 
 #import "ARXValue.h"
 
-@class ARXContext, ARXBlock, ARXFunctionType, ARXModule, ARXType;
+@class ARXContext, ARXBlock, ARXFunctionType, ARXModule, ARXPointerValue, ARXType;
 
 @interface ARXFunction : ARXValue
 

@@ -35,6 +35,14 @@
 	return [function argumentNamed: name];
 }
 
+-(ARXPointerValue *)pointerArgumentNamed:(NSString *)name {
+	return (ARXPointerValue *)[self argumentNamed: name];
+}
+
+-(ARXStructureValue *)structureArgumentNamed:(NSString *)name {
+	return (ARXStructureValue *)[self argumentNamed: name];
+}
+
 
 -(ARXBlock *)addBlockWithName:(NSString *)name {
 	return [function addBlockWithName: name];

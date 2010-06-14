@@ -12,10 +12,12 @@
 @implementation ARXStructureValue
 
 -(ARXPointerValue *)referenceToElementAtIndex:(NSUInteger)i {
-	return (ARXPointerValue*)[ARXValue valueWithValueRef: LLVMBuildGEP(self.builder.builderRef, self.valueRef, (LLVMValueRef[]){ [self.context constantUnsignedInt32: 0].valueRef, [self.context constantUnsignedInt32: i].valueRef }, 2, [[NSString stringWithFormat: @"element %u", i] UTF8String])];
+	// return [ARXValue valueWithValueRef: LLVMBuildGEP(self.builder.builderRef, self.valueRef, (LLVMValueRef[]){ [self.context constantUnsignedInt32: i].valueRef }, 1, [[NSString stringWithFormat: @"element %u", i] UTF8String])];
+	return [ARXValue valueWithValueRef: LLVMBuildGEP(self.builder.builderRef, self.valueRef, (LLVMValueRef[]){ [self.context constantUnsignedInt32: 0].valueRef, [self.context constantUnsignedInt32: i].valueRef }, 2, [[NSString stringWithFormat: @"element %u", i] UTF8String])];
 }
 
 -(ARXValue *)elementAtIndex:(NSUInteger)i {
+	// return [self referenceToElementAtIndex: i];
 	return [self referenceToElementAtIndex: i].value;
 }
 

@@ -70,6 +70,8 @@
 		D4D7500111C3A06B002FF2F1 /* ARXOptimizer+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D7500011C3A06B002FF2F1 /* ARXOptimizer+Protected.h */; };
 		D4D7507311C3AE6C002FF2F1 /* ARXPointerType.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D7507111C3AE6C002FF2F1 /* ARXPointerType.h */; };
 		D4D7507411C3AE6C002FF2F1 /* ARXPointerType.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D7507211C3AE6C002FF2F1 /* ARXPointerType.m */; };
+		D4D752E611C61C10002FF2F1 /* ARXBooleanType.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D752E411C61C10002FF2F1 /* ARXBooleanType.h */; };
+		D4D752E711C61C10002FF2F1 /* ARXBooleanType.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D752E511C61C10002FF2F1 /* ARXBooleanType.m */; };
 		D4D9DCDE10EB31DC003EEE90 /* ARXCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D9DCDA10EB31DC003EEE90 /* ARXCompiler.h */; };
 		D4D9DCDF10EB31DC003EEE90 /* ARXCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D9DCDB10EB31DC003EEE90 /* ARXCompiler.m */; };
 		D4D9DE5E10EB5F68003EEE90 /* libAuspicionLLVM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */; };
@@ -166,6 +168,8 @@
 		D4D7500011C3A06B002FF2F1 /* ARXOptimizer+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ARXOptimizer+Protected.h"; path = "Classes/ARXOptimizer+Protected.h"; sourceTree = "<group>"; };
 		D4D7507111C3AE6C002FF2F1 /* ARXPointerType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARXPointerType.h; sourceTree = "<group>"; };
 		D4D7507211C3AE6C002FF2F1 /* ARXPointerType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARXPointerType.m; sourceTree = "<group>"; };
+		D4D752E411C61C10002FF2F1 /* ARXBooleanType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARXBooleanType.h; sourceTree = "<group>"; };
+		D4D752E511C61C10002FF2F1 /* ARXBooleanType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARXBooleanType.m; sourceTree = "<group>"; };
 		D4D9DCDA10EB31DC003EEE90 /* ARXCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARXCompiler.h; path = Classes/ARXCompiler.h; sourceTree = "<group>"; };
 		D4D9DCDB10EB31DC003EEE90 /* ARXCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARXCompiler.m; path = Classes/ARXCompiler.m; sourceTree = "<group>"; };
 		D4D9DE5510EB5F4F003EEE90 /* libAuspicionLLVM.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAuspicionLLVM.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -346,6 +350,8 @@
 		D4CF5F6511C13B3D00C9DD15 /* Type */ = {
 			isa = PBXGroup;
 			children = (
+				D4D752E411C61C10002FF2F1 /* ARXBooleanType.h */,
+				D4D752E511C61C10002FF2F1 /* ARXBooleanType.m */,
 				D4D74FEA11C39DB9002FF2F1 /* ARXFunctionType.h */,
 				D4D74FEB11C39DB9002FF2F1 /* ARXFunctionType.m */,
 				D4D7507111C3AE6C002FF2F1 /* ARXPointerType.h */,
@@ -429,6 +435,7 @@
 				D4D74FFF11C3A061002FF2F1 /* ARXContext+Protected.h in Headers */,
 				D4D7500111C3A06B002FF2F1 /* ARXOptimizer+Protected.h in Headers */,
 				D4D7507311C3AE6C002FF2F1 /* ARXPointerType.h in Headers */,
+				D4D752E611C61C10002FF2F1 /* ARXBooleanType.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +573,7 @@
 				D4CF617511C3537600C9DD15 /* NSObject+UniqueFactory.m in Sources */,
 				D4D74FED11C39DB9002FF2F1 /* ARXFunctionType.m in Sources */,
 				D4D7507411C3AE6C002FF2F1 /* ARXPointerType.m in Sources */,
+				D4D752E711C61C10002FF2F1 /* ARXBooleanType.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -657,7 +665,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -673,7 +681,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};

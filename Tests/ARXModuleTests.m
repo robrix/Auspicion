@@ -2,6 +2,12 @@
 // Created by Rob Rix on 2010-06-11
 // Copyright 2010 Monochrome Industries
 
+#import "ARXContext+Protected.h"
+#import "ARXFunction+Protected.h"
+#import "ARXFunctionType.h"
+#import "ARXModule+Protected.h"
+#import "ARXType+Protected.h"
+
 @interface ARXModuleTests : SenTestCase {
 	ARXModule *module;
 	ARXContext *context;

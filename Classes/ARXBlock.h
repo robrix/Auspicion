@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class ARXFunction;
+@class ARXFunction, ARXValue;
 
 @interface ARXBlock : NSObject {
 	struct LLVMOpaqueBasicBlock * blockRef;
@@ -13,5 +13,7 @@
 @property (nonatomic, readonly) ARXFunction *parentFunction;
 
 -(void)define:(void(^)())block;
+
+@property (nonatomic, readonly) ARXValue *lastInstruction;
 
 @end

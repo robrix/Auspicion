@@ -2,6 +2,7 @@
 // Created by Rob Rix on 2010-06-10
 // Copyright 2010 Monochrome Industries
 
+#import "ARXFunction.h"
 #import "ARXFunctionType.h"
 #import "ARXType+Protected.h"
 
@@ -45,6 +46,11 @@
 
 -(BOOL)hasVariableArity {
 	return LLVMIsFunctionVarArg(self.typeRef);
+}
+
+
+-(Class)correspondingValueClass {
+	return [ARXFunction class];
 }
 
 @end

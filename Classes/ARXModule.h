@@ -32,5 +32,6 @@ typedef void (^ARXModuleFunctionDefinitionBlock)(ARXFunctionBuilder *);
 
 -(ARXValue *)globalNamed:(NSString *)name;
 -(void)setGlobal:(ARXValue *)global forName:(NSString *)name;
+-(void)initializeGlobal:(ARXValue *)global forName:(NSString *)name;
 
 @end
