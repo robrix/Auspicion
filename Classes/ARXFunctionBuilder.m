@@ -64,4 +64,8 @@
 	[self.builder return: value];
 }
 
+-(void)return {
+	[self.builder return];
+}
+
 @end

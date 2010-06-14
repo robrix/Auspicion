@@ -51,6 +51,10 @@
 	return [ARXValue valueWithValueRef: LLVMBuildRet(self.builderRef, value.valueRef)];
 }
 
+-(ARXValue *)return {
+	return [ARXValue valueWithValueRef: LLVMBuildRetVoid(self.builderRef)];
+}
+
 
 -(ARXValue *)call:(ARXValue *)function arguments:(NSArray *)arguments {
 	NSParameterAssert(function != nil);
