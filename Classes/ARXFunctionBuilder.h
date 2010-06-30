@@ -22,6 +22,7 @@
 -(ARXBlock *)addBlockWithName:(NSString *)name;
 -(void)goto:(ARXBlock *)destination;
 
+-(ARXPointerValue *)allocateVariableOfType:(ARXType *)type;
 -(ARXPointerValue *)allocateVariableOfType:(ARXType *)type value:(ARXValue *)value;
 
 -(void)return:(ARXValue *)value;

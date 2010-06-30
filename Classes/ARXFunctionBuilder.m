@@ -53,8 +53,12 @@
 }
 
 
+-(ARXPointerValue *)allocateVariableOfType:(ARXType *)type {
+	return [self.builder allocateLocal: @"" type: type];
+}
+
 -(ARXPointerValue *)allocateVariableOfType:(ARXType *)type value:(ARXValue *)value {
-	ARXPointerValue *address = [self.builder allocateLocal: @"" type: type];
+	ARXPointerValue *address = [self allocateVariableOfType: type];
 	address.value = value;
 	return address;
 }

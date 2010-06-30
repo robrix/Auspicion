@@ -26,6 +26,14 @@
 	return [self elementAtIndex: [self.structureType indexForElementName: name]];
 }
 
+-(void)setElement:(ARXValue *)element forName:(NSString *)name {
+	[self referenceToElementAtIndex: [self.structureType indexForElementName: name]].value = element;
+}
+
+-(ARXStructureValue *)structureElementNamed:(NSString *)name {
+	return (ARXStructureValue *)[self elementNamed: name];
+}
+
 
 -(NSArray *)elements {
 	NSMutableArray *elements = [NSMutableArray array];

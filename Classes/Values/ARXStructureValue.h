@@ -12,6 +12,8 @@
 -(ARXValue *)elementAtIndex:(NSUInteger)i;
 
 -(ARXValue *)elementNamed:(NSString *)name;
+-(void)setElement:(ARXValue *)element forName:(NSString *)name;
+-(ARXStructureValue *)structureElementNamed:(NSString *)name;
 
 @property (nonatomic, copy) NSArray *elements;
 

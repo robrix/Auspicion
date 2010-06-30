@@ -25,7 +25,7 @@
 
 
 -(NSUInteger)elementCount {
-	return LLVMCountStructElementTypes(self.typeRef);
+	return LLVMCountStructElementTypes(LLVMGetElementType(self.typeRef));
 }
 
 
