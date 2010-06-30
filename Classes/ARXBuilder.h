@@ -37,7 +37,7 @@ Unless otherwise noted (e.g. with NS_REQUIRES_NIL_TERMINATION), variadic builder
 
 -(ARXValue *)add:(ARXValue *)left, ...;
 -(ARXValue *)subtract:(ARXValue *)left, ...;
--(ARXValue *)not:(ARXValue *)value;
+-(ARXBooleanValue *)not:(ARXValue *)value;
 
 -(ARXValue *)stringPointer:(NSString *)string;
 

@@ -120,7 +120,7 @@
 }
 
 
--(ARXValue *)constantStructure:(ARXValue *)value, ... {
+-(ARXStructureValue *)constantStructure:(ARXValue *)value, ... {
 	NSParameterAssert(value != nil);
 	NSMutableArray *values = [NSMutableArray arrayWithObject: value];
 	va_list list;

@@ -32,6 +32,8 @@
 
 -(ARXBooleanValue *)isUnsignedLessThan:(ARXValue *)other;
 
+-(ARXBooleanValue *)invert;
+
 -(ARXValue *)plus:(ARXValue *)other;
 
 -(ARXBooleanValue *)toBoolean;

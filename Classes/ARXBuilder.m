@@ -111,7 +111,7 @@
 	return [ARXValue valueWithValueRef: LLVMBuildSub(self.builderRef, left.valueRef, right.valueRef, "")];
 }
 
--(ARXValue *)not:(ARXValue *)value {
+-(ARXBooleanValue *)not:(ARXValue *)value {
 	NSParameterAssert(value != nil);
 	return [ARXValue valueWithValueRef: LLVMBuildNot(self.builderRef, value.valueRef, "")];
 }

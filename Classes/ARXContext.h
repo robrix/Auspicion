@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class ARXStructureType, ARXType, ARXValue;
+@class ARXStructureType, ARXStructureValue, ARXType, ARXValue;
 
 @interface ARXContext : NSObject {
 	struct LLVMOpaqueContext * contextRef;
@@ -40,6 +40,6 @@
 
 -(ARXValue *)constantNullOfType:(ARXType *)type;
 
--(ARXValue *)constantStructure:(ARXValue *)value, ... NS_REQUIRES_NIL_TERMINATION;
+-(ARXStructureValue *)constantStructure:(ARXValue *)value, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end
