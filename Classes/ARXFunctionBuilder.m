@@ -72,4 +72,9 @@
 	[self.builder return];
 }
 
+
+-(NSString *)description {
+	return [function description];
+}
+
 @end
