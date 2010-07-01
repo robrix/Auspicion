@@ -15,11 +15,6 @@
 
 @implementation ARXFunction
 
-+(ARXFunction *)functionInModule:(ARXModule *)module withName:(NSString *)name type:(ARXType *)type {
-	return [ARXFunction valueWithValueRef: LLVMAddFunction(module.moduleRef, [name UTF8String], type.typeRef)];
-}
-
-
 -(LLVMLinkage)linkage {
 	return LLVMGetLinkage(self.valueRef);
 }
@@ -31,6 +26,11 @@
 
 -(ARXFunctionType *)functionType {
 	return [ARXFunctionType typeWithTypeRef: AuspicionLLVMGetFunctionType(self.valueRef)];
+}
+
+
+-(BOOL)isGlobal {
+	return YES;
 }
 
 
