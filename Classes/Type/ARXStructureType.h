@@ -5,11 +5,13 @@
 #import "ARXType.h"
 
 @interface ARXStructureType : ARXType {
-	NSDictionary *elementNames;
+	NSArray *elementNames;
 }
 
 -(void)declareElementNames:(NSArray *)names;
+@property (nonatomic, readonly) NSArray *elementNames;
 -(NSUInteger)indexForElementName:(NSString *)name;
--(NSUInteger)elementCount;
+
+@property (nonatomic, readonly) NSUInteger elementCount;
 
 @end
