@@ -8,12 +8,7 @@
 
 @interface ARXFunction : ARXValue
 
-+(ARXFunction *)functionInModule:(ARXModule *)module withName:(NSString *)name type:(ARXType *)type;
-
 @property (nonatomic, readonly) ARXFunctionType *functionType;
-
-@property (nonatomic, readonly) ARXContext *context;
-@property (nonatomic, readonly) ARXModule *module;
 
 -(ARXValue *)argumentAtIndex:(NSUInteger)index;
 -(ARXValue *)argumentNamed:(NSString *)name;

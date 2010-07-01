@@ -43,7 +43,7 @@
 -(ARXFunction *)externalFunctionWithName:(NSString *)name type:(ARXType *)type {
 	ARXFunction *function = [self functionNamed: name];
 	if(!function) {
-		function = [ARXFunction functionInModule: self withName: name type: type];
+		function = [ARXFunction valueWithValueRef: LLVMAddFunction(self.moduleRef, [name UTF8String], type.typeRef)];
 		function.linkage = LLVMExternalLinkage;
 	}
 	return function;
@@ -56,7 +56,7 @@
 }
 
 -(ARXFunction *)functionWithName:(NSString *)name type:(ARXType *)type {
-	ARXFunction *function = [ARXFunction functionInModule: self withName: name type: type];
+	ARXFunction *function = [ARXFunction valueWithValueRef: LLVMAddFunction(self.moduleRef, [name UTF8String], type.typeRef)];
 	LLVMAppendBasicBlock(function.valueRef, "entry");
 	return function;
 }
