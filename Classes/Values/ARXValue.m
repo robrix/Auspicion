@@ -28,7 +28,7 @@
 
 +(id)valueWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)_name {
 	ARXValue *value = [self valueWithValueRef: _valueRef];
-	value.name = _name;
+	value.name = [_name copy];
 	return value;
 }
 
@@ -38,6 +38,11 @@
 
 
 @synthesize valueRef;
+
+
+-(void)referencedByPointer:(ARXPointerValue *)pointer {
+	referencingPointer = pointer;
+}
 
 
 -(NSString *)name {

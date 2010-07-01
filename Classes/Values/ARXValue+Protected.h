@@ -4,11 +4,15 @@
 
 #import "ARXValue.h"
 
+@class ARXPointerValue;
+
 @interface ARXValue ()
 
 @property (nonatomic, readonly) LLVMValueRef valueRef;
 
 +(id)valueWithValueRef:(LLVMValueRef)_valueRef name:(NSString *)name;
 +(id)valueWithValueRef:(LLVMValueRef)_valueRef;
+
+-(void)referencedByPointer:(ARXPointerValue *)pointer;
 
 @end
