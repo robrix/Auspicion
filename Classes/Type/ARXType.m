@@ -34,9 +34,7 @@
 		case LLVMPointerTypeKind:
 			{
 				LLVMTypeKind referencedTypeKind = LLVMGetTypeKind(LLVMGetElementType(typeRef));
-				if(referencedTypeKind == LLVMStructTypeKind) {
-					result = [ARXStructureType class];
-				} else if(referencedTypeKind == LLVMFunctionTypeKind) {
+				if(referencedTypeKind == LLVMFunctionTypeKind) {
 					result = [ARXFunctionType class];
 				} else {
 					result = [ARXPointerType class];
