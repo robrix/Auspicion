@@ -55,6 +55,7 @@
 			children = (
 				D4E572C719E1AD4D00158018 /* Auspicion */,
 				D4E572D419E1AD4D00158018 /* AuspicionTests */,
+				D4E572E119E1BD9900158018 /* External */,
 				D4E572C619E1AD4D00158018 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -100,6 +101,21 @@
 				D4E572D619E1AD4D00158018 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D4E572E119E1BD9900158018 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				D4E572E219E1BDA100158018 /* llvm */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
+		D4E572E219E1BDA100158018 /* llvm */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = llvm;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -324,6 +340,10 @@
 				INFOPLIST_FILE = Auspicion/Info.plist;
 				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/llvm/3.5.0/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -341,6 +361,10 @@
 				INFOPLIST_FILE = Auspicion/Info.plist;
 				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/llvm/3.5.0/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -397,6 +421,7 @@
 				D4E572DD19E1AD4D00158018 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D4E572DE19E1AD4D00158018 /* Build configuration list for PBXNativeTarget "AuspicionTests" */ = {
 			isa = XCConfigurationList;
@@ -405,6 +430,7 @@
 				D4E572E019E1AD4D00158018 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
