@@ -1,3 +1,7 @@
-#Why?
+# Mothballed
+
+Note that this branch has been mothballed; new development will take place on `master` instead.
+
+#Why
 
 Auspicion sets out to make it more convenient to write compilers using LLVM.
