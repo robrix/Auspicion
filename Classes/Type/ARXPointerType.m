@@ -19,9 +19,7 @@
 
 -(Class)correspondingValueClass {
 	Class result = Nil;
-	if([self.referencedType isKindOfClass: [ARXStructureType class]]) {
-		result = [ARXStructureValue class];
-	} else if([self.referencedType isKindOfClass: [ARXFunctionType class]]) {
+	if([self.referencedType isKindOfClass: [ARXFunctionType class]]) {
 		result = [ARXFunction class];
 	} else {
 		result = [ARXPointerValue class];

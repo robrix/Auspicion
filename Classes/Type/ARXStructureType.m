@@ -9,23 +9,18 @@
 @implementation ARXStructureType
 
 -(void)declareElementNames:(NSArray *)names {
-	NSMutableDictionary *tempNames = [[NSMutableDictionary alloc] init];
-	NSUInteger i = 0;
-	for(NSString *name in names) {
-		[tempNames setObject: [NSNumber numberWithUnsignedInteger: i] forKey: name];
-		i++;
-	}
-	elementNames = [tempNames copy];
-	[tempNames release];
+	elementNames = [names copy];
 }
 
+@synthesize elementNames;
+
 -(NSUInteger)indexForElementName:(NSString *)name {
-	return [[elementNames objectForKey: name] unsignedIntegerValue];
+	return [elementNames indexOfObject: name];
 }
 
 
 -(NSUInteger)elementCount {
-	return LLVMCountStructElementTypes(LLVMGetElementType(self.typeRef));
+	return LLVMCountStructElementTypes(self.typeRef);
 }
 
 

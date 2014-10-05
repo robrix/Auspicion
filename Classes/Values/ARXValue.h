@@ -4,10 +4,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class ARXBlock, ARXBooleanValue, ARXBuilder, ARXContext, ARXFunction, ARXModule, ARXType;
+@class ARXBlock, ARXBooleanValue, ARXBuilder, ARXContext, ARXFunction, ARXModule, ARXPointerValue, ARXType;
 
 @interface ARXValue : NSObject {
 	struct LLVMOpaqueValue * valueRef;
+	ARXPointerValue *referencingPointer;
 	BOOL isParameter;
 	BOOL isGlobal;
 }
