@@ -11,6 +11,7 @@
 		D4E572D119E1AD4D00158018 /* Auspicion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4E572C519E1AD4D00158018 /* Auspicion.framework */; };
 		D4E572D819E1AD4D00158018 /* AuspicionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E572D719E1AD4D00158018 /* AuspicionTests.swift */; };
 		D4E572F019E1BF7F00158018 /* libLLVM-3.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D4E572EF19E1BF7F00158018 /* libLLVM-3.5.dylib */; };
+		D4E572F219E1C01A00158018 /* libLLVM-3.5.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = D4E572EF19E1BF7F00158018 /* libLLVM-3.5.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,6 +23,20 @@
 			remoteInfo = Auspicion;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D4E572F119E1C00800158018 /* Copy Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D4E572F219E1C01A00158018 /* libLLVM-3.5.dylib in Copy Libraries */,
+			);
+			name = "Copy Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D4E572C519E1AD4D00158018 /* Auspicion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Auspicion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,6 +159,7 @@
 				D4E572C119E1AD4D00158018 /* Frameworks */,
 				D4E572C219E1AD4D00158018 /* Headers */,
 				D4E572C319E1AD4D00158018 /* Resources */,
+				D4E572F119E1C00800158018 /* Copy Libraries */,
 			);
 			buildRules = (
 			);
