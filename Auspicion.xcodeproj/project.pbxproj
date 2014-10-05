@@ -46,6 +46,7 @@
 		D4E572D619E1AD4D00158018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4E572D719E1AD4D00158018 /* AuspicionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuspicionTests.swift; sourceTree = "<group>"; };
 		D4E572EF19E1BF7F00158018 /* libLLVM-3.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libLLVM-3.5.dylib"; sourceTree = "<group>"; };
+		D4E5730719E1D54700158018 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +133,7 @@
 		D4E572E219E1BDA100158018 /* llvm */ = {
 			isa = PBXGroup;
 			children = (
+				D4E5730719E1D54700158018 /* module.modulemap */,
 				D4E572EF19E1BF7F00158018 /* libLLVM-3.5.dylib */,
 			);
 			path = llvm;
@@ -356,6 +358,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/External/llvm\"",
+				);
 				INFOPLIST_FILE = Auspicion/Info.plist;
 				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
@@ -381,6 +387,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/External/llvm\"",
+				);
 				INFOPLIST_FILE = Auspicion/Info.plist;
 				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
