@@ -1,0 +1,412 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D4E572CB19E1AD4D00158018 /* Auspicion.h in Headers */ = {isa = PBXBuildFile; fileRef = D4E572CA19E1AD4D00158018 /* Auspicion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D4E572D119E1AD4D00158018 /* Auspicion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4E572C519E1AD4D00158018 /* Auspicion.framework */; };
+		D4E572D819E1AD4D00158018 /* AuspicionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E572D719E1AD4D00158018 /* AuspicionTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D4E572D219E1AD4D00158018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D4E572BC19E1AD4D00158018 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4E572C419E1AD4D00158018;
+			remoteInfo = Auspicion;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D4E572C519E1AD4D00158018 /* Auspicion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Auspicion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4E572C919E1AD4D00158018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D4E572CA19E1AD4D00158018 /* Auspicion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Auspicion.h; sourceTree = "<group>"; };
+		D4E572D019E1AD4D00158018 /* AuspicionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AuspicionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4E572D619E1AD4D00158018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D4E572D719E1AD4D00158018 /* AuspicionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuspicionTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D4E572C119E1AD4D00158018 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4E572CD19E1AD4D00158018 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4E572D119E1AD4D00158018 /* Auspicion.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D4E572BB19E1AD4D00158018 = {
+			isa = PBXGroup;
+			children = (
+				D4E572C719E1AD4D00158018 /* Auspicion */,
+				D4E572D419E1AD4D00158018 /* AuspicionTests */,
+				D4E572C619E1AD4D00158018 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D4E572C619E1AD4D00158018 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D4E572C519E1AD4D00158018 /* Auspicion.framework */,
+				D4E572D019E1AD4D00158018 /* AuspicionTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D4E572C719E1AD4D00158018 /* Auspicion */ = {
+			isa = PBXGroup;
+			children = (
+				D4E572CA19E1AD4D00158018 /* Auspicion.h */,
+				D4E572C819E1AD4D00158018 /* Supporting Files */,
+			);
+			path = Auspicion;
+			sourceTree = "<group>";
+		};
+		D4E572C819E1AD4D00158018 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D4E572C919E1AD4D00158018 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D4E572D419E1AD4D00158018 /* AuspicionTests */ = {
+			isa = PBXGroup;
+			children = (
+				D4E572D719E1AD4D00158018 /* AuspicionTests.swift */,
+				D4E572D519E1AD4D00158018 /* Supporting Files */,
+			);
+			path = AuspicionTests;
+			sourceTree = "<group>";
+		};
+		D4E572D519E1AD4D00158018 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D4E572D619E1AD4D00158018 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D4E572C219E1AD4D00158018 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4E572CB19E1AD4D00158018 /* Auspicion.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D4E572C419E1AD4D00158018 /* Auspicion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4E572DB19E1AD4D00158018 /* Build configuration list for PBXNativeTarget "Auspicion" */;
+			buildPhases = (
+				D4E572C019E1AD4D00158018 /* Sources */,
+				D4E572C119E1AD4D00158018 /* Frameworks */,
+				D4E572C219E1AD4D00158018 /* Headers */,
+				D4E572C319E1AD4D00158018 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Auspicion;
+			productName = Auspicion;
+			productReference = D4E572C519E1AD4D00158018 /* Auspicion.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D4E572CF19E1AD4D00158018 /* AuspicionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4E572DE19E1AD4D00158018 /* Build configuration list for PBXNativeTarget "AuspicionTests" */;
+			buildPhases = (
+				D4E572CC19E1AD4D00158018 /* Sources */,
+				D4E572CD19E1AD4D00158018 /* Frameworks */,
+				D4E572CE19E1AD4D00158018 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D4E572D319E1AD4D00158018 /* PBXTargetDependency */,
+			);
+			name = AuspicionTests;
+			productName = AuspicionTests;
+			productReference = D4E572D019E1AD4D00158018 /* AuspicionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D4E572BC19E1AD4D00158018 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Rob Rix";
+				TargetAttributes = {
+					D4E572C419E1AD4D00158018 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					D4E572CF19E1AD4D00158018 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
+			};
+			buildConfigurationList = D4E572BF19E1AD4D00158018 /* Build configuration list for PBXProject "Auspicion" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D4E572BB19E1AD4D00158018;
+			productRefGroup = D4E572C619E1AD4D00158018 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D4E572C419E1AD4D00158018 /* Auspicion */,
+				D4E572CF19E1AD4D00158018 /* AuspicionTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D4E572C319E1AD4D00158018 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4E572CE19E1AD4D00158018 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D4E572C019E1AD4D00158018 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4E572CC19E1AD4D00158018 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4E572D819E1AD4D00158018 /* AuspicionTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D4E572D319E1AD4D00158018 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4E572C419E1AD4D00158018 /* Auspicion */;
+			targetProxy = D4E572D219E1AD4D00158018 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D4E572D919E1AD4D00158018 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D4E572DA19E1AD4D00158018 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D4E572DC19E1AD4D00158018 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = Auspicion/Info.plist;
+				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		D4E572DD19E1AD4D00158018 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = Auspicion/Info.plist;
+				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		D4E572DF19E1AD4D00158018 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AuspicionTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D4E572E019E1AD4D00158018 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AuspicionTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D4E572BF19E1AD4D00158018 /* Build configuration list for PBXProject "Auspicion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4E572D919E1AD4D00158018 /* Debug */,
+				D4E572DA19E1AD4D00158018 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D4E572DB19E1AD4D00158018 /* Build configuration list for PBXNativeTarget "Auspicion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4E572DC19E1AD4D00158018 /* Debug */,
+				D4E572DD19E1AD4D00158018 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D4E572DE19E1AD4D00158018 /* Build configuration list for PBXNativeTarget "AuspicionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4E572DF19E1AD4D00158018 /* Debug */,
+				D4E572E019E1AD4D00158018 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D4E572BC19E1AD4D00158018 /* Project object */;
+}
