@@ -5,4 +5,3 @@ extern double AuspicionVersionNumber;
 
 /// Project version string for Auspicion.
 extern const unsigned char AuspicionVersionString[];
-
