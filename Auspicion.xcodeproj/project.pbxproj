@@ -39,6 +39,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D4C6E6C519E2282A00A575F5 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = External/llvm/module.modulemap; sourceTree = SOURCE_ROOT; };
 		D4E572C519E1AD4D00158018 /* Auspicion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Auspicion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E572C919E1AD4D00158018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4E572CA19E1AD4D00158018 /* Auspicion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Auspicion.h; sourceTree = "<group>"; };
@@ -100,6 +101,7 @@
 		D4E572C819E1AD4D00158018 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D4C6E6C519E2282A00A575F5 /* module.modulemap */,
 				D4E572C919E1AD4D00158018 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -417,9 +419,14 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/External/llvm\"",
+				);
 				INFOPLIST_FILE = AuspicionTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "\"$(SRCROOT)/External/llvm\"";
 			};
 			name = Debug;
 		};
@@ -431,9 +438,14 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/External/llvm\"",
+				);
 				INFOPLIST_FILE = AuspicionTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "\"$(SRCROOT)/External/llvm\"";
 			};
 			name = Release;
 		};
