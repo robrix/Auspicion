@@ -5,6 +5,8 @@ extension LLVMTypeRef {
 		switch type {
 		case .Void:
 			self = LLVMVoidType()
+		case let .Integer(i):
+			self = LLVMIntTypeInContext(context, UInt32(i))
 		default:
 			print("unimplemented")
 			self = LLVMVoidType()
