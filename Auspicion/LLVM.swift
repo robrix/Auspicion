@@ -24,4 +24,9 @@ extension LLVMTypeRef {
 }
 
 
+extension LLVMValueRef {
+	
+}
+
+
 import llvm
