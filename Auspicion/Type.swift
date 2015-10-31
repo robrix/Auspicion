@@ -1,5 +1,5 @@
 //  Copyright (c) 2014 Rob Rix. All rights reserved.
 
-enum Type {
+public enum Type {
 	case Void
 }
