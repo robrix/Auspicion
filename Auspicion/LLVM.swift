@@ -1,7 +1,9 @@
 //  Copyright © 2015 Rob Rix. All rights reserved.
 
 extension LLVMModuleRef {
-	
+	init(module: Module, context: LLVMContextRef) {
+		self = LLVMModuleCreateWithNameInContext(module.name, context)
+	}
 }
 
 
