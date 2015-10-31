@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D4C6E6C319E227C700A575F5 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6E6C119E227C700A575F5 /* Context.swift */; };
 		D4C6E6C419E227C700A575F5 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6E6C219E227C700A575F5 /* Module.swift */; };
+		D4C6E6C719E22C5E00A575F5 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6E6C619E22C5E00A575F5 /* Type.swift */; };
 		D4E572CB19E1AD4D00158018 /* Auspicion.h in Headers */ = {isa = PBXBuildFile; fileRef = D4E572CA19E1AD4D00158018 /* Auspicion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D4E572D119E1AD4D00158018 /* Auspicion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4E572C519E1AD4D00158018 /* Auspicion.framework */; };
 		D4E572D819E1AD4D00158018 /* AuspicionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E572D719E1AD4D00158018 /* AuspicionTests.swift */; };
@@ -44,6 +45,7 @@
 		D4C6E6C119E227C700A575F5 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
 		D4C6E6C219E227C700A575F5 /* Module.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		D4C6E6C519E2282A00A575F5 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = External/llvm/module.modulemap; sourceTree = SOURCE_ROOT; };
+		D4C6E6C619E22C5E00A575F5 /* Type.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
 		D4E572C519E1AD4D00158018 /* Auspicion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Auspicion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4E572C919E1AD4D00158018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4E572CA19E1AD4D00158018 /* Auspicion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Auspicion.h; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				D4E572CA19E1AD4D00158018 /* Auspicion.h */,
 				D4C6E6C119E227C700A575F5 /* Context.swift */,
 				D4C6E6C219E227C700A575F5 /* Module.swift */,
+				D4C6E6C619E22C5E00A575F5 /* Type.swift */,
 				D4E572C819E1AD4D00158018 /* Supporting Files */,
 			);
 			path = Auspicion;
@@ -204,6 +207,7 @@
 		D4E572BC19E1AD4D00158018 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Rob Rix";
 				TargetAttributes = {
@@ -257,6 +261,7 @@
 			files = (
 				D4C6E6C319E227C700A575F5 /* Context.swift in Sources */,
 				D4C6E6C419E227C700A575F5 /* Module.swift in Sources */,
+				D4C6E6C719E22C5E00A575F5 /* Type.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
