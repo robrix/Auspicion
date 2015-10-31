@@ -7,4 +7,5 @@ public enum Type {
 	case Double
 	indirect case Function([Type], Type)
 	indirect case Array(Type, Int)
+	case Product([Type])
 }
