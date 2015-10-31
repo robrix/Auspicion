@@ -5,4 +5,5 @@ public enum Type {
 	case Integer(Int)
 	case Float
 	case Double
+	indirect case Function([Type], Type)
 }
