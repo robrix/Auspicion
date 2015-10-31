@@ -16,6 +16,9 @@ extension LLVMTypeRef {
 			self = LLVMFunctionType(LLVMTypeRef(type: result, context: context), &params, UInt32(params.count), 0)
 		case let .Array(type, count):
 			self = LLVMArrayType(LLVMTypeRef(type: type, context: context), UInt32(count))
+		case let .Product(types):
+			var types = types.map { LLVMTypeRef(type: $0, context: context) }
+			self = LLVMStructTypeInContext(context, &types, UInt32(types.count), 0)
 		default:
 			print("unimplemented")
 			self = LLVMVoidType()
