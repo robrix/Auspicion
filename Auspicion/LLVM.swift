@@ -24,4 +24,19 @@ extension LLVMTypeRef {
 }
 
 
+extension LLVMValueRef {
+	init(constant: Constant, context: LLVMContextRef) {
+		let type = LLVMTypeRef(type: constant.type, context: context)
+		switch constant {
+		case let .Boolean(v):
+			self = LLVMConstInt(type, v ? 0 : 1, 0)
+		case let .Integer(i):
+			self = LLVMConstInt(type, UInt64(i), 0)
+		case let .Real(r):
+			self = LLVMConstReal(type, r)
+		}
+	}
+}
+
+
 import llvm

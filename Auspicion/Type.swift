@@ -8,4 +8,8 @@ public enum Type {
 	indirect case Function([Type], Type)
 	indirect case Array(Type, Int)
 	case Product([Type])
+
+	static var Boolean: Type {
+		return .Integer(1)
+	}
 }
