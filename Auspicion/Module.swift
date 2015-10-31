@@ -10,12 +10,12 @@ public final class Module {
 	init(name: String, context: Context) {
 		self.name = name
 		self.context = context
-		self.module = LLVMModuleCreateWithNameInContext(name, context.context).takeUnretainedValue()
+		self.module = LLVMModuleCreateWithNameInContext(name, context.context)
 	}
 
 	deinit {
 		LLVMDisposeModule(module)
 	}
 
-	private let module: LLVMModule
+	private let module: LLVMModuleRef
 }
