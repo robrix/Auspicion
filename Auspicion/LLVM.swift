@@ -25,7 +25,12 @@ extension LLVMTypeRef {
 
 
 extension LLVMValueRef {
-	
+	init(constant: Constant, context: LLVMContextRef) {
+		switch constant {
+		default:
+			self = LLVMConstInt(LLVMTypeRef(type: constant.type, context: context), 0, 0)
+		}
+	}
 }
 
 
