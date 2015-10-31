@@ -2,4 +2,5 @@
 
 public struct Function {
 	public let name: String
+	public let returnType: Type
 }
