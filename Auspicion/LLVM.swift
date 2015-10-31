@@ -1,5 +1,10 @@
 //  Copyright © 2015 Rob Rix. All rights reserved.
 
+extension LLVMModuleRef {
+	
+}
+
+
 extension LLVMTypeRef {
 	init(type: Type, context: LLVMContextRef) {
 		switch type {
