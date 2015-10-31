@@ -1,6 +1,6 @@
 //  Copyright © 2015 Rob Rix. All rights reserved.
 
-enum Constant: BooleanLiteralConvertible, IntegerLiteralConvertible {
+enum Constant: BooleanLiteralConvertible, FloatLiteralConvertible, IntegerLiteralConvertible {
 	case Boolean(Bool)
 	case Integer(Int)
 	case Real(Double)
@@ -10,6 +10,13 @@ enum Constant: BooleanLiteralConvertible, IntegerLiteralConvertible {
 
 	init(booleanLiteral: Bool) {
 		self = .Boolean(booleanLiteral)
+	}
+
+
+	// MARK: FloatLiteralConvertible
+
+	init(floatLiteral: Double) {
+		self = .Real(floatLiteral)
 	}
 
 
