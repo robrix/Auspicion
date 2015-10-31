@@ -3,6 +3,9 @@
 extension LLVMModuleRef {
 	init(module: Module, context: LLVMContextRef) {
 		self = LLVMModuleCreateWithNameInContext(module.name, context)
+		for function in module.functions {
+			LLVMAddFunction(self, function.name, LLVMTypeRef(type: function.type, context: context))
+		}
 	}
 }
 
