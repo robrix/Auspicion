@@ -19,9 +19,6 @@ extension LLVMTypeRef {
 		case let .Product(types):
 			var types = types.map { LLVMTypeRef(type: $0, context: context) }
 			self = LLVMStructTypeInContext(context, &types, UInt32(types.count), 0)
-		default:
-			print("unimplemented")
-			self = LLVMVoidType()
 		}
 	}
 }
