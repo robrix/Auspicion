@@ -3,4 +3,6 @@
 public enum Type {
 	case Void
 	case Integer(Int)
+	case Float
+	case Double
 }
