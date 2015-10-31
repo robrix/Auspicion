@@ -6,5 +6,5 @@ public enum Type {
 	case Float
 	case Double
 	indirect case Function([Type], Type)
-	indirect case Array(Type)
+	indirect case Array(Type, Int)
 }
