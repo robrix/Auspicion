@@ -6,6 +6,18 @@ enum Constant: BooleanLiteralConvertible, FloatLiteralConvertible, IntegerLitera
 	case Real(Double)
 
 
+	var type: Type {
+		switch self {
+		case .Boolean:
+			return .Boolean
+		case .Integer:
+			return .Integer(sizeof(Int.self))
+		case .Real:
+			return .Double
+		}
+	}
+
+
 	// MARK: BooleanLiteralConvertible
 
 	init(booleanLiteral: Bool) {
