@@ -1,5 +1,12 @@
 //  Copyright © 2015 Rob Rix. All rights reserved.
 
+extension LLVMModuleRef {
+	init(module: Module, context: LLVMContextRef) {
+		self = LLVMModuleCreateWithNameInContext(module.name, context)
+	}
+}
+
+
 extension LLVMTypeRef {
 	init(type: Type, context: LLVMContextRef) {
 		switch type {
