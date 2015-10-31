@@ -17,5 +17,5 @@ public final class Module {
 		LLVMDisposeModule(module)
 	}
 
-	private let module: LLVMModule
+	private let module: LLVMModuleRef
 }
