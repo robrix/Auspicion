@@ -11,7 +11,7 @@ public final class Context {
 	}
 
 	convenience init() {
-		self.init(context: LLVMContextCreate().takeUnretainedValue())
+		self.init(context: LLVMContextCreate())
 	}
 
 	deinit {
