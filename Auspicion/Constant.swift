@@ -2,6 +2,7 @@
 
 enum Constant: BooleanLiteralConvertible {
 	case Boolean(Bool)
+	case Integer(Int)
 
 
 	// MARK: BooleanLiteralConvertible
