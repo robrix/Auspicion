@@ -2,5 +2,6 @@
 
 public struct Function {
 	public let name: String
+	public let parameterTypes: [Type]
 	public let returnType: Type
 }
