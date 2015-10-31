@@ -3,6 +3,7 @@
 enum Constant: BooleanLiteralConvertible, IntegerLiteralConvertible {
 	case Boolean(Bool)
 	case Integer(Int)
+	case Real(Double)
 
 
 	// MARK: BooleanLiteralConvertible
