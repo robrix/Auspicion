@@ -2,4 +2,5 @@
 
 public enum Type {
 	case Void
+	case Integer(Int)
 }
