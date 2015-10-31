@@ -29,6 +29,8 @@ extension LLVMValueRef {
 		switch constant {
 		case let .Boolean(v):
 			self = LLVMConstInt(LLVMTypeRef(type: constant.type, context: context), v ? 0 : 1, 0)
+		case let .Integer(i):
+			self = LLVMConstInt(LLVMTypeRef(type: constant.type, context: context), UInt64(i), 0)
 		default:
 			self = LLVMConstInt(LLVMTypeRef(type: constant.type, context: context), 0, 0)
 		}
