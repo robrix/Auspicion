@@ -2,9 +2,9 @@
 
 /// A module, i.e. a single unit of compilation.
 public struct Module {
-	let name: String
+	public let name: String
 
-	init(name: String) {
+	public init(name: String) {
 		self.name = name
 	}
 }
