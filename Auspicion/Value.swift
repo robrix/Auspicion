@@ -1,12 +1,12 @@
 //  Copyright © 2015 Rob Rix. All rights reserved.
 
-enum Value: BooleanLiteralConvertible, FloatLiteralConvertible, IntegerLiteralConvertible {
+public enum Value: BooleanLiteralConvertible, FloatLiteralConvertible, IntegerLiteralConvertible {
 	case Boolean(Bool)
 	case Integer(Int)
 	case Real(Double)
 
 
-	var type: Type {
+	public var type: Type {
 		switch self {
 		case .Boolean:
 			return .Boolean
@@ -20,21 +20,21 @@ enum Value: BooleanLiteralConvertible, FloatLiteralConvertible, IntegerLiteralCo
 
 	// MARK: BooleanLiteralConvertible
 
-	init(booleanLiteral: Bool) {
+	public init(booleanLiteral: Bool) {
 		self = .Boolean(booleanLiteral)
 	}
 
 
 	// MARK: FloatLiteralConvertible
 
-	init(floatLiteral: Double) {
+	public init(floatLiteral: Double) {
 		self = .Real(floatLiteral)
 	}
 
 
 	// MARK: IntegerLiteralConvertible
 
-	init(integerLiteral: Int) {
+	public init(integerLiteral: Int) {
 		self = .Integer(integerLiteral)
 	}
 }
