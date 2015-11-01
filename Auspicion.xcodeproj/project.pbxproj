@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D4886ECC1BE5794400AFAC9E /* LLVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4886ECB1BE5794400AFAC9E /* LLVM.swift */; };
-		D4886ECE1BE57F1500AFAC9E /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4886ECD1BE57F1500AFAC9E /* Constant.swift */; };
+		D4886ECE1BE57F1500AFAC9E /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4886ECD1BE57F1500AFAC9E /* Value.swift */; };
 		D4886ED01BE58AFC00AFAC9E /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4886ECF1BE58AFC00AFAC9E /* Function.swift */; };
 		D4C6E6C419E227C700A575F5 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6E6C219E227C700A575F5 /* Module.swift */; };
 		D4C6E6C719E22C5E00A575F5 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6E6C619E22C5E00A575F5 /* Type.swift */; };
@@ -45,7 +45,7 @@
 
 /* Begin PBXFileReference section */
 		D4886ECB1BE5794400AFAC9E /* LLVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LLVM.swift; sourceTree = "<group>"; };
-		D4886ECD1BE57F1500AFAC9E /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		D4886ECD1BE57F1500AFAC9E /* Value.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Value.swift; sourceTree = "<group>"; };
 		D4886ECF1BE58AFC00AFAC9E /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		D4C6E6C219E227C700A575F5 /* Module.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		D4C6E6C519E2282A00A575F5 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = External/llvm/module.modulemap; sourceTree = SOURCE_ROOT; };
@@ -106,7 +106,7 @@
 				D4C6E6C219E227C700A575F5 /* Module.swift */,
 				D4886ECF1BE58AFC00AFAC9E /* Function.swift */,
 				D4C6E6C619E22C5E00A575F5 /* Type.swift */,
-				D4886ECD1BE57F1500AFAC9E /* Constant.swift */,
+				D4886ECD1BE57F1500AFAC9E /* Value.swift */,
 				D4886ECB1BE5794400AFAC9E /* LLVM.swift */,
 				D4E572C819E1AD4D00158018 /* Supporting Files */,
 			);
@@ -266,7 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4886ECC1BE5794400AFAC9E /* LLVM.swift in Sources */,
-				D4886ECE1BE57F1500AFAC9E /* Constant.swift in Sources */,
+				D4886ECE1BE57F1500AFAC9E /* Value.swift in Sources */,
 				D4C6E6C419E227C700A575F5 /* Module.swift in Sources */,
 				D4C6E6C719E22C5E00A575F5 /* Type.swift in Sources */,
 				D4886ED01BE58AFC00AFAC9E /* Function.swift in Sources */,

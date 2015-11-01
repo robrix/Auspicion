@@ -1,6 +1,6 @@
 //  Copyright © 2015 Rob Rix. All rights reserved.
 
-enum Constant: BooleanLiteralConvertible, FloatLiteralConvertible, IntegerLiteralConvertible {
+enum Value: BooleanLiteralConvertible, FloatLiteralConvertible, IntegerLiteralConvertible {
 	case Boolean(Bool)
 	case Integer(Int)
 	case Real(Double)

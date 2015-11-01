@@ -35,9 +35,9 @@ extension LLVMTypeRef {
 
 
 extension LLVMValueRef {
-	init(constant: Constant, context: LLVMContextRef) {
-		let type = LLVMTypeRef(type: constant.type, context: context)
-		switch constant {
+	init(value: Value, context: LLVMContextRef) {
+		let type = LLVMTypeRef(type: value.type, context: context)
+		switch value {
 		case let .Boolean(v):
 			self = LLVMConstInt(type, v ? 0 : 1, 0)
 		case let .Integer(i):
